@@ -31,7 +31,7 @@ ________________________________
 #####0.1.0 - setup
 - [x] git repo
 - [x] readme
-- [] release tags in git
+- [x] release tags in git
 
 #####0.1.1 - setup specs 
 - [ ] determine setup specs
