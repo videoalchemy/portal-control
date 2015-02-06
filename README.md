@@ -4,9 +4,9 @@ ___________________
 
 ________________________________
 ###Overview
-Portal Control is an interactive installation containing video feedback loops that movement and gesture can manipulate.
+Portal Control is an interactive installation containing video feedback loops controlled by movement and gesture.
 
-Main components:
+####Main components:  
 1. the gear
      - screens, projectors, kinect, computer, cables, and software
 2. closest point tracking using the kinect
