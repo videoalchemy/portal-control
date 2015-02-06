@@ -84,6 +84,8 @@ ________________________________
 ```git tag```  
 - delete tag  
 ```git tag -d v1.0.0```  
+- push tags from CLI  
+```git push --tags```  
 - source: [Git Tip of the Week: Tags](http://alblue.bandlem.com/2011/04/git-tip-of-week-tags.html)
 
 
