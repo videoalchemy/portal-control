@@ -33,12 +33,30 @@ ________________________________
 - [x] readme
 - [x] release tags in git
 
-#####0.1.1 - setup specs 
-- [ ] determine setup specs
-     - [ ] screen size
-     - [ ] footprint 
-     - [ ] throw distance
-- [ ] get setup specs to Peter Tjeerdsma peter@petert.net
+#####0.1.1 - complete practice sketches for image processing
+- [x] create processsing sketches for icm shiffman practice 15.0-15.9
+- [ ] 15.0 Intro to images
+- [ ] 15.1 Animate an Image
+- [ ] 15.2 Array of Images
+- [ ] 15.3 the Pixel Array
+- [ ] 15.4 Image processing with Pixels
+- [ ] 15.5 Pixel Neighbors
+- [ ] 15.6 Painting with pixels
+- [ ] 15.7 Capture and Live Video
+- [ ] 15.8 Movie Objects and displaying vids
+- [ ] 15.9 Intro to Computer Vision
+
+#####0.1.2 - complete practice sessions for flow fields
+
+#####0.1.3 - setup specs 
+- [ ] get setup specs from Peter Tjeerdsma peter@petert.net
+     - [ ] what's the screen resolution for both projectors?
+     - [ ] throw dimensions? and footprint 
+     - [ ] are the projectors on separate signals?
+     - [ ] how far is the computer location from the installation
+     - [ ] where with the kinect be mounted?  close enought to computers?
+     - [ ] can the Kinect go overheadh
+
 
 #####0.2.0 - requirements phase
 - [ ] requirements
