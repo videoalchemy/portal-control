@@ -27,13 +27,12 @@ PImage outputScreen;
 PImage imgNeek;
 PImage imgGit;
 PImage imgICM;
-boolean isOn;
+boolean isOn = true;
 
 
 public void setup() {
 	size(640,480);
 	background(0);
-	isOn = true;
 	imgNeek = loadImage("../../data/neek.png");
 	imgGit = loadImage("../../data/gitGraph.png");
 	imgICM = loadImage("../../data/icm.png");
