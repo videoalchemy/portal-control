@@ -18,6 +18,9 @@ public class icm_15_4_imageProcessingWithPixels extends PApplet {
     - ex. image processing with Pixels
     - Shiffman's lecture: 
 https://vimeo.com/channels/introcompmedia/108975594
+TODO:
+1. [x] draw images to buffer and buffer to output screen
+2. [ ] use pixel array to accomplish first task
 */
 
 
@@ -50,7 +53,9 @@ public void draw() {
 	}
 
 	image(outputScreen, 0, 0, width, height);
-	
+
+
+	//imgNeek.loadPixels();	
 	
 
 }

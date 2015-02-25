@@ -5,7 +5,23 @@ https://vimeo.com/channels/introcompmedia/108975594
 TODO:
 1. [x] draw images to buffer and buffer to output screen
 2. [ ] use pixel array to accomplish first task
-*/
+
+
+Def:
+loadPixels()
+	- load the pixel data for the display window into the pixel[].
+	- this function must be called 
+		before reading from OR writing to pixel[]
+	- the rule is:
+		anytime you want to manipulate the pixel array (pixel[])
+		you must first call loadPixels(),
+		and after changes are made, you must call updatePixels()
+  updatePixels()
+  	- updates the display window with the data in the display window
+	- Use in conjunction with loadPixels(). 
+	- If you're only reading pixels from the array, there's no need to call 
+		updatePixels() — updating is only necessary to apply changes. 
+*/	
 
 
 
@@ -39,7 +55,7 @@ void draw() {
 	image(outputScreen, 0, 0, width, height);
 
 
-	//imgNeek.loadPixels();	
+	imgNeek.loadPixels();	
 	
 
 }
