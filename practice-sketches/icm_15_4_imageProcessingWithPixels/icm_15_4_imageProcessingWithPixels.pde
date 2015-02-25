@@ -54,10 +54,15 @@ void draw() {
 
 	image(outputScreen, 0, 0, width, height);
 
+	/* use loadPixels to manipulate what's already on the display window
+		by walking through the pixel array */
 
-	imgNeek.loadPixels();	
 	
-
+	loadPixels();	
+	for (int i=0; i<width*height/2; i++) {
+		pixels[i+width*height/2] = imgNeek.pixels[i];
+		}
+	updatePixels();
 }
 
 void mousePressed() {
