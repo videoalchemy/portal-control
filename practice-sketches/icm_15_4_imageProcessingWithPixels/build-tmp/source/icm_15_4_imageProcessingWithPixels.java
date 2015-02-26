@@ -61,6 +61,7 @@ public void setup() {
 
 
 public void draw() {
+	
 	if (isOn) {
 		outputScreen = imgGit;
 	}
@@ -68,17 +69,35 @@ public void draw() {
 		outputScreen = imgICM;
 	}
 
-	image(outputScreen, 0, 0, width, height);
+	//image(outputScreen, 0, 0, width, height);
 
 	/* use loadPixels to manipulate what's already on the display window
 		by walking through the pixel array */
 
-	
+/*	
 	loadPixels();	
 	for (int i=0; i<width*height/2; i++) {
-		pixels[i+width*height/2] = imgNeek.pixels[i];
+		pixels[i+width*height/2] = pixels[i];
 		}
 	updatePixels();
+*/
+	
+	loadPixels();	
+	//outputScreen.loadPixels();
+
+	for (int i=0; i<width*height; i++) {
+		pixels[i] = outputScreen.pixels[i];
+		
+		if ((i>mouseX+width*mouseY) && (i<width*height)){
+			pixels[i] = outputScreen.pixels[i];
+		}
+		else{
+			pixels[i] = imgNeek.pixels[i];
+		}
+		
+	}
+	updatePixels();
+
 }
 
 public void mousePressed() {
