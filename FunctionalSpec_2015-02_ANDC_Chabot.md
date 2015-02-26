@@ -17,7 +17,6 @@ Portal Control is a responsive graphics installation designed for the Mar 2015 e
         * what kind of cables?
     + power
     + [ ] place to sit / setup?  a table??
-    + [ ] 
 - **required gear**
     + [ ] laptop
     + [ ] kinect
@@ -25,7 +24,7 @@ Portal Control is a responsive graphics installation designed for the Mar 2015 e
     + [ ] table and chairs??
     + [ ] extension cords for the kinect (usb and power)
     + [ ] dongle / adapters for the projector signal cables
-    + [ ] 
+    
 
 #####Functional Requirements (the 'system shall' list)
 - **system shall** synchronize between user's location as sensed by the kinect and the user's projected location, as determined by the location of the image on the projection surface.
