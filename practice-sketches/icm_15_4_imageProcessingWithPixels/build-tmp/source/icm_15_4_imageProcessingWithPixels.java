@@ -20,9 +20,9 @@ public class icm_15_4_imageProcessingWithPixels extends PApplet {
 https://vimeo.com/channels/introcompmedia/108975594
 TODO:
 1. [x] draw images to buffer and buffer to output screen
-2. [ ] recreate the image function by copying the pixel value from
+2. [x] recreate the image function by copying the pixel value from
 		each pixel location on an image and copying directly to the screen pixel for pixel
-3. [ ] manipulate the pixel value for eacn pixel in the pixel array 
+3. [x] manipulate the pixel value for eacn pixel in the pixel array 
 		(without changing the pixel index value)
 		pixel[loc] = img1.pixel[loc]/2;
 
@@ -115,8 +115,6 @@ TODO:
 		- rotate
 		- transform
 		- grown
-
-
 Notes:
 loadPixels()
 	- load the pixel data for the display window into the pixel[].
@@ -134,12 +132,9 @@ updatePixels()
 pixel brightness
 	- how do we affect the brightness of a pixel?
 	- ans: the brightness of a pixel is affected by the magnitude of its color value
-	
 */
 
-
-
-PImage emptyScreen;
+PImage buffer;
 PImage outputScreen;
 PImage imgNeek;
 PImage imgGit;
@@ -154,32 +149,65 @@ public void setup() {
 	imgNeek = loadImage("../../data/neek.png");
 	imgGit = loadImage("../../data/gitGraph.png");
 	imgICM = loadImage("../../data/icm.png");
-	//outputScreen = createImage();
+	buffer = createImage(displayWidth, displayHeight, ARGB );
 }
-
-
-
 public void draw() {
 	
 	switch(imageModulo){
 		case 0:
-			outputScreen = imgGit;
+			buffer = imgGit;
+			pixelForPixel();
 			break;
 		case 1:
-			outputScreen = imgNeek;
+			buffer = imgNeek;
+			pixelForPixelExtractColor();
 			break;
 		case 2:
-			outputScreen = imgICM;
+			buffer = imgICM;
+			image(buffer, 0, 0, width, height);
 			break;
 		default:
-			outputScreen = imgGit;
+			buffer = imgGit;
+			image(buffer, 0, 0, width, height);
 			break;
 		}
-
-	image(outputScreen, 0, 0, width, height);
 }
 
 
+public void pixelForPixel() {
+	//image(buffer, 0, 0, width, height);
+	loadPixels();
+	buffer.loadPixels();
+
+	//find pixel location
+	for (int x=0; x < width; x++){
+		for (int y = 0; y < height; y++){
+			int loc = x + y*width;
+			pixels[loc] = buffer.pixels[loc]/2; 
+		}
+	}
+	updatePixels();
+}
+
+public void pixelForPixelExtractColor(){
+ 	//image(buffer, 0,0,width,height);
+ 	loadPixels();
+ 	buffer.loadPixels();
+
+ 	//find pixel location
+ 	for (int x = 0; x < width; x++){
+ 		for (int y = 0; y < height; y++){
+ 			int loc = x + y*width;
+ 			// extract color
+ 			float r = red(buffer.pixels[loc]);
+ 			float g = green(buffer.pixels[loc]);
+ 			float b = blue(buffer.pixels[loc]);
+ 			// combine r,g,b to create a new color
+ 			pixels[loc] = color(r,b,g*4);
+ 		}
+ 	}
+ 	updatePixels();
+}
 
 public void mousePressed() {
 
