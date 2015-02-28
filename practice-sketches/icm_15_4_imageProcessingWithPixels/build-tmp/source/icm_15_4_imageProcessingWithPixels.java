@@ -26,7 +26,7 @@ TODO:
 		(without changing the pixel index value)
 		pixel[loc] = img1.pixel[loc]/2;
 
-4. [ ] recreate the image function, but this time 
+4. [x] recreate the image function, but this time 
 		separate the rgb components color values for each pixel
 		'Give me the red, green and blue component of each pixel'
 		and then, make a new color(r,g,b)
@@ -37,11 +37,11 @@ TODO:
 
 		pixels[loc] = color(r,g,b);
 
-5. [ ] manipulate the values of rgb components before copying the pixel
+5. [x] manipulate the values of rgb components before copying the pixel
 		value to the processing screen.  manipulation takes place
 		at the point where the pixels are copied over, after having been faithful
 		copied from the source image
-6. [ ] exercises:
+6. [x] exercises:
 	- swap two colors --> pixels[loc] = color(g,r,b);
 	- change one color ---> pixels[loc] = color(g,r,b*2);
 
@@ -135,7 +135,6 @@ pixel brightness
 */
 
 PImage buffer;
-PImage outputScreen;
 PImage imgNeek;
 PImage imgGit;
 PImage imgICM;
@@ -163,8 +162,8 @@ public void draw() {
 			pixelForPixelExtractColor();
 			break;
 		case 2:
-			buffer = imgICM;
-			image(buffer, 0, 0, width, height);
+			//buffer = imgICM;
+			pixelPoint_ExtractColor_UseBuffer();
 			break;
 		default:
 			buffer = imgGit;
@@ -173,7 +172,7 @@ public void draw() {
 		}
 }
 
-
+// ----CASE 0
 public void pixelForPixel() {
 	//image(buffer, 0, 0, width, height);
 	loadPixels();
@@ -189,11 +188,11 @@ public void pixelForPixel() {
 	updatePixels();
 }
 
+// ----CASE 1
 public void pixelForPixelExtractColor(){
  	//image(buffer, 0,0,width,height);
  	loadPixels();
  	buffer.loadPixels();
-
  	//find pixel location
  	for (int x = 0; x < width; x++){
  		for (int y = 0; y < height; y++){
@@ -208,6 +207,24 @@ public void pixelForPixelExtractColor(){
  	}
  	updatePixels();
 }
+
+// ----CASE 2
+public void pixelPoint_ExtractColor_UseBuffer() {
+	//image(buffer, 0, 0, width, height);
+	loadPixels();
+	buffer.loadPixels();
+	imgICM.loadPixels();
+
+	for (int x = 0; x < width; x++){
+		for (int y = 0; y < height; y++){
+			int loc = x + y*width;
+			buffer.pixels[loc] = imgICM.pixels[loc];
+		}
+	}
+	updatePixels();
+	image(buffer, mouseX,mouseY,width,height);
+}
+
 
 public void mousePressed() {
 
