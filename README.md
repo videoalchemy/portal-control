@@ -23,6 +23,7 @@ Portal Control is an interactive installation containing video feedback loops co
 2. [Keystone] - video projection mapping library for Processing
 3. [Blobscanner] - blob detection and analysis
 4. [Kinect Projector Toolkit] - Gene Kogan's library for aligning a projector and a Kinect
+5. [SurfaceMapper] - enables the projection of textures on multiple surfaceds
 
 
 ________________________________
@@ -119,5 +120,7 @@ _________________________
 
 [openCV for Processing]:https://github.com/atduskgreg/opencv-processing
 [keystone]:http://keystonep5.sourceforge.net/
+http://www.ixagon.se/surfacemapper/
 [Blobscanner]:https://sites.google.com/site/blobscanner/home/
 [Kinect Projector Toolkit]:http://www.genekogan.com/works/kinect-projector-toolkit.html
+[SurfaceMapper]:http://www.ixagon.se/surfacemapper/
