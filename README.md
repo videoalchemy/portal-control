@@ -17,7 +17,7 @@ Portal Control is an interactive installation containing video feedback loops co
      - reference images used to inform pixel color
 5. flow field
      - to control particle movement and/or to use as in conjuction with the feedback loop somehow (tentative)
-
+6. [openCV for Processing]
 ________________________________
 ###Requirements for 1.0.0 - Chabot
 ####Setup Requirements
@@ -110,4 +110,5 @@ ________________________________
 
 _________________________
 
+[openCV for Processing]https://github.com/atduskgreg/opencv-processing
 
