@@ -19,6 +19,7 @@ Portal Control is an interactive installation containing video feedback loops co
      - to control particle movement and/or to use as in conjuction with the feedback loop somehow (tentative)
 6. [openCV for Processing] - a Processing Library for the OpenCV computer vision library by GregBorstein
 7. [Keystone] - video projection mapping library for Processing
+8. [Blobscanner] - blob detection and analysis
 
 
 ________________________________
@@ -115,4 +116,4 @@ _________________________
 
 [openCV for Processing]:https://github.com/atduskgreg/opencv-processing
 [keystone]:http://keystonep5.sourceforge.net/
-
+[Blobscanner]:https://sites.google.com/site/blobscanner/home/
