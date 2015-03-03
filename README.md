@@ -17,9 +17,12 @@ Portal Control is an interactive installation containing video feedback loops co
      - reference images used to inform pixel color
 5. flow field
      - to control particle movement and/or to use as in conjuction with the feedback loop somehow (tentative)
-6. [openCV for Processing] - a Processing Library for the OpenCV computer vision library by GregBorstein
-7. [Keystone] - video projection mapping library for Processing
-8. [Blobscanner] - blob detection and analysis
+
+####Processing Libraries under consideration
+1. [openCV for Processing] - a Processing Library for the OpenCV computer vision library by GregBorstein
+2. [Keystone] - video projection mapping library for Processing
+3. [Blobscanner] - blob detection and analysis
+4. [Kinect Projector Toolkit] - Gene Kogan's library for aligning a projector and a Kinect
 
 
 ________________________________
@@ -117,3 +120,4 @@ _________________________
 [openCV for Processing]:https://github.com/atduskgreg/opencv-processing
 [keystone]:http://keystonep5.sourceforge.net/
 [Blobscanner]:https://sites.google.com/site/blobscanner/home/
+[Kinect Projector Toolkit]:http://www.genekogan.com/works/kinect-projector-toolkit.html
