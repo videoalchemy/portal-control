@@ -2,6 +2,10 @@
 > gesture controlled video feedback installation
 ___________________
 
+##Review Similar projects:
+- http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
+- KinectPhysics polygon blob sketch in kidkinect project / ex-kinect-proj
+- CustomShape sketch from same directory
 ________________________________
 ###Overview
 Portal Control is an interactive installation containing video feedback loops controlled by movement and gesture.
@@ -70,14 +74,31 @@ ________________________________
 #####1.0.0 - minimal live system for Chabot
 
 
-#####Future Releases
+#####Future Releases and their big ideas
+- [] Treat silheoutte blob (from kinect/openCV) as a sprite
+     - sprites are what Shiffman uses when he attaches a png as the image for a particle syste.  This combined with an additive effect, or something similar, produces partcle systems like smoke, fire, etc.
+     - sprites as png can have their own shape, size AND alpha  (something I'd thought I have to rely loadGraphics to do)
+     - grab the frame from kinect, process through openCV, ask for each blob, make a png out of it and draw to screen.  Essentially creating a particle system where each particle is a png (alpah intact) image of 1 frame, or one slice of time.
+     - each blob has an associated image with its associated parameters
+     - blob info can be translated into the affect the blob is having on the image
+
+- the blob object
+     - is a depth map greyscale siloutte of a user as detected by openCV
+     - each blob has unique id
+     - each blob has an arrary containing sprites (pngs with alphas inact), which follow the passing of time.  Use this for the feedback loop.  Whereas shiffman's particle system all have the same sprite assigned to each particle, the portal control particle systems will contain particles, each from a different moment in time (and thus the feedback loop, printing imgaes of previous selves.
+     - each blob has an image assigned to it
+     - each blob generates its own behavioral patterns.  
+     - each blob affects its image different
+     - each blob has a unique image assigned to it.(Colombo!)
+     - the particle system inherets a its behavoior from the blob.
+
+- fractal tree branching algorithm shiffman covers in NOC about efficient way of handling recursion, may be helpful when handling entire arrays of sprites, each array contains the passing of time as told by a series of single images sorted chronologically 
 
 
 ________________________________
-###Resources
-####VideoExamples
+###Resources and Examples
+- [Using PGraphics as layers in Processng] - 
 
-####Terms
 
 
 ####Notes
@@ -109,5 +130,7 @@ ________________________________
 
 
 _________________________
+
+[Using PGraphics as layers in Processng]:http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
 
 
