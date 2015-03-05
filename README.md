@@ -105,11 +105,28 @@ ________________________________
 
 ________________________________
 ###Resources and Examples
-- [Using PGraphics as layers in Processng] - 
+
+#####PGraphcis
+- [Using PGraphics as layers in Processng] - PGraphcis to layer objects, drawy behind objects without worrying about the function's order in draw
+- PGraphcis in action
+```
+// 0. Declare the variable with Pgraphics type
+PGraphics layer01;
+PGraphics layer02;
+
+// 1. declare the variable using PGraphics data type
+layer01 = createGraphics(width, height);
+layer02 = createGraphics(width, height);
+
+// 3. Use drawing functions on the variable 
+layer01.beginDraw();
+layer01.ellipse(x,y,z,a);
+layer01.endDraw();
 
 
 
-####Notes
+______________________________________
+####DevNotes
 #####2015-01-19: from zoran
 - Opportunity to build interactive installation at Chabot Space and Science Center in March is exciting. March leaves you about a month and a half to get things ready.  
 - STEPS:
