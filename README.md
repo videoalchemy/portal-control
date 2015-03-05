@@ -22,6 +22,14 @@ Portal Control is an interactive installation containing video feedback loops co
 5. flow field
      - to control particle movement and/or to use as in conjuction with the feedback loop somehow (tentative)
 
+####Processing Libraries under consideration
+1. [openCV for Processing] - a Processing Library for the OpenCV computer vision library by GregBorstein
+2. [Keystone] - video projection mapping library for Processing
+3. [Blobscanner] - blob detection and analysis
+4. [Kinect Projector Toolkit] - Gene Kogan's library for aligning a projector and a Kinect
+5. [SurfaceMapper] - enables the projection of textures on multiple surfaceds
+
+
 ________________________________
 ###Requirements for 1.0.0 - Chabot
 ####Setup Requirements
@@ -131,6 +139,12 @@ ________________________________
 
 _________________________
 
-[Using PGraphics as layers in Processng]:http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
 
+[Using PGraphics as layers in Processng]:http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
+[openCV for Processing]:https://github.com/atduskgreg/opencv-processing
+[keystone]:http://keystonep5.sourceforge.net/
+http://www.ixagon.se/surfacemapper/
+[Blobscanner]:https://sites.google.com/site/blobscanner/home/
+[Kinect Projector Toolkit]:http://www.genekogan.com/works/kinect-projector-toolkit.html
+[SurfaceMapper]:http://www.ixagon.se/surfacemapper/
 
