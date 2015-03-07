@@ -129,6 +129,8 @@ layer01.ellipse(x,y,z,a);
 layer01.endDraw();
 ```
 
+#####Kinect and Projector Alignment and Calibration
+- The [AR Sandbox] project from UC Davis provides install insructions and along with procedures for Kinect/projector alignment.
 
 ______________________________________
 ####DevNotes
