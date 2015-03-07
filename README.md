@@ -8,32 +8,6 @@ ________________________________
 Portal Control is an interactive video installation where implicate order and computational feedback emerge from the individual and collective behaviors of participants.
 
 
-________________________________
-##Review Similar projects:
-- http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
-- KinectPhysics polygon blob sketch in kidkinect project / ex-kinect-proj
-- CustomShape sketch from same directory
-- [AR Sandbox] - install instructions including Kinect / Projector Alignment and Calibration
-
-_________________________________
-####Project components:  
-1. the gear
-     - screens, projectors, kinect, computer, cables, and software
-2. closest point tracking using the kinect
-     - The feedback loop will track the point associated with the closest object detected by the Kinect.
-3. Feedback loop 
-     - using PImage and PGraphics in a way that samples the output screen, creating a feedback loop
-4. reference image
-     - reference images used to inform pixel color
-5. flow field
-     - to control particle movement and/or to use as in conjuction with the feedback loop somehow (tentative)
-
-####Processing Libraries under consideration
-1. [openCV for Processing] - a Processing Library for the OpenCV computer vision library by GregBorstein
-2. [Keystone] - video projection mapping library for Processing
-3. [Blobscanner] - blob detection and analysis
-4. [Kinect Projector Toolkit] - Gene Kogan's library for aligning a projector and a Kinect
-5. [SurfaceMapper] - enables the projection of textures on multiple surfaceds
 
 
 ________________________________
@@ -165,12 +139,4 @@ ______________________________________
 _________________________
 
 
-[Using PGraphics as layers in Processng]:http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
-[openCV for Processing]:https://github.com/atduskgreg/opencv-processing
-[keystone]:http://keystonep5.sourceforge.net/
-http://www.ixagon.se/surfacemapper/
-[Blobscanner]:https://sites.google.com/site/blobscanner/home/
-[Kinect Projector Toolkit]:http://www.genekogan.com/works/kinect-projector-toolkit.html
-[SurfaceMapper]:http://www.ixagon.se/surfacemapper/
-[AR Sandbox]:http://idav.ucdavis.edu/~okreylos/ResDev/SARndbox/Instructions.html
 
