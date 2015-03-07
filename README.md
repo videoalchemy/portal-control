@@ -2,14 +2,12 @@
 > gesture controlled video feedback installation
 ___________________
 
-
+#####see [Portal Control wiki](https://github.com/VideoAlchemy/portal-control/wiki) for detailed dev docs, including tech and feature specs, study notes and tutorials.
 ________________________________
 ###Overview
 Portal Control is an interactive video installation where implicate order and computational feedback emerge from the individual and collective behaviors of participants.
 
 
-###[Portal Control wiki](https://github.com/VideoAlchemy/portal-control/wiki)
-- contains all development docs, tech and feature specs, study notes and tutorials
 ________________________________
 ##Review Similar projects:
 - http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
