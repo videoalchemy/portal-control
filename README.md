@@ -5,7 +5,7 @@ ___________________
 
 ________________________________
 ###Overview
-Portal Control is an interactive installation containing video feedback loops controlled by movement and gesture.
+Portal Control is an interactive video installation where implicate order and computational feedback emerge from the individual and collective behaviors of participants.
 
 ________________________________
 ##Review Similar projects:
