@@ -2,15 +2,20 @@
 > gesture controlled video feedback installation
 ___________________
 
-##Review Similar projects:
-- http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
-- KinectPhysics polygon blob sketch in kidkinect project / ex-kinect-proj
-- CustomShape sketch from same directory
+
 ________________________________
 ###Overview
 Portal Control is an interactive installation containing video feedback loops controlled by movement and gesture.
 
-####Main components:  
+________________________________
+##Review Similar projects:
+- http://funprogramming.org/143-Using-PGraphics-as-layers-in-Processing.html
+- KinectPhysics polygon blob sketch in kidkinect project / ex-kinect-proj
+- CustomShape sketch from same directory
+- [AR Sandbox] - install instructions including Kinect / Projector Alignment and Calibration
+
+_________________________________
+####Project components:  
 1. the gear
      - screens, projectors, kinect, computer, cables, and software
 2. closest point tracking using the kinect
@@ -82,7 +87,7 @@ ________________________________
 #####1.0.0 - minimal live system for Chabot
 
 
-#####Future Releases and their big ideas
+#####Future Release Ideas
 - [] Treat silheoutte blob (from kinect/openCV) as a sprite
      - sprites are what Shiffman uses when he attaches a png as the image for a particle syste.  This combined with an additive effect, or something similar, produces partcle systems like smoke, fire, etc.
      - sprites as png can have their own shape, size AND alpha  (something I'd thought I have to rely loadGraphics to do)
@@ -100,13 +105,13 @@ ________________________________
      - each blob has a unique image assigned to it.(Colombo!)
      - the particle system inherets a its behavoior from the blob.
 
-- fractal tree branching algorithm shiffman covers in NOC about efficient way of handling recursion, may be helpful when handling entire arrays of sprites, each array contains the passing of time as told by a series of single images sorted chronologically 
+- fractal tree branching algorithm shiffman covers in NOC about efficient way of handling recursion, may be helpful when handling entire arrays of sprites, each array contains the passing of time as told by a series of single images sorted chronologically.  A looping series of pgraphics? 
 
 
 ________________________________
 ###Resources and Examples
 
-#####PGraphcis
+#####PGraphcis examples
 - [Using PGraphics as layers in Processng] - PGraphcis to layer objects, drawy behind objects without worrying about the function's order in draw
 - PGraphcis in action
 ```
@@ -164,4 +169,5 @@ http://www.ixagon.se/surfacemapper/
 [Blobscanner]:https://sites.google.com/site/blobscanner/home/
 [Kinect Projector Toolkit]:http://www.genekogan.com/works/kinect-projector-toolkit.html
 [SurfaceMapper]:http://www.ixagon.se/surfacemapper/
+[AR Sandbox]:http://idav.ucdavis.edu/~okreylos/ResDev/SARndbox/Instructions.html
 
