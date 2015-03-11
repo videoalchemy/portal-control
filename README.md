@@ -8,8 +8,11 @@ ________________________________
 ###Overview
 Portal Control is an interactive video installation where implicate order and computational feedback emerge from the individual and collective behaviors of participants.
 
+_________________________________________
 
-##[Shared doc for the Portal Visuals and Lighting team](https://docs.google.com/document/d/1Ob_se0SsQ8vo-zfbqum9-aZ8LHm4XTG3tVy2hwaRi_w/edit#)
+##[Shared doc for the visuals team](https://docs.google.com/document/d/1Ob_se0SsQ8vo-zfbqum9-aZ8LHm4XTG3tVy2hwaRi_w/edit#)
+
+##[photos of the site](https://plus.google.com/photos/+PeterTjeerdsma/albums/6113277440510066033/6120722622858072082?pid=6120722622858072082&oid=113044775100915882929)
 
 
 
