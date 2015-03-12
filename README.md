@@ -27,6 +27,7 @@ ___________________________
 
 
 ###Chabot feature specs:
+- [ ] videdScale = 1.6  //ratio of source images (640x480) to the output screen (1024x768)
 - [ ] display underlying image
 - [ ] silouette determines the feedback zones of underlying image (w/o emergent shape).  After viewing images of the space, it occurs to me that the image projected on the floor is small compared to the space.  If Kinect and Projector are aligned, the functional interaction space shrinks to the size of the image, eliminating all other in the space.  Potentially a good idea.  
 
@@ -38,7 +39,26 @@ ________________________________
 - [ ] display image
 - [ ] create feedback using get
 - [ ] create feedback using pixel array
-- [ ] 
+
+
+___________________________
+####functions
+
+#####copy(); 
+- copies portion of display window and places it back into display
+- or copies portion of source image and places into display window
+```
+// copy from processing screen back to processing screen
+copy(sx, sy, sw, sh, dx, dy, dw, dh); 
+
+// copy from srcImage to processing screen
+copy(srcImage, sx, sy, sw, sh, dx, dy, dw, dh); 
+```
+
+
+
+
+
 
 
 
