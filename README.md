@@ -39,6 +39,7 @@ ________________________________
 - [ ] display image
 - [ ] create feedback using get
 - [ ] create feedback using pixel array
+- [ ] use closest point tracking to rotate image
 
 
 ___________________________

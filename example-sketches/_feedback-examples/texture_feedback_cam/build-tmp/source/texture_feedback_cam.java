@@ -15,12 +15,17 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class rota_feedback_cam extends PApplet {
+public class texture_feedback_cam extends PApplet {
 
 
+
+
+//import codeanticode.glgraphics.*;
 
 
 Capture cam;
+
+
 
 float frameSize=10;
 PImage img;
@@ -30,19 +35,35 @@ PImage tex;
 public void setup() {
   noCursor();
 
-  size(800, 800, P3D);
+  size(1024, 768, P3D);///P3D
+  
+//get list of available cameras
+ //String[] devices = Capture.list();
+  //println(devices);
 
   // If no device is specified, will just use the default.
   cam = new Capture(this, 320, 240);
+  cam.start();
   
-  img = loadImage("nextGen4.png"); //start with an initial image
-  patternLang = loadImage ("nextGen5.png");
+  img = loadImage("000.png"); //start with an initial image
+  patternLang = loadImage ("004.png");
   stroke(255);
 }
 
 public void draw() {
   strokeWeight(frameSize);
+  lights();
+  stroke(255,0,0);
   background(0);
+  pushMatrix();
+  translate(width/2,height/2,-250);
+  translate(mouseX-width/2,mouseY-width/2,500);
+  beginShape();
+  texture(img);
+  sphere(50);
+  endShape();
+  popMatrix(); 
+  ellipse (mouseX,mouseY,50,50);
 
   translate(width / 2, height / 2);
 
@@ -50,13 +71,7 @@ public void draw() {
   rotateY(map(mouseX, 0, width, -2*PI, 2*PI));
   rotateX(map(mouseY, 0, width, -2*PI, 2*PI));
 
-  //________________call camera
-  //commented this out to prevent flicker
-  // if (cam.available() == true) {
-  // cam.read();
-  // image(cam, -50, -50);
-  // }
-  cam.read();
+  
   image(cam, -50, -50, 200, 200);
 
   //begin mesh shape and place the grabbed texture from get()
@@ -70,8 +85,8 @@ public void draw() {
 
   //place a png from previous generative art piece
   image(patternLang, -200, -200, 200, 200);
-  
-    // acquire pixels within these dimensions and store in PImage varible 'img'
+
+  // acquire pixels within these dimensions and store in PImage varible 'img'
   img=get(200, 200, 400, 400);
 }
 
@@ -83,8 +98,15 @@ public void keyPressed() {
     frameSize--;
   }
 }
+
+
+public void captureEvent(Capture cam){
+  cam.read();
+}
+
+
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "rota_feedback_cam" };
+    String[] appletArgs = new String[] { "texture_feedback_cam" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {
