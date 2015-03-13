@@ -62,8 +62,11 @@ copy(srcImage, sx, sy, sw, sh, dx, dy, dw, dh);
 #####imageMode(CENTER);
 - control the PImage from it's center!
 
-
-
+#####alphaMask with MASK, from PGraphic
+```
+imgToMask = loadImage("imageToMask.png");
+imgForMasking = loadImage("imageForMasking.png");
+imgToMask.mask(imgForMasking);
 
 
 
