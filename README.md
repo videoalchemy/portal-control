@@ -35,11 +35,14 @@ ___________________________
 ________________________________
 
 #####devLog-2015-03-11
-- [ ] convert images to 1024, 768 at 72 DPI
-- [ ] display image
-- [ ] create feedback using get
-- [ ] create feedback using pixel array
-- [ ] use closest point tracking to rotate image
+- [x] convert images to 1024, 768 at 72 DPI
+- [x] display image
+- [x] create feedback using get
+- [x] create feedback using pixel array
+
+#####devlog-2015-0312
+- [x] implement analog-rvl metaphor
+- [ ] create an alpha
 
 
 ___________________________
@@ -56,7 +59,8 @@ copy(sx, sy, sw, sh, dx, dy, dw, dh);
 copy(srcImage, sx, sy, sw, sh, dx, dy, dw, dh); 
 ```
 
-
+#####imageMode(CENTER);
+- control the PImage from it's center!
 
 
 
