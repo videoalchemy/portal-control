@@ -122,20 +122,34 @@ PImage buffer;
 PImage imgNeek;
 PImage imgGit;
 PImage imgICM;
+PImage c002;
+PImage monitorOUTPUT;
+PImage bufferDisplaySize;
+
+
 int imageCount = 0;
 int imageModulo = 0;
+
+// signal monitors for output image are 10% the size of the output screen
+float monitorScale = .10; 
 
 
 void setup() {
 	size(640,480);
 	background(0);
+	buffer 	= createImage(width, height, ARGB );
 	imgNeek = loadImage("../../data/neek.png");
-	imgGit = loadImage("../../data/gitGraph.png");
-	imgICM = loadImage("../../data/icm.png");
-	buffer = createImage(displayWidth, displayHeight, ARGB );
+	imgGit 	= loadImage("../../data/gitGraph.png");
+	imgICM 	= loadImage("../../data/icm.png");
+	c002	= loadImage("../../data/002.png");
+	monitorOUTPUT = createImage(width, height, ARGB);
+	bufferDisplaySize = createImage(displayWidth, displayHeight, ARGB );
+
+	
 }
 void draw() {
-	
+
+
 	switch(imageModulo){
 		case 0:
 			println("Case 0");
@@ -149,12 +163,20 @@ void draw() {
 			println("Case 2");
 			pixelPoint_ExtractColor_UseBuffer();
 			break;
+		case 3:
+			println("Case 3");
+			pixelPoint_ExtractColorAgain_UseBuffer();
+			break;
 		default:
 			println("Case default");
 			//buffer = imgGit;
 			//image(buffer, 0, 0, width, height);
 			break;
 		}
+
+// monitor and display the final output screen
+monitor_output_signal();
+
 }
 
 // ----CASE 0
@@ -208,16 +230,70 @@ void pixelPoint_ExtractColor_UseBuffer() {
 			buffer.pixels[loc] = imgICM.pixels[loc];
 		}
 	}
-	//updatePixels();
+	buffer.updatePixels();
 	image(buffer, mouseX,mouseY,width,height);
 
 }
 
+// ----CASE 3
+void pixelPoint_ExtractColorAgain_UseBuffer() {
+	println("pixelPoint_ExtractColorAgain");
+	loadPixels();
+	buffer.loadPixels();
+	c002.loadPixels();
+
+	// wallk through each location
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++){
+			int loc = x + y*width;
+			// get color info
+			float r = red(c002.pixels[loc]);
+			float g = green(c002.pixels[loc]);
+			float b = blue(c002.pixels[loc]);
+
+			buffer.pixels[loc] = color(r,g,b);
+		}
+	}
+	buffer.updatePixels();
+	updatePixels();
+	image(buffer, 0,0, width, height);
+
+}
+
+void monitor_output_signal(){
+	
+	// position and display the monitor on top left
+	image(monitorOUTPUT, 0,0, width/monitorScale, height/monitorScale);
+
+	loadPixels();
+	monitorOUTPUT.loadPixels();
+
+	
+	// Use the monitorOUTPUT to capture everything in it's final state
+	// wallk through each location of the final output and place in the output monitor
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < height; y++){
+			int loc = x + y*width;
+			// get color info
+			float r = red(buffer.pixels[loc]);
+			float g = green(buffer.pixels[loc]);
+			float b = blue(buffer.pixels[loc]);
+
+			monitorOUTPUT.pixels[loc] = color(r,g,b);
+		}
+	}
+
+	updatePixels();
+	monitorOUTPUT.updatePixels();
+	buffer.updatePixels();
+
+}
 
 void mousePressed() {
 
+	
+	imageModulo = imageCount % 4;
 	imageCount = imageCount + 1;
-	imageModulo = imageCount % 3;
 }
 
 
