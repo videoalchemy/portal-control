@@ -138,7 +138,7 @@ PImage buffer;
 PImage imgNeek;
 PImage imgGit;
 PImage imgICM;
-int imageCount = 1;
+int imageCount = 0;
 int imageModulo = 0;
 
 
@@ -154,35 +154,37 @@ public void draw() {
 	
 	switch(imageModulo){
 		case 0:
-			buffer = imgGit;
+			println("Case 0");
 			pixelForPixel();
 			break;
 		case 1:
-			buffer = imgNeek;
+		    println("Case 1");
 			pixelForPixelExtractColor();
 			break;
 		case 2:
-			//buffer = imgICM;
+			println("Case 2");
 			pixelPoint_ExtractColor_UseBuffer();
 			break;
 		default:
-			buffer = imgGit;
-			image(buffer, 0, 0, width, height);
+			println("Case default");
+			//buffer = imgGit;
+			//image(buffer, 0, 0, width, height);
 			break;
 		}
 }
 
 // ----CASE 0
 public void pixelForPixel() {
-	//image(buffer, 0, 0, width, height);
+	// load pixel array for screen
 	loadPixels();
-	buffer.loadPixels();
+	// load pixel array for imgGit pgraphic source image
+	imgGit.loadPixels();
 
-	//find pixel location
+	//find pixel location of source image and copy it to processing screen
 	for (int x=0; x < width; x++){
 		for (int y = 0; y < height; y++){
 			int loc = x + y*width;
-			pixels[loc] = buffer.pixels[loc]/2; 
+			pixels[loc] = imgGit.pixels[loc]/3; 
 		}
 	}
 	updatePixels();
@@ -190,18 +192,19 @@ public void pixelForPixel() {
 
 // ----CASE 1
 public void pixelForPixelExtractColor(){
- 	//image(buffer, 0,0,width,height);
+ 	// load the pixel arrays
  	loadPixels();
- 	buffer.loadPixels();
+ 	imgNeek.loadPixels();
  	//find pixel location
  	for (int x = 0; x < width; x++){
  		for (int y = 0; y < height; y++){
  			int loc = x + y*width;
  			// extract color
- 			float r = red(buffer.pixels[loc]);
- 			float g = green(buffer.pixels[loc]);
- 			float b = blue(buffer.pixels[loc]);
- 			// combine r,g,b to create a new color
+ 			float r = red(imgNeek.pixels[loc]);
+ 			float g = green(imgNeek.pixels[loc]);
+ 			float b = blue(imgNeek.pixels[loc]);
+ 			//
+ 			// update the screen pixels with new color infor extracted from source image
  			pixels[loc] = color(r,b,g*4);
  		}
  	}
@@ -221,8 +224,9 @@ public void pixelPoint_ExtractColor_UseBuffer() {
 			buffer.pixels[loc] = imgICM.pixels[loc];
 		}
 	}
-	updatePixels();
+	//updatePixels();
 	image(buffer, mouseX,mouseY,width,height);
+
 }
 
 
