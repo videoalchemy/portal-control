@@ -13,25 +13,23 @@ ___________________
 ___________________________
 ###var_NAMES and analog videolab metaphor
 
-####PImages
-
-#####<source>
+#####{source} PImage
 - pristine original source.  the mother mold
 - provides a copy to a specific channel for DISPLAY and/or MONITOR
 - is never itself altered or displayed
 
-#####chnl<x>_MONITOR
+#####chnl{x}_MONITOR PImage
 - provides view of unaltered source
 - always appears in the same place in the mx_MONITOR
 - becomes the texture used for the MONITOR shape
 
 
-#####chnl<x>_DISPLAY
+#####chnl{x}_DISPLAY PImage
 - receives a source
 - image processing takes place when pixel values are copied from source to DISPLAY
 - becomes the texture used for DISPLAY
 
-#####mx_MONITOR
+#####mx_MONITOR PImage
 - contains all chnl<x>_MONITOR textures
 - has blue background
 - can display each chnl<x>_DISPLAY separately
@@ -41,15 +39,15 @@ ___________________________
 ___________________________
 ###Controller Components (touchOSC)
 
-####chnl<x>Controls
+####chnl{x}_CONTROLLER
 
-#####chnl<x>_SEND 
+#####chnl{x}_SEND 
 - select new image
 - send chnl<x>_DISPLAY to mx_MONITOR where it can be isolated for evaluation, test, etc. seen above the blue test background of mx_MONITOR
 - by default, the chnl<x>_MONITOR always appears on mx_MONITOR, so no need to toggle this
 - send chnl<x>_DISPLAY to mx_OUTPUT to view on main screen
 
-#####chnl<x>_POSITION
+#####chnl{x}_POSITION
 - vertex-location-control
      - 4 2D grids, each control one corner
 - image-location-control (used with imageMode(CENTER); )
@@ -58,7 +56,7 @@ ___________________________
 - rotate
 - rotateZ ????
 
-#####chnl<x>_PIXELS
+#####chnl{x}_PIXELS
 - alpha threshold
      - at what level of brightness does alpha go to 100%
      - this forms an irregular shape.  not sure if this will work if the image is a vertex based shape.  it should punch holes in the shape, no?  see the layers underneath? sheet hope so
