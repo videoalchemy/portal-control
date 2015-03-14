@@ -102,9 +102,9 @@ void setup() {
 
 
 void draw() {
-	fill(255);
+	//fill(255);
 		//label monitors by assigning text
-	write_labels_on_monitors();
+	//write_labels_on_monitors();
 	
 
 	//create switch cases to swap out mixers
