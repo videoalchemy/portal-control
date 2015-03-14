@@ -88,7 +88,7 @@ bufferMixesSignal.loadPixels();
 accumulateForces(); --> into a single force
 applyForce();
 updatePixels into a buffer mixerStation
-
+```
 
 #####blend(img, x,y,h,d, u,v,uw,vh, BLENDMODE);
 - apply blend mode from piece of img to piece of graphics window
@@ -119,7 +119,7 @@ noTint();
 // create transparency
 image(opaqueImage, 0,0);
 tint(255,255,255,)
-
+```
 
 
 
