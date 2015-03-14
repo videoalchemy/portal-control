@@ -9,6 +9,7 @@ ___________________
 2. sources are never altered
 3. pixel manipulation is always via pixels array
 4. analog video equipment metaphor drives design
+5. pixel manipulation takes place inside mx_OUTPUT
 
 ___________________________
 ###var_NAMES and analog videolab metaphor
@@ -17,6 +18,42 @@ ___________________________
 - pristine original source.  the mother mold
 - provides a copy to a specific channel for DISPLAY and/or MONITOR
 - is never itself altered or displayed
+- includes PImage arrays for the following
+```
+PImage journals[ ]
+PImage emblems[ ] 
+```
+
+#####depthImage & silhouette PImage
+- derived from the depthImage pixel array
+- includes depth info for all pixels within the min max 
+- exludes the floor
+```
+/* retains depth info for each pixel within range, and is:
+    - more difficult, 
+    - less like a silhoutte, 
+    - useful depth information is retained
+*/
+for each pixel of location loc in the depthImage,
+if the pixel depth in within min max
+    then pixel of location loc in silhouette image is greyscale 0-255
+    where greyscale is mapped from (pixelDepth, 0, 1024, 0, 255)
+else, the pixel at location loc in silhouette is completely transparent (0,0,0,255)
+
+normalize the range of depth where closest is 100% and furthest is 0%
+```
+// or, keep just the silhouette
+for each pixel[loc] in depth image:
+	if your within min max range
+		then create to silh.pixels[loc] = color(255) // a white pixel
+	else place a transparent pixel in that location
+
+upon iteration through depthImage pixels array,
+    apply erode filter to remove small white noise
+    	// unfortunately the filter(); only applies to graphics screen
+    	// openCV has erode abilities which likely can be applied to Pimgaes
+```
+
 
 #####chnl{x}_MONITOR PImage
 - provides view of unaltered source
@@ -29,10 +66,42 @@ ___________________________
 - image processing takes place when pixel values are copied from source to DISPLAY
 - becomes the texture used for DISPLAY
 
+
 #####mx_MONITOR PImage
 - contains all chnl<x>_MONITOR textures
 - has blue background
-- can display each chnl<x>_DISPLAY separately
+- can display each chnl<x>_DISPLAY separately for testing
+
+#####mx_MIXING_BUFFER PImage
+- handles all chnl to chnl pixel manipulation, blending between channels
+- returned from a function responsible for mixing chnls:
+```
+mx_MIXED_BUFFER = returnBlendOf(chnl{x}_DISPLAY, chnl{z}_DISPLAY, blendMode b);
+```
+
+
+
+#####mx_OUTPUT PImage
+- receives each chnl{x}_DISPLAY
+- home of all image processing algorithms (eg blendColor(), etc)
+- contains the shapes into which the chnl{x}_DISPLAYS are used for texture
+- apply textures after all image processing takes place
+```
+// chnl{x}_DISPLAYS in mx_OUTPUT as texture for chnl{x}_DISPLAY_SHAPE
+// or, in future OOP version:
+src{x}.send_TO(channel chnl);
+chnl{x}.send_TO(mixer mx);
+chnl{x}.shape_IS(displayShape shape);
+chnl{x}.blend_WITH(chnl{z}, blendMode blend);
+chnl{x}.displays_IN(mx_OUTPUT);
+etc
+etc
+etc
+```
+
+#####feedback{x} PImage
+- TBD
+
 
 
 
@@ -68,8 +137,24 @@ ___________________________
 
 
 
-___________________________
-####functions to implement
+__________________________
+###Functions to create
+
+
+#####returnBlendOf(PImage, PImage, blendMode);
+- this allows blends to take place prior to display as texture in mx_OUTPUT
+```
+mx_MIXED_BUFFER = returnBlendOf(chnl{x}_DISPLAY, chnl{z}_DISPLAY, blendMode b);
+```
+
+#####applyEffectsTo(PImage, effect, amount)
+```
+return applyEffectTo(chnl{x}_DISPLAYS, effectName, amount )
+```
+
+
+_________________________
+###Existing functions to implement
 
 #####blendColor();
 - applies blend from one pixel to another as pixel by pixel are copied over from pixels[]
@@ -90,8 +175,10 @@ applyForce();
 updatePixels into a buffer mixerStation
 ```
 
+
 #####blend(img, x,y,h,d, u,v,uw,vh, BLENDMODE);
 - apply blend mode from piece of img to piece of graphics window
+
 
 
 #####filter(<filteName>, <factor>);
@@ -104,6 +191,7 @@ updatePixels into a buffer mixerStation
 3. apply INVERT to the screen
 4. draw unfiltered texture map to the screen
 ```
+
 
 #####tint(r,g,b,a); 
 - applied directly to graphics window
@@ -123,8 +211,6 @@ tint(255,255,255,)
 
 
 
-
-
 #####copy(); 
 - copies portion of display window and places it back into display
 - or copies portion of source image and places into display window
@@ -139,12 +225,15 @@ copy(srcImage, sx, sy, sw, sh, dx, dy, dw, dh);
 #####imageMode(CENTER);
 - control the PImage from it's center!
 
+
 #####alphaMask with MASK, from PGraphic
 ```
 imgToMask = loadImage("imageToMask.png");
 imgForMasking = loadImage("imageForMasking.png");
 imgToMask.mask(imgForMasking);
 ```
+
+
 #####texture(img);
 ```
 beginShape();
