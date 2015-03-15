@@ -213,7 +213,7 @@ public void updateControlsFromKeyboard() {
 //    SCREEN SNAPS
 
 
-// output: right now + project + versiond as a string
+// output: right now + project + version as a string
 // 2015-03-15_portal-control/portal-control_v0.5.3_01-42-50
 public String nowAsString() {
   return nf(year(), 4)+"-"+

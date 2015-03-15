@@ -63,7 +63,7 @@ String nowAsString() {
          nf(second(), 2);
 }
 
-// Save the current screen state as a .jpg in the SNAP_FOLDER_PATH,
+// Save the current screen state as a .png in the SNAP_FOLDER_PATH,
 // If you pass a filename, we'll use that, otherwise we'll default to the current date.
 // NOTE: do NOT pass the ".jpg" or the path.
 // Returns the name of the file saved.

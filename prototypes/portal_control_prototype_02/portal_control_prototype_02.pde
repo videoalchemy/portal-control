@@ -105,7 +105,6 @@ PImage getEmblem(int anEmblem) {
 void mousePressed() {
 	// test for randomly indexing into the array
 	randomJournalPage();
-	saveScreen();
 }
 
 void randomJournalPage(){

@@ -14,6 +14,12 @@ class Channel {
 
 	float maxWidthScale; 	// max as 	
 
+	monitorX;				// x cordinate of the channel's monitor image
+	monitorY;				// y cordinate of the channel's monitor image
+
+	
+	
+	Channel(PImage _source)
 
 
 }
