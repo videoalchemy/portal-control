@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class portal_control_prototype_02 extends PApplet {
+
 /* jstephens portal_control_prototype_02  - 2015-03
 
 1. [] create PImage array of journals
@@ -26,10 +42,10 @@ int SCREEN_HEIGHT 		= 768;
 float VIDEO_SCALE 		= SCREEN_WIDTH/640;      // 1.6
 
 // FACTOR by which the dimensions of source images (640)must be multiplied to match chnl_MONITOR size (SCREEN_WIDTH/5)
-float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2);				// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
+float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2f);				// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
 
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
-float SCALE_FACTOR 		= 1.5;
+float SCALE_FACTOR 		= 1.5f;
 // Location where we'll save snapshots.
 String SNAP_FOLDER_PATH = "~/videoalchemy/snaps/portal_control_snaps/proto_02/";
 
@@ -47,7 +63,7 @@ PImage[] journal = new PImage[numOfJournalPages];
 
 
  
-void setup() {
+public void setup() {
  println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
  size (SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -63,7 +79,7 @@ void setup() {
     } 
 }
 
-void draw() {
+public void draw() {
 	ellipse(mouseX, mouseY, width, height);
 }
 
@@ -72,7 +88,7 @@ void draw() {
 //
 
 //
-PImage getJournalPage(int journalPage) {
+public PImage getJournalPage(int journalPage) {
 	if (journal[journalPage] == null) {
 		println("loading journal page "+journalPage+" of "+numOfJournalPages);
         journal[journalPage] = loadImage("../../images/journal-pages/00"+journalPage+".png");
@@ -80,3 +96,12 @@ PImage getJournalPage(int journalPage) {
 	return journal[journalPage]; 
 }
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "portal_control_prototype_02" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}

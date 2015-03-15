@@ -140,6 +140,29 @@ ___________________________
 __________________________
 ###Functions to create
 
+#####OOP
+- the question isn't whether or not it's a ggod idea, it's whether or not it can be implemented fast enough to save time in the long run.  Chabot install :: t-minus 4 days.
+- if we did, it would look like this:
+```
+class Channel 
+	has a source
+	has dimensions
+	can be monitored
+	can be displayed
+	can be blended with other channels
+	can be moved
+outputs a shape texture by img
+
+void display() {
+	
+	PImage journalPage = getJournalPage(journalPage);
+
+	beginShape();
+	texture(journalPage);
+	vertex(x,y,u,v);
+}
+
+```
 
 #####returnBlendOf(PImage, PImage, blendMode);
 - this allows blends to take place prior to display as texture in mx_OUTPUT
@@ -197,16 +220,21 @@ updatePixels into a buffer mixerStation
 - applied directly to graphics window
 - use this to create transparency
 ```
-// shade output RED
-tint(255,0,0);
+// solid base layer image
+image(opaqueImage,0,0);
+
+// adjust tint of upcoming image
+tint(255,150);
+
+// draw the tint-adjusted image
 image(myImage,0,0);
 
-// shut it off
+// shut it off tint so as to not affect remainder of images
 noTint();
 
 // create transparency
 image(opaqueImage, 0,0);
-tint(255,255,255,)
+tint(255,150)
 ```
 
 

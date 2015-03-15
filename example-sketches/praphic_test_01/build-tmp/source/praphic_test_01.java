@@ -41,7 +41,7 @@ public void draw(){
 	top.ellipse(0, 0, 100, 100);
 	top.endDraw();
 
-	image(top,mouseX, mouseY,width, height);
+	image(top,0, 0,width, height);
 }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "praphic_test_01" };

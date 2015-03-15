@@ -24,6 +24,8 @@ void draw() {
   offset += dx * easing; 
   tint(255, 127);  // Display at half opacity
   image(img, offset, 0);
+  noTint();
+  image(img,0,offset);
 }
 
 

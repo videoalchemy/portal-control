@@ -18,6 +18,7 @@ bottom = createGraphics(width, height);
 
 void draw(){
 
+	
 	top.beginDraw();
 	top.fill(255,0,0,150);
 	//top.translate(width/2, height/2);
