@@ -49,6 +49,13 @@ PImage[] journal = new PImage[numOfJournalPages];
 // selecting a random page num at mouse press sets this
 int pageNum = 0;
 
+
+// Create 1 channel
+Channel[] chnl = new Channel[3];
+Channel chnl_0;
+Channel chnl_1;
+Channel chnl_2;
+
  
 void setup() {
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
@@ -66,14 +73,26 @@ void setup() {
     	for (int i = 0; i < numOfEmblems; i++)      
     		getEmblem(i);
     } 
+
+    // create channels
+    chnl[0] = chnl_0 = new Channel("  chnl_0", journal[1]);
+	chnl[1] = chnl_1 = new Channel("  chnl_1", emblem[1]);
+  	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
+
 	
 	printInstructions();
 }
 
 void draw() {
 	
-	image(getJournalPage(pageNum), 0, 0, width/2, height);
-	image(getEmblem(pageNum), width/2, 0, width/2, height);
+	//image(getJournalPage(pageNum), 0, 0, width/2, height);
+	//image(getEmblem(pageNum), width/2, 0, width/2, height);
+
+
+	// display the Channels
+	chnl_0.display(0, .5);
+	chnl_1.display( .5, .5);
+
 
 	// checks for button press
 	updateControlsFromKeyboard();
@@ -105,6 +124,7 @@ PImage getEmblem(int anEmblem) {
 void mousePressed() {
 	// test for randomly indexing into the array
 	randomJournalPage();
+
 }
 
 void randomJournalPage(){
@@ -120,6 +140,10 @@ void printInstructions() {
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
    	println("   TAB	  clears background");
+   	println("   'J'	  selects a new journal page as the source image for chnl_0");
+   	println("   'E'	  selects a new emblem as the source image for chnl_0");
+   	println("   '1'	  selects a new journal page as the source image for chnl_1");
+   	println("   'Q'	  selects a new emblem as the source image for chnl_1");
    	println("          -----------------------------------");
    	println("");
 }

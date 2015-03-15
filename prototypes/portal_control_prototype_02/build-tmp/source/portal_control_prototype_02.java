@@ -65,6 +65,13 @@ PImage[] journal = new PImage[numOfJournalPages];
 // selecting a random page num at mouse press sets this
 int pageNum = 0;
 
+
+// Create 1 channel
+Channel[] chnl = new Channel[3];
+Channel chnl_0;
+Channel chnl_1;
+Channel chnl_2;
+
  
 public void setup() {
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
@@ -82,14 +89,26 @@ public void setup() {
     	for (int i = 0; i < numOfEmblems; i++)      
     		getEmblem(i);
     } 
+
+    // create channels
+    chnl[0] = chnl_0 = new Channel("  chnl_0", journal[1]);
+	chnl[1] = chnl_1 = new Channel("  chnl_1", emblem[1]);
+  	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
+
 	
 	printInstructions();
 }
 
 public void draw() {
 	
-	image(getJournalPage(pageNum), 0, 0, width/2, height);
-	image(getEmblem(pageNum), width/2, 0, width/2, height);
+	//image(getJournalPage(pageNum), 0, 0, width/2, height);
+	//image(getEmblem(pageNum), width/2, 0, width/2, height);
+
+
+	// display the Channels
+	chnl_0.display(0, .5f);
+	chnl_1.display( .5f, .5f);
+
 
 	// checks for button press
 	updateControlsFromKeyboard();
@@ -121,7 +140,7 @@ public PImage getEmblem(int anEmblem) {
 public void mousePressed() {
 	// test for randomly indexing into the array
 	randomJournalPage();
-	saveScreen();
+
 }
 
 public void randomJournalPage(){
@@ -137,16 +156,18 @@ public void printInstructions() {
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
    	println("   TAB	  clears background");
+   	println("   'J'	  selects a new journal page as the source image for chnl_0");
+   	println("   'E'	  selects a new emblem as the source image for chnl_0");
+   	println("   '1'	  selects a new journal page as the source image for chnl_1");
+   	println("   'Q'	  selects a new emblem as the source image for chnl_1");
    	println("          -----------------------------------");
    	println("");
 }
-/*
 class Channel {
 
 	String name;
 
-	PImage chnl_MONITOR;
-	PImage chnl_DISPLAY;
+	PImage sourceImage;
 
 	int imageNum;  			// index of the displayed image
 
@@ -156,12 +177,38 @@ class Channel {
 
 	float maxWidthScale; 	// max as 	
 
+	float monitorX;				// x cordinate of the channel's monitor image
+	float monitorY;				// y cordinate of the channel's monitor image
 
+	
+	
+	Channel(String _name, PImage _sourceImage)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		
+	}
+
+	public void changeSourceImage(String sourceName) {
+    	if (sourceName == "journals") {
+    		int journalPage = PApplet.parseInt(random(numOfJournalPages-1));
+    		sourceImage 	= journal[journalPage];
+    	} else if (sourceName == "emblems") {
+    		int anEmblem 	= PApplet.parseInt(random(numOfEmblems-1));
+    		sourceImage 	=  emblem[anEmblem];
+    	}
+	}
+	
+	public void monitor() {
+		//image(sourceImage, monitorX);
+	}
+
+	public void display(float monitorColumn, float widthFactor) {
+		image(sourceImage, width*monitorColumn, 0, width*widthFactor, height);
+	}
 
 }
 
 
-*/
 //////////////////////////////
 // KeyEVENTS - flipping switches!
 
@@ -188,21 +235,37 @@ public void updateControlsFromKeyboard() {
     //clearButtons();
     return;
   }
-  
+
   //saves an image everytime the ENTER is pressed.
   if (currentKey==ENTER) {
-    saveFrame(SNAP_FOLDER_PATH + nowAsString() + ".png");
+    String filename = nowAsString() + ".png";
+    println("SAVED AS "+filename);
+    saveFrame(SNAP_FOLDER_PATH + filename);
     //saveFrame(SNAP_FOLDER_PATH + "screen-####.png");
     noCursor();
-  } 
-  else {
+  } else {
     //println(currentKey);rg
     cursor();
-    // TAB key clears background (to black)
-    if (currentKey==TAB) {
-      background(0);
-    } 
- }
+  }
+
+  // TAB key clears background (to black)
+  if (currentKey==TAB) {
+    background(0);
+  } 
+
+
+  // change the source image
+  else if (currentKey == 'J') {
+    chnl_0.changeSourceImage("journals");
+  } else if (currentKey == 'E') {
+    chnl_0.changeSourceImage("emblems");
+  }
+
+   else if (currentKey == '1') {
+    chnl_1.changeSourceImage("journals");
+  } else if (currentKey == 'Q') {
+    chnl_1.changeSourceImage("emblems");
+  }
 }
 //  END KEYCODE FOR EVENTS
 /////////////////////////
@@ -217,28 +280,28 @@ public void updateControlsFromKeyboard() {
 // 2015-03-15_portal-control/portal-control_v0.5.3_01-42-50
 public String nowAsString() {
   return nf(year(), 4)+"-"+
-         nf(month(), 2)+"-"+
-         nf(day(), 2)+"_"+
-         project+"/"+
-         project+"_"+
-         version+"_"+
-         nf(hour(), 2)+"-"+
-         nf(minute(), 2)+"-"+
-         nf(second(), 2);
+    nf(month(), 2)+"-"+
+    nf(day(), 2)+"_"+
+    project+"/"+
+    project+"_"+
+    version+"_"+
+    nf(hour(), 2)+"-"+
+    nf(minute(), 2)+"-"+
+    nf(second(), 2);
 }
 
-// Save the current screen state as a .jpg in the SNAP_FOLDER_PATH,
+// Save the current screen state as a .png in the SNAP_FOLDER_PATH,
 // If you pass a filename, we'll use that, otherwise we'll default to the current date.
 // NOTE: do NOT pass the ".jpg" or the path.
 // Returns the name of the file saved.
 public String saveScreen() {
-   return saveScreen(null); 
+  return saveScreen(null);
 }
 public String saveScreen(String fileName) {
   if (fileName == null) {
-    fileName = nowAsString(); 
+    fileName = nowAsString();
   }
-  
+
   save(SNAP_FOLDER_PATH + fileName + ".png");
   println("SAVED AS "+fileName);
   return fileName;
@@ -247,6 +310,7 @@ public String saveScreen(String fileName) {
 
 //
 ///////////////////////
+
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "portal_control_prototype_02" };
     if (passedArgs != null) {

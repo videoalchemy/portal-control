@@ -1,10 +1,8 @@
-/*
 class Channel {
 
 	String name;
 
-	PImage chnl_MONITOR;
-	PImage chnl_DISPLAY;
+	PImage sourceImage;
 
 	int imageNum;  			// index of the displayed image
 
@@ -14,15 +12,35 @@ class Channel {
 
 	float maxWidthScale; 	// max as 	
 
-	monitorX;				// x cordinate of the channel's monitor image
-	monitorY;				// y cordinate of the channel's monitor image
+	float monitorX;				// x cordinate of the channel's monitor image
+	float monitorY;				// y cordinate of the channel's monitor image
 
 	
 	
-	Channel(PImage _source)
+	Channel(String _name, PImage _sourceImage)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		
+	}
 
+	void changeSourceImage(String sourceName) {
+    	if (sourceName == "journals") {
+    		int journalPage = int(random(numOfJournalPages-1));
+    		sourceImage 	= journal[journalPage];
+    	} else if (sourceName == "emblems") {
+    		int anEmblem 	= int(random(numOfEmblems-1));
+    		sourceImage 	=  emblem[anEmblem];
+    	}
+	}
+	
+	void monitor() {
+		//image(sourceImage, monitorX);
+	}
+
+	void display(float monitorColumn, float widthFactor) {
+		image(sourceImage, width*monitorColumn, 0, width*widthFactor, height);
+	}
 
 }
 
 
-*/
