@@ -1,7 +1,9 @@
 /* jstephens portal_control_prototype_02  - 2015-03
 
-1. [] create PImage array of journals
-2. [] display random journal at mousepress
+1. [x] create PImage array of journals
+2. [x] display random journal at mousepress
+3. 
+
 3. [] display random journal at iPhone press
 
 - [] channel class????
@@ -39,12 +41,14 @@ String SNAP_FOLDER_PATH = "~/videoalchemy/snaps/portal_control_snaps/proto_02/";
 
 
 // PImage arrays to hold the source images.
-int numOfEmblems 	= 20; //total = xx , 20=troubleshooting 
+int numOfEmblems 	= 9; //total = xx , 20=troubleshooting 
 PImage[] emblem = new PImage[numOfEmblems];
 
 int numOfJournalPages 	= 9; //total = xx , // gotta keep it here until we figure out what to do with the leading ZEROS
 PImage[] journal = new PImage[numOfJournalPages];
 
+// selecting a random page num at mouse press sets this
+int pageNum = 0;
 
  
 void setup() {
@@ -59,12 +63,18 @@ void setup() {
  //
  if (PRELOAD_IMAGES) {
     for (int i = 0; i < numOfJournalPages; i++)      
-    	getJournalPage(i);
+    	getJournalPage(i); 
+    for (int i = 0; i < numOfEmblems; i++)      
+    	getEmblem(i);
     } 
+
 }
 
 void draw() {
-	ellipse(mouseX, mouseY, width, height);
+	
+	image(getJournalPage(pageNum), 0, 0, width/2, height);
+	image(getEmblem(pageNum), width/2, 0, width/2, height);
+
 }
 
 /////////////////////////
@@ -80,3 +90,28 @@ PImage getJournalPage(int journalPage) {
 	return journal[journalPage]; 
 }
 
+//
+PImage getEmblem(int anEmblem) {
+	if (emblem[anEmblem] == null) {
+		println("loading emblem "+anEmblem+" of "+numOfEmblems);
+        emblem[anEmblem] = loadImage("../../images/angels/angel00"+anEmblem+".png");
+    }
+	return emblem[anEmblem]; 
+}
+
+
+void mousePressed() {
+
+	// test for randomly indexing into the array
+	println("mousePress registered");
+	println("current pageNum ="+pageNum);
+	randomJournalPage();
+
+}
+
+void randomJournalPage(){
+	println("Switching journal page "+pageNum);
+	pageNum = int(random(numOfJournalPages-1));
+    println(" for "+pageNum);
+
+}
