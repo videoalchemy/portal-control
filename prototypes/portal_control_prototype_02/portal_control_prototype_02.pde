@@ -2,14 +2,13 @@
 
 1. [x] create PImage array of journals
 2. [x] display random journal at mousepress
-3. 
+3. [ ] implement channel class
 
-3. [] display random journal at iPhone press
 
-- [] channel class????
-
+[] display random journal at iPhone press
 */
 
+String version = "proto_02";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
@@ -33,7 +32,7 @@ float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2);				// 1.6 * .2 (increase to SC
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
 float SCALE_FACTOR 		= 1.5;
 // Location where we'll save snapshots.
-String SNAP_FOLDER_PATH = "~/videoalchemy/snaps/portal_control_snaps/proto_02/";
+String SNAP_FOLDER_PATH = "../../../snaps/portal_control_snaps/";
 
 //
 //  END GLOBALS FOR DRAWING 
@@ -52,22 +51,23 @@ int pageNum = 0;
 
  
 void setup() {
- println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ 	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
+ 	size (SCREEN_WIDTH, SCREEN_HEIGHT);
 
- //optional
- smooth();
+ 	//optional
+ 	smooth();
 
- // 
- // preload images if necessary
- //
- if (PRELOAD_IMAGES) {
-    for (int i = 0; i < numOfJournalPages; i++)      
-    	getJournalPage(i); 
-    for (int i = 0; i < numOfEmblems; i++)      
-    	getEmblem(i);
+ 	// 
+ 	// preload images if necessary
+ 	//
+ 	if (PRELOAD_IMAGES) {
+    	for (int i = 0; i < numOfJournalPages; i++)      
+    		getJournalPage(i); 
+    	for (int i = 0; i < numOfEmblems; i++)      
+    		getEmblem(i);
     } 
-
+	
+	printInstructions();
 }
 
 void draw() {
@@ -75,13 +75,13 @@ void draw() {
 	image(getJournalPage(pageNum), 0, 0, width/2, height);
 	image(getEmblem(pageNum), width/2, 0, width/2, height);
 
-}
+	// checks for button press
+	updateControlsFromKeyboard();
+}	
 
-/////////////////////////
-//  FUNCTIONS
-//
+///////////////////////////////////////
+//  GO GET THE SOURCE IMAGE!
 
-//
 PImage getJournalPage(int journalPage) {
 	if (journal[journalPage] == null) {
 		println("loading journal page "+journalPage+" of "+numOfJournalPages);
@@ -98,20 +98,29 @@ PImage getEmblem(int anEmblem) {
     }
 	return emblem[anEmblem]; 
 }
+//  END GET THE SOURCE IMAGE
+////////////////////////////////////////
 
 
 void mousePressed() {
-
 	// test for randomly indexing into the array
-	println("mousePress registered");
-	println("current pageNum ="+pageNum);
 	randomJournalPage();
-
+	saveScreen();
 }
 
 void randomJournalPage(){
-	println("Switching journal page "+pageNum);
+	print("Switching from journal page "+pageNum);
 	pageNum = int(random(numOfJournalPages-1));
-    println(" for "+pageNum);
+    println(" to "+pageNum);
+}
 
+//
+void printInstructions() {
+	println("");
+	println("                 Keyboard controls");
+  	println("          -----------------------------------");
+   	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
+   	println("   TAB	  clears background");
+   	println("          -----------------------------------");
+   	println("");
 }

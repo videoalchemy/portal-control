@@ -17,13 +17,14 @@ public class portal_control_prototype_02 extends PApplet {
 /* jstephens portal_control_prototype_02  - 2015-03
 
 1. [x] create PImage array of journals
-2. [] display random journal at mousepress
-3. [] display random journal at iPhone press
+2. [x] display random journal at mousepress
+3. [ ] implement channel class
 
-- [] channel class????
 
+[] display random journal at iPhone press
 */
 
+String version = "proto_02";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
@@ -47,7 +48,7 @@ float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2f);				// 1.6 * .2 (increase to S
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
 float SCALE_FACTOR 		= 1.5f;
 // Location where we'll save snapshots.
-String SNAP_FOLDER_PATH = "~/videoalchemy/snaps/portal_control_snaps/proto_02/";
+String SNAP_FOLDER_PATH = "../../../snaps/portal_control_snaps/";
 
 //
 //  END GLOBALS FOR DRAWING 
@@ -66,22 +67,23 @@ int pageNum = 0;
 
  
 public void setup() {
- println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ 	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
+ 	size (SCREEN_WIDTH, SCREEN_HEIGHT);
 
- //optional
- smooth();
+ 	//optional
+ 	smooth();
 
- // 
- // preload images if necessary
- //
- if (PRELOAD_IMAGES) {
-    for (int i = 0; i < numOfJournalPages; i++)      
-    	getJournalPage(i); 
-    for (int i = 0; i < numOfEmblems; i++)      
-    	getEmblem(i);
+ 	// 
+ 	// preload images if necessary
+ 	//
+ 	if (PRELOAD_IMAGES) {
+    	for (int i = 0; i < numOfJournalPages; i++)      
+    		getJournalPage(i); 
+    	for (int i = 0; i < numOfEmblems; i++)      
+    		getEmblem(i);
     } 
-
+	
+	printInstructions();
 }
 
 public void draw() {
@@ -89,13 +91,13 @@ public void draw() {
 	image(getJournalPage(pageNum), 0, 0, width/2, height);
 	image(getEmblem(pageNum), width/2, 0, width/2, height);
 
-}
+	// checks for button press
+	updateControlsFromKeyboard();
+}	
 
-/////////////////////////
-//  FUNCTIONS
-//
+///////////////////////////////////////
+//  GO GET THE SOURCE IMAGE!
 
-//
 public PImage getJournalPage(int journalPage) {
 	if (journal[journalPage] == null) {
 		println("loading journal page "+journalPage+" of "+numOfJournalPages);
@@ -112,23 +114,136 @@ public PImage getEmblem(int anEmblem) {
     }
 	return emblem[anEmblem]; 
 }
+//  END GET THE SOURCE IMAGE
+////////////////////////////////////////
 
 
 public void mousePressed() {
-
 	// test for randomly indexing into the array
-	println("mousePress registered");
-	println("current pageNum ="+pageNum);
 	randomJournalPage();
-
+	saveScreen();
 }
 
 public void randomJournalPage(){
-	println("Switching journal page "+pageNum);
+	print("Switching from journal page "+pageNum);
 	pageNum = PApplet.parseInt(random(numOfJournalPages-1));
-    println(" for "+pageNum);
+    println(" to "+pageNum);
+}
+
+//
+public void printInstructions() {
+	println("");
+	println("                 Keyboard controls");
+  	println("          -----------------------------------");
+   	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
+   	println("   TAB	  clears background");
+   	println("          -----------------------------------");
+   	println("");
+}
+/*
+class Channel {
+
+	String name;
+
+	PImage chnl_MONITOR;
+	PImage chnl_DISPLAY;
+
+	int imageNum;  			// index of the displayed image
+
+	float opacity;  		// for use with tint
+	float theta;			// track rotation
+
+
+	float maxWidthScale; 	// max as 	
+
+
 
 }
+
+
+*/
+//////////////////////////////
+// KeyEVENTS - flipping switches!
+
+
+/////////////////////
+//  KEYCODE FOR EVENTS
+
+// Current keyCode for the pressed key
+int currentKey = -1;
+
+// Remember the current key when it goes down.
+public void keyPressed() {
+  currentKey = keyCode;
+}
+
+// Clear the current key when it goes up.
+public void keyReleased() {
+  currentKey = -1;
+}
+
+public void updateControlsFromKeyboard() {
+  // if no key is currently down, make sure all of the buttons are up and bail  
+  if (currentKey == -1) {
+    //clearButtons();
+    return;
+  }
+  
+  //saves an image everytime the ENTER is pressed.
+  if (currentKey==ENTER) {
+    saveFrame(SNAP_FOLDER_PATH + nowAsString() + ".png");
+    //saveFrame(SNAP_FOLDER_PATH + "screen-####.png");
+    noCursor();
+  } 
+  else {
+    //println(currentKey);rg
+    cursor();
+    // TAB key clears background (to black)
+    if (currentKey==TAB) {
+      background(0);
+    } 
+ }
+}
+//  END KEYCODE FOR EVENTS
+/////////////////////////
+
+
+
+///////////////////
+//    SCREEN SNAPS
+
+
+// output right now as a string   YYYY.MM.DDHH.MM.SS
+public String nowAsString() {
+  return nf(year(), 4)+"-"+
+         nf(month(), 2)+"-"+
+         nf(day(), 2)+"_"+
+         version+"/"+
+         nf(hour(), 2)+"-"+
+         nf(minute(), 2)+"-"+
+         nf(second(), 2);
+}
+
+// Save the current screen state as a .jpg in the SNAP_FOLDER_PATH,
+// If you pass a filename, we'll use that, otherwise we'll default to the current date.
+// NOTE: do NOT pass the ".jpg" or the path.
+// Returns the name of the file saved.
+public String saveScreen() {
+   return saveScreen(null); 
+}
+public String saveScreen(String fileName) {
+  if (fileName == null) {
+    fileName = nowAsString(); 
+  }
+  
+  save(SNAP_FOLDER_PATH + fileName + ".png");
+  println("SAVED AS "+fileName);
+  return fileName;
+}
+
+
+//
+///////////////////////
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "portal_control_prototype_02" };
     if (passedArgs != null) {
