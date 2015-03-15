@@ -24,7 +24,7 @@ public class portal_control_prototype_02 extends PApplet {
 [] display random journal at iPhone press
 */
 String project = "portal-control";
-String version = "v0.5.3";
+String version = "v0.5.4";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
