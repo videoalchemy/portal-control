@@ -49,12 +49,15 @@ void updateControlsFromKeyboard() {
 //    SCREEN SNAPS
 
 
-// output right now as a string   YYYY.MM.DDHH.MM.SS
+// output: right now + project + version as a string
+// 2015-03-15_portal-control/portal-control_v0.5.3_01-42-50
 String nowAsString() {
   return nf(year(), 4)+"-"+
          nf(month(), 2)+"-"+
          nf(day(), 2)+"_"+
-         version+"/"+
+         project+"/"+
+         project+"_"+
+         version+"_"+
          nf(hour(), 2)+"-"+
          nf(minute(), 2)+"-"+
          nf(second(), 2);

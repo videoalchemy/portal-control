@@ -23,8 +23,8 @@ public class portal_control_prototype_02 extends PApplet {
 
 [] display random journal at iPhone press
 */
-
-String version = "proto_02";
+String project = "portal-control";
+String version = "v0.5.3";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
@@ -213,12 +213,15 @@ public void updateControlsFromKeyboard() {
 //    SCREEN SNAPS
 
 
-// output right now as a string   YYYY.MM.DDHH.MM.SS
+// output: right now + project + versiond as a string
+// 2015-03-15_portal-control/portal-control_v0.5.3_01-42-50
 public String nowAsString() {
   return nf(year(), 4)+"-"+
          nf(month(), 2)+"-"+
          nf(day(), 2)+"_"+
-         version+"/"+
+         project+"/"+
+         project+"_"+
+         version+"_"+
          nf(hour(), 2)+"-"+
          nf(minute(), 2)+"-"+
          nf(second(), 2);

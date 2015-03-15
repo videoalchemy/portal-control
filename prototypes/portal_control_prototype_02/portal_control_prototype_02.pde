@@ -7,8 +7,8 @@
 
 [] display random journal at iPhone press
 */
-
-String version = "proto_02";
+String project = "portal-control";
+String version = "v0.5.3";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
