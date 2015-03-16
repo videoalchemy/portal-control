@@ -39,8 +39,8 @@ if the pixel depth in within min max
     then pixel of location loc in silhouette image is greyscale 0-255
     where greyscale is mapped from (pixelDepth, 0, 1024, 0, 255)
 else, the pixel at location loc in silhouette is completely transparent (0,0,0,255)
-
-normalize the range of depth where closest is 100% and furthest is 0%
+```
+- normalize the range of depth where closest is 100% and furthest is 0%
 ```
 // or, keep just the silhouette
 for each pixel[loc] in depth image:
