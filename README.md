@@ -2,6 +2,28 @@
 > gesture controlled video feedback installation
 ___________________
 
+####repo organization
+#####portal-control/portal-control 
+- contains the most recent version in development
+
+#####_exhibitions
+- versions completed for a specific exhibition live here.
+- tags will also be used for each release, including exhibition releases, so you can roll back to an exhibition release
+- however, I may want to compare exhibition / major release versions side by side rather than rolling back each time I want to look at previous versions.  Thus, the _exhibition folder
+- also, the exhibition folder provides some historical context.
+
+#####images
+- for any image, inlcuding those used by the app.  going to keep this in place so as to not break the prototypes
+
+#####docs
+- kept the markdown docs here before creating a wiki
+- but as development cycles shortened, the wiki became too slow to use, to cumbersome. 
+- so started using the README again.  
+- which means that neither the docs folder nor the wiki are up to date, although they contain lots of background research and ideas not covered in the more relevant README of the main repo.
+
+
+
+__________________________
 #####see [Portal Control wiki](https://github.com/VideoAlchemy/portal-control/wiki) for detailed dev docs, including tech and feature specs, study notes and tutorials.
 
 ####requirements
