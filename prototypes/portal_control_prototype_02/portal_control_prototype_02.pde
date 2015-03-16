@@ -1,12 +1,14 @@
-/* jstephens portal_control_prototype_02  - 2015-03
+/*******************************************************************
+ *	VideoAlchemy "Portal Control" Computational Feedback Interface
+ *
+ * Copyright (c) 2015 Jason Stephens & Video Alchemy Collective
+ * The MIT License (MIT)
+ *******************************************************************/
 
-1. [x] create PImage array of journals
-2. [x] display random journal at mousepress
-3. [ ] implement channel class
-
-
-[] display random journal at iPhone press
+/* TODO
+	[] display random journal at iPhone press
 */
+
 String project = "portal-control";
 String version = "v0.5.4";
 
