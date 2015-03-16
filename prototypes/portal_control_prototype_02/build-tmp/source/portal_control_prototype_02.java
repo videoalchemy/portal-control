@@ -43,7 +43,7 @@ int SCREEN_HEIGHT 		= 768;
 float VIDEO_SCALE 		= SCREEN_WIDTH/640;      // 1.6
 
 // FACTOR by which the dimensions of source images (640)must be multiplied to match chnl_MONITOR size (SCREEN_WIDTH/5)
-float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2f);				// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
+float MONITOR_SCALE 	=  (SCREEN_WIDTH/640) * (.2f);		// 20% of full screen should be 5 monitors		// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
 
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
 float SCALE_FACTOR 		= 1.5f;
@@ -90,7 +90,7 @@ public void setup() {
     		getEmblem(i);
     } 
 
-    // create channels
+    // create channels and prepopulate with an image
     chnl[0] = chnl_0 = new Channel("  chnl_0", journal[1]);
 	chnl[1] = chnl_1 = new Channel("  chnl_1", emblem[1]);
   	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
@@ -105,14 +105,35 @@ public void draw() {
 	//image(getEmblem(pageNum), width/2, 0, width/2, height);
 
 
-	// display the Channels
-	chnl_0.display(0, .5f);
-	chnl_1.display( .5f, .5f);
+	///////////////////////
+	//    display the Channel outputs
+
+	chnl_0.display(chnl_0.output());
+	chnl_1.display(chnl_1.output());
+	
+
+	///////////////////////
+	//    display the Channel Monitors
+
+	chnl_0.monitor(chnl_0.output(), MONITOR_SCALE, 0);
+	chnl_1.monitor(chnl_1.output(), MONITOR_SCALE, .2f);
 
 
 	// checks for button press
 	updateControlsFromKeyboard();
 }	
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////////////////
 //  GO GET THE SOURCE IMAGE!
@@ -168,6 +189,7 @@ class Channel {
 	String name;
 
 	PImage sourceImage;
+	PImage chnl_output;
 
 	int imageNum;  			// index of the displayed image
 
@@ -180,6 +202,7 @@ class Channel {
 	float monitorX;				// x cordinate of the channel's monitor image
 	float monitorY;				// y cordinate of the channel's monitor image
 
+	
 	
 	
 	Channel(String _name, PImage _sourceImage)  {
@@ -197,14 +220,41 @@ class Channel {
     		sourceImage 	=  emblem[anEmblem];
     	}
 	}
-	
-	public void monitor() {
-		//image(sourceImage, monitorX);
+
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	public void monitor(PImage monitor, float monitorScale, float monitorPosition) {
+		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
 	}
 
-	public void display(float monitorColumn, float widthFactor) {
-		image(sourceImage, width*monitorColumn, 0, width*widthFactor, height);
+	// use this to view a channel's processed OUTPUT at full screen size
+	// this function internally calls the PImage OUTPUT function used by 
+	// other channels and mixers 
+	public void display(PImage display) {
+		image(display, 0, 0, width, height);
 	}
+
+
+	public PImage output(){
+		//image(sourceImage, 0,0, width, height);
+
+		chnl_output = sourceImage;
+
+		// 1. set the output image to be the source
+
+		// use a buffer image so that the sourceImage is unchanged
+
+
+		// add image processing here
+		//////////////////////
+
+
+		// add texture mapping here
+		////////////////////////////
+
+		return chnl_output;
+	}
+
 
 }
 

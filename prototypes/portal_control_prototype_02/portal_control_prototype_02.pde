@@ -27,7 +27,7 @@ int SCREEN_HEIGHT 		= 768;
 float VIDEO_SCALE 		= SCREEN_WIDTH/640;      // 1.6
 
 // FACTOR by which the dimensions of source images (640)must be multiplied to match chnl_MONITOR size (SCREEN_WIDTH/5)
-float MONITOR_SCALE 	= (SCREEN_WIDTH/640) * (.2);				// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
+float MONITOR_SCALE 	=  (SCREEN_WIDTH/640) * (.2);		// 20% of full screen should be 5 monitors		// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
 
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
 float SCALE_FACTOR 		= 1.5;
@@ -74,7 +74,7 @@ void setup() {
     		getEmblem(i);
     } 
 
-    // create channels
+    // create channels and prepopulate with an image
     chnl[0] = chnl_0 = new Channel("  chnl_0", journal[1]);
 	chnl[1] = chnl_1 = new Channel("  chnl_1", emblem[1]);
   	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
@@ -89,14 +89,35 @@ void draw() {
 	//image(getEmblem(pageNum), width/2, 0, width/2, height);
 
 
-	// display the Channels
-	chnl_0.display(0, .5);
-	chnl_1.display( .5, .5);
+	///////////////////////
+	//    display the Channel outputs
+
+	chnl_0.display(chnl_0.output());
+	chnl_1.display(chnl_1.output());
+	
+
+	///////////////////////
+	//    display the Channel Monitors
+
+	chnl_0.monitor(chnl_0.output(), MONITOR_SCALE, 0);
+	chnl_1.monitor(chnl_1.output(), MONITOR_SCALE, .2);
 
 
 	// checks for button press
 	updateControlsFromKeyboard();
 }	
+
+
+
+
+
+
+
+
+
+
+
+
 
 ///////////////////////////////////////
 //  GO GET THE SOURCE IMAGE!
