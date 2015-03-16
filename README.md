@@ -13,7 +13,7 @@ ___________________
 - also, the exhibition folder provides some historical context.
 
 #####images
-- for any image not used by the app.  images used by the app will now go in 'data'
+- for any image, inlcuding those used by the app.  going to keep this in place so as to not break the prototypes
 
 #####docs
 - kept the markdown docs here before creating a wiki
