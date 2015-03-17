@@ -1,11 +1,14 @@
-class Channel {
+/*
+class FeedbackChannel {
 
 	String name;
 
 
-	PImage sourceImage;
-	PImage chnl_output;
-	PImage chnl_feedback;
+	PImage defaultSource;
+ 
+	PImage output;
+	PImage buffer;
+	PImage feedback
 
 	int imageNum;  			// index of the displayed image
 
@@ -21,22 +24,19 @@ class Channel {
 	
 	
 	
-	Channel(String _name, PImage _sourceImage)  {
-		name      = _name;
-		sourceImage = _sourceImage;
-		chnl_feedback = createImage(width, height, ARGB);
+	FeedbackChannel(String _name, PImage _defaultSource)  {
+		name 	      = _name;
+		defaultSource = _defaultSource;
+		
+		output = createImage(width, height, ARGB);
+		buffer = createImage(width, height, ARGB);
+		feedback = createImage(width, height, ARGB);
 		
 	}
 
-	void changeSourceImage(String sourceName) {
-    	if (sourceName == "journals") {
-    		int journalPage = int(random(numOfJournalPages-1));
-    		sourceImage 	= journal[journalPage];
-    	} else if (sourceName == "emblems") {
-    		int anEmblem 	= int(random(numOfEmblems-1));
-    		sourceImage 	=  emblem[anEmblem];
-    	}
-	}
+
+
+
 
 	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
 	void monitor(PImage monitor, float monitorScale, float monitorPosition) {
@@ -72,10 +72,13 @@ class Channel {
 		return chnl_output;
 	}
 
+}
 
 
 
-	PImage getFeedbackFrom(PImage channelIn) {
+
+/*
+	PImage feedback(PImage channelIn) {
 
 		
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
@@ -108,38 +111,5 @@ class Channel {
 	}
 
 
-	// Pass a Channel Class and return a feedback loop
-	PImage getFeedbackFrom(Channel chnl) {
 
-		
-		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
-		//chnl_output = this.output();
-		//image(chnl_output, 0, 0, width, height);
-
-		image(chnl.output(), 100, 100, width-100, height-100);
-
-		/////////////////////////
-		//  GENERATE FEEDBACK
-		imageMode(CENTER);
-
-		image(chnl_feedback, mouseX, mouseY, width-150, height-150);
-
-		imageMode(CORNER);
-
-
-		chnl_feedback = get();
-
-		//  END FEEDBACK
-		//////////////////////////
-
-
-		/////////////////
-		// add some simple feedback here
-		// draw yourself to something that changes, then get yourself
-
-
-		return chnl_feedback;
-	}
-}
-
-
+*/

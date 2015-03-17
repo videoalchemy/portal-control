@@ -60,11 +60,13 @@ Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
 
-PImage chnl_1_feedback;
+PImage feedback_of_chnl_1;
+PImage feedback_of_chnl_2;
 
  
 void setup() {
- 	chnl_1_feedback = createImage(width, height, ARGB);
+ 	feedback_of_chnl_1 = createImage(width, height, ARGB);
+ 	feedback_of_chnl_2 = createImage(width, height, ARGB);
 
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
  	size (SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -109,8 +111,11 @@ void draw() {
 
 	///////////////////////
 	//   get FEEDBACk
-	chnl_1_feedback = chnl_3.feedback(chnl_1_journals.output());
-	chnl_3.display(chnl_1_feedback);
+	feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output());
+	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems);
+	
+
+	chnl_3.display(feedback_of_chnl_1);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
@@ -121,7 +126,7 @@ void draw() {
 
 	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
 	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2);
-	chnl_3.monitor(chnl_1_feedback, MONITOR_SCALE, .4);
+	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4);
 
 
 	// checks for button press

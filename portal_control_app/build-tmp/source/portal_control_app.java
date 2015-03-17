@@ -76,11 +76,13 @@ Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
 
-PImage chnl_1_feedback;
+PImage feedback_of_chnl_1;
+PImage feedback_of_chnl_2;
 
  
 public void setup() {
- 	chnl_1_feedback = createImage(width, height, ARGB);
+ 	feedback_of_chnl_1 = createImage(width, height, ARGB);
+ 	feedback_of_chnl_2 = createImage(width, height, ARGB);
 
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
  	size (SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -125,8 +127,11 @@ public void draw() {
 
 	///////////////////////
 	//   get FEEDBACk
-	chnl_1_feedback = chnl_3.feedback(chnl_1_journals.output());
-	chnl_3.display(chnl_1_feedback);
+	feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output());
+	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems);
+	
+
+	chnl_3.display(feedback_of_chnl_1);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
@@ -137,7 +142,7 @@ public void draw() {
 
 	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
 	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2f);
-	chnl_3.monitor(chnl_1_feedback, MONITOR_SCALE, .4f);
+	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4f);
 
 
 	// checks for button press
@@ -209,6 +214,7 @@ class Channel {
 
 	String name;
 
+
 	PImage sourceImage;
 	PImage chnl_output;
 	PImage chnl_feedback;
@@ -259,26 +265,29 @@ class Channel {
 
 
 	public PImage output(){
-		//image(sourceImage, 0,0, width, height);
-
+		
+		/////////////////////
+		// use pixel array here
 		chnl_output = sourceImage;
 
-		// 1. set the output image to be the source
-
-		// use a buffer image so that the sourceImage is unchanged
-
-
-		// add image processing here
+		
 		//////////////////////
+		//   IMAGE PROCESSING
 
 
-		// add texture mapping here
-		////////////////////////////
+		///////////////////////
+		//   
+
+		/////////////////////////
+		//   ROTATE SCALE TRANSFORM
 
 		return chnl_output;
 	}
 
-	public PImage feedback(PImage channelIn) {
+
+
+
+	public PImage getFeedbackFrom(PImage channelIn) {
 
 		
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
@@ -311,9 +320,156 @@ class Channel {
 	}
 
 
+	// Pass a Channel Class and return a feedback loop
+	public PImage getFeedbackFrom(Channel chnl) {
+
+		
+		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
+		//chnl_output = this.output();
+		//image(chnl_output, 0, 0, width, height);
+
+		image(chnl.output(), 100, 100, width-100, height-100);
+
+		/////////////////////////
+		//  GENERATE FEEDBACK
+		imageMode(CENTER);
+
+		image(chnl_feedback, mouseX, mouseY, width-150, height-150);
+
+		imageMode(CORNER);
+
+
+		chnl_feedback = get();
+
+		//  END FEEDBACK
+		//////////////////////////
+
+
+		/////////////////
+		// add some simple feedback here
+		// draw yourself to something that changes, then get yourself
+
+
+		return chnl_feedback;
+	}
 }
 
 
+/*
+class FeedbackChannel {
+
+	String name;
+
+
+	PImage defaultSource;
+ 
+	PImage output;
+	PImage buffer;
+	PImage feedback
+
+	int imageNum;  			// index of the displayed image
+
+	float opacity;  		// for use with tint
+	float theta;			// track rotation
+
+
+	float maxWidthScale; 	// max as 	
+
+	float monitorX;				// x cordinate of the channel's monitor image
+	float monitorY;				// y cordinate of the channel's monitor image
+
+	
+	
+	
+	FeedbackChannel(String _name, PImage _defaultSource)  {
+		name 	      = _name;
+		defaultSource = _defaultSource;
+		
+		output = createImage(width, height, ARGB);
+		buffer = createImage(width, height, ARGB);
+		feedback = createImage(width, height, ARGB);
+		
+	}
+
+
+
+
+
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	void monitor(PImage monitor, float monitorScale, float monitorPosition) {
+		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
+	}
+
+	// use this to view a channel's processed OUTPUT at full screen size
+	// this function internally calls the PImage OUTPUT function used by 
+	// other channels and mixers 
+	void display(PImage display) {
+		image(display, 0, 0, width, height);
+	}
+
+
+	PImage output(){
+		
+		/////////////////////
+		// use pixel array here
+		chnl_output = sourceImage;
+
+		
+		//////////////////////
+		//   IMAGE PROCESSING
+
+
+		///////////////////////
+		//   
+
+		/////////////////////////
+		//   ROTATE SCALE TRANSFORM
+
+		return chnl_output;
+	}
+
+}
+
+
+
+
+/*
+	PImage feedback(PImage channelIn) {
+
+		
+		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
+		//chnl_output = this.output();
+		//image(chnl_output, 0, 0, width, height);
+
+		image(channelIn, 0, 0, width, height);
+
+		/////////////////////////
+		//  GENERATE FEEDBACK
+		imageMode(CENTER);
+
+		image(chnl_feedback, mouseX, mouseY, width, height);
+
+		imageMode(CORNER);
+
+
+		chnl_feedback = get();
+
+		//  END FEEDBACK
+		//////////////////////////
+
+
+		/////////////////
+		// add some simple feedback here
+		// draw yourself to something that changes, then get yourself
+
+
+		return chnl_feedback;
+	}
+
+
+
+*/
 //////////////////////////////
 // KeyEVENTS - flipping switches!
 
