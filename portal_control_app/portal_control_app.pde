@@ -38,6 +38,9 @@ float SCALE_FACTOR 		= 1.5;
 // Location where we'll save snapshots.
 String SNAP_FOLDER_PATH = "../../snaps/portal_control_snaps/";
 
+//  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
+int DISPLAY_CHANNEL = 0;   
+
 //
 //  END GLOBALS FOR DRAWING 
 ////////////////
@@ -104,9 +107,7 @@ void setup() {
 
 void draw() {
 	
-	///////////////////////
-	//    display the Channel outputs
-
+	
 	
 
 	////////////////////////
@@ -114,8 +115,7 @@ void draw() {
 	//chnl_1_journals.monitor();
 	
 
-	//chnl_1_journals.display(chnl_1_journals.output());
-	chnl_1_journals.display();
+	
 
 
 	//chnl_2_emblems.display(chnl_2_emblems.output());
@@ -142,15 +142,15 @@ void draw() {
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
 	
+	///////////////////////
+	//    SWITCH BETWEEN CHANNEL DISPLAYS - for testing or in case you get lost
+	switchDisplayChannel();
+	
 
 	///////////////////////
-	//    display the Channel Monitors
-	//         maybe calling twice will eliminate the flicker.  Seemed to work
-	displayChannelMonitors();
+	//    SHOW the Channel Monitors
+	showChannelMonitors();
 	
-	
-
-
 	// checks for button press
 	updateControlsFromKeyboard();
 }	
@@ -160,14 +160,29 @@ void draw() {
 
 
 
+void switchDisplayChannel(){
+	switch(DISPLAY_CHANNEL){
+		case 1:
+			chnl_1_journals.display();
+			break;
+		case 2:
+			chnl_2_emblems.display();
+			break;
+		//////////////
+		// ADD ALL CHANNELS HERE
+		//////////////
 
+		default:
+			break;
+	}
+}
 
 
 
 
 ///////////////////////////////
 //    DISPLAY MONITORS
-void displayChannelMonitors(){
+void showChannelMonitors(){
 	
 	/////////////////////////
 	//    REDUCE FLICKER of monitor view by looping through 2x
@@ -176,17 +191,11 @@ void displayChannelMonitors(){
 	chnl_1_journals.monitor(MONITOR_SCALE, 0);
 
 	//chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
-	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2);
-	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4);
+	chnl_2_emblems.monitor(MONITOR_SCALE, .2);
+	chnl_3.monitor(MONITOR_SCALE, .4);
 	}
 
 }
-
-
-
-
-
-
 
 
 
