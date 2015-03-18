@@ -33,46 +33,10 @@ class Channel {
 		chnl_output 	= createImage(width, height, ARGB);
 	}
 	
-	/////////////////////////////////
-	//      CONSTRUCTOR
-	Channel(String _name, PImage _sourceImage)  {
-		name      = _name;
-		sourceImage = _sourceImage;
-		chnl_feedback = createImage(width, height, ARGB);
-		chnl_output = createImage(width, height, ARGB);
-	}
+	
 
-	/////////////////////////////////
-	//       CONSTRUCTOR OVERLOAD WITH vertexX instructions
-	Channel(String _name, PImage _sourceImage, float _vertexX)  {
-		name      = _name;
-		sourceImage = _sourceImage;
-		chnl_feedback = createImage(width, height, ARGB);
-		chnl_output = createImage(width, height, ARGB);
+	
 
-		//////
-		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
-		vertexX = _vertexX;
-		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
-	}
-
-/*
-	/////////////////////////////////
-	//       CONSTRUCTOR OVERLOAD WITH PVECTOR vertex1
-	Channel(String _name, PImage _sourceImage)  {
-		name      = _name;
-		sourceImage = _sourceImage;
-		chnl_feedback = createImage(width, height, ARGB);
-		chnl_output = createImage(width, height, ARGB);
-
-
-		//////
-		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
-		vertexX = _vertexX;
-		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
-	}
-
-*/
 
 
 
@@ -180,7 +144,7 @@ class Channel {
   		texture(chnl_feedback);
         vertex(mouseX, mouseY, 0, 0);
         vertex(width, 0, 1,0);
-  		vertex(width, height, 1, 1);
+  		vertex(width-mouseX, height-mouseY, 1, 1);
   		vertex(chnl.vertexX, height, 0, 1);
   		textureMode(IMAGE);
   		endShape(CLOSE);
