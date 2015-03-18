@@ -20,10 +20,17 @@ public class portal_control_app extends PApplet {
  * Copyright (c) 2015 Jason Stephens & Video Alchemy Collective
  * The MIT License (MIT)
  *******************************************************************/
+/* PROJECT MILESTONES ON GITHUB:
+https://github.com/VideoAlchemy/portal-control/milestones
 
-/* TODO
-	[] Made FEEDBACK its own CLASS!!!!
-	[] display random journal at iPhone press
+TODO
+[] verify the existence of a transparent layer transparency
+[] create transparency so that the feedback loop takes the shape of the source image
+	- shape the feeback from the base case shape 
+
+[] create controls for the source image texture maps
+
+[] display random journal at iPhone press
 
 */
 
@@ -37,6 +44,9 @@ String version = "v0.6.0_dev";
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
 boolean PRELOAD_IMAGES 	= true;
+
+// Toggle the showMonitors feature. Default to on
+boolean SHOW_MONITORS = true;
 
 // Size of the output screen.  Use 'displayWidth' and 'displayHeight' for full screen size, or specify explicit size.
 int SCREEN_WIDTH 		= 1024; 
@@ -123,22 +133,6 @@ public void setup() {
 
 public void draw() {
 	
-	
-	
-
-	////////////////////////
-	//     
-	//chnl_1_journals.monitor();
-	
-
-	
-
-
-	//chnl_2_emblems.display(chnl_2_emblems.output());
-	
-
-
-
 	///////////////////////
 	//   CREATE FEEDBACK FROM CHANNEL<z>
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
@@ -172,10 +166,9 @@ public void draw() {
 }	
 
 
-
-
-
-
+/////////////////////////////////////////////////////////////////
+//      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
+////////     ----this is screaming for an awesome interface--------
 public void switchDisplayChannel(){
 	switch(DISPLAY_CHANNEL){
 		case 1:
@@ -187,37 +180,36 @@ public void switchDisplayChannel(){
 		//////////////
 		// ADD ALL CHANNELS HERE
 		//////////////
-
 		default:
 			break;
 	}
 }
+//      END DISPLAY CHANNEL
+/////////////////////////////////////////////////////////////////
 
 
 
 
-///////////////////////////////
-//    DISPLAY MONITORS
+///////////////////////////////////////////////////////////
+//    SHOW MONITORS
 public void showChannelMonitors(){
-	
-	/////////////////////////
-	//    REDUCE FLICKER of monitor view by looping through 2x
-	for (int i = 0; i < 2; i++){
+	if (SHOW_MONITORS) {
 
-	chnl_1_journals.monitor(MONITOR_SCALE, 0);
-
-	//chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
-	chnl_2_emblems.monitor(MONITOR_SCALE, .2f);
-	chnl_3.monitor(MONITOR_SCALE, .4f);
+//DEBUG::    REDUCE FLICKER of monitor view by looping through 2x
+		for (int i = 0; i < 2; i++){
+			chnl_1_journals.monitor(MONITOR_SCALE, 0);
+			chnl_2_emblems.monitor(MONITOR_SCALE, .2f);
+			chnl_3.monitor(MONITOR_SCALE, .4f);
 	}
-
 }
+}
+//    END SHOW MONITORS
+/////////////////////////////////////////////////////////
 
 
 
 ///////////////////////////////////////
-//  GO GET THE SOURCE IMAGE!
-
+//  GO GET THE SOURCE IMAGES!
 public PImage getJournalPage(int journalPage) {
 	if (journal[journalPage] == null) {
 		println("loading journal page "+journalPage+" of "+numOfJournalPages);
@@ -225,7 +217,6 @@ public PImage getJournalPage(int journalPage) {
     }
 	return journal[journalPage]; 
 }
-
 //
 public PImage getEmblem(int anEmblem) {
 	if (emblem[anEmblem] == null) {
@@ -237,34 +228,35 @@ public PImage getEmblem(int anEmblem) {
 //  END GET THE SOURCE IMAGE
 ////////////////////////////////////////
 
-
-public void mousePressed() {
-	// test for randomly indexing into the array
-	//randomJournalPage();
-
-}
-
-public void randomJournalPage(){
-	print("Switching from journal page "+pageNum);
-	pageNum = PApplet.parseInt(random(numOfJournalPages-1));
-    println(" to "+pageNum);
-}
-
-//
+////////////////////////////////////////
+//   PROVIDE SOME POINTERS
 public void printInstructions() {
 	println("");
 	println("                 Keyboard controls");
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
    	println("   TAB	  clears background");
-   	println("   'J'	  selects a new journal page as the source image for chnl_1_journals");
-   	println("   'E'	  selects a new emblem as the source image for chnl_1_journals");
-   	println("   '1'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'Q'	  selects a new emblem as the source image for chnl_2_emblems");
-   	println("   '4'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   '5'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   'Q'	  selects a new journal page as the source image for chnl_1_journals");
+   	println("   'W'	  selects a new emblem as the source image for chnl_1_journals");
+   	println("   'A'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   'S'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   'Z'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   'X'	  selects a new emblem as the source image for chnl_2_emblems");
    	println("          -----------------------------------");
    	println("");
+}
+
+
+
+
+public void mousePressed() {
+	// test for randomly indexing into the array
+	//randomJournalPage();
+}
+public void randomJournalPage(){
+	print("Switching from journal page "+pageNum);
+	pageNum = PApplet.parseInt(random(numOfJournalPages-1));
+    println(" to "+pageNum);
 }
 class Channel {
 
@@ -557,21 +549,24 @@ class FeedbackChannel {
 // KeyEVENTS - flipping switches!
 
 
-/////////////////////
+////////////////////////////////////////////////////
 //  KEYCODE FOR EVENTS
 
+//////////////////////////////////////
+//  CREATE MOMENTARY SWITCH 
 // Current keyCode for the pressed key
 int currentKey = -1;
-
 // Remember the current key when it goes down.
 public void keyPressed() {
   currentKey = keyCode;
 }
-
 // Clear the current key when it goes up.
 public void keyReleased() {
   currentKey = -1;
 }
+//  END MOMENTARY SWITCH
+//////////////////////////////////////
+
 
 public void updateControlsFromKeyboard() {
   // if no key is currently down, make sure all of the buttons are up and bail  
@@ -580,7 +575,11 @@ public void updateControlsFromKeyboard() {
     return;
   }
 
-  //saves an image everytime the ENTER is pressed.
+  ////////////////////////////////////////////////////////////
+  ////     --------------- SCREEN ADMIN ------------------
+  //////////////////////////////////////////////////
+  //  SCREEN CAPTURE  =  ENTER
+  //////////////////////////////////////////////////
   if (currentKey==ENTER) {
     String filename = nowAsString() + ".png";
     println("SAVED AS "+filename);
@@ -592,40 +591,61 @@ public void updateControlsFromKeyboard() {
     cursor();
   }
 
-  // TAB key clears background (to black)
+  /////////////////////////////////////////////////
+  //  CLEAR BACKGROUND = TAB 
+  /////////////////////////////////////////////////
   if (currentKey==TAB) {
     background(0);
   } 
 
-
-  // change the source image
-  else if (currentKey == 'J') {
+  /////////////////////////////////////////////////
+  //     SELECT NEW SOURCE IMAGES FOR CHANNELS 1-4
+  /////////////////////////////////////////////////
+  //select source for chnl 1
+  else if (currentKey == 'Q') {
     chnl_1_journals.changeSourceImage("journals");
-  } else if (currentKey == 'E') {
+  } else if (currentKey == 'W') {
     chnl_1_journals.changeSourceImage("emblems");
   }
-
-   else if (currentKey == '1') {
+  //select source for chnl 2
+   else if (currentKey == 'A') {
     chnl_2_emblems.changeSourceImage("journals");
-  } else if (currentKey == 'Q') {
+  } else if (currentKey == 'S') {
     chnl_2_emblems.changeSourceImage("emblems");
   }
-
-  else if (currentKey == '4') {
+  //select source for chnl 4
+  else if (currentKey == 'Z') {
     chnl_4_has_controls.changeSourceImage("journals");
-  } else if (currentKey == '5') {
+  } else if (currentKey == 'X') {
     chnl_4_has_controls.changeSourceImage("emblems");
   }
+  //     END SELECT NEW SOURCE IMAGE
+  ////////////////////////////////////////////////
+
+  else if (currentKey == '0') {
+    SHOW_MONITORS = !SHOW_MONITORS;
+  }
+
+
+
+
 }
+
+
+
+
+
+
 //  END KEYCODE FOR EVENTS
 /////////////////////////
 
 
 
-///////////////////
+
+
+
+////////////////////////////////////////////////////
 //    SCREEN SNAPS
-
-
 // output: right now + project + version as a string
 // 2015-03-15_portal-control/portal-control_v0.5.3_01-42-50
 public String nowAsString() {
@@ -639,7 +659,6 @@ public String nowAsString() {
     nf(minute(), 2)+"-"+
     nf(second(), 2);
 }
-
 // Save the current screen state as a .png in the SNAP_FOLDER_PATH,
 // If you pass a filename, we'll use that, otherwise we'll default to the current date.
 // NOTE: do NOT pass the ".jpg" or the path.
@@ -651,15 +670,14 @@ public String saveScreen(String fileName) {
   if (fileName == null) {
     fileName = nowAsString();
   }
-
   save(SNAP_FOLDER_PATH + fileName + ".png");
   println("SAVED AS "+fileName);
   return fileName;
 }
 
 
-//
-///////////////////////
+//   END SCREEN SNAPS
+////////////////////////////////////////////////////////////
 
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "portal_control_app" };

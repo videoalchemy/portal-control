@@ -4,10 +4,17 @@
  * Copyright (c) 2015 Jason Stephens & Video Alchemy Collective
  * The MIT License (MIT)
  *******************************************************************/
+/* PROJECT MILESTONES ON GITHUB:
+https://github.com/VideoAlchemy/portal-control/milestones
 
-/* TODO
-	[] Made FEEDBACK its own CLASS!!!!
-	[] display random journal at iPhone press
+TODO
+[] verify the existence of a transparent layer transparency
+[] create transparency so that the feedback loop takes the shape of the source image
+	- shape the feeback from the base case shape 
+
+[] create controls for the source image texture maps
+
+[] display random journal at iPhone press
 
 */
 
@@ -21,6 +28,9 @@ String version = "v0.6.0_dev";
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
 boolean PRELOAD_IMAGES 	= true;
+
+// Toggle the showMonitors feature. Default to on
+boolean SHOW_MONITORS = true;
 
 // Size of the output screen.  Use 'displayWidth' and 'displayHeight' for full screen size, or specify explicit size.
 int SCREEN_WIDTH 		= 1024; 
@@ -107,22 +117,6 @@ void setup() {
 
 void draw() {
 	
-	
-	
-
-	////////////////////////
-	//     
-	//chnl_1_journals.monitor();
-	
-
-	
-
-
-	//chnl_2_emblems.display(chnl_2_emblems.output());
-	
-
-
-
 	///////////////////////
 	//   CREATE FEEDBACK FROM CHANNEL<z>
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
@@ -156,10 +150,9 @@ void draw() {
 }	
 
 
-
-
-
-
+/////////////////////////////////////////////////////////////////
+//      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
+////////     ----this is screaming for an awesome interface--------
 void switchDisplayChannel(){
 	switch(DISPLAY_CHANNEL){
 		case 1:
@@ -171,37 +164,36 @@ void switchDisplayChannel(){
 		//////////////
 		// ADD ALL CHANNELS HERE
 		//////////////
-
 		default:
 			break;
 	}
 }
+//      END DISPLAY CHANNEL
+/////////////////////////////////////////////////////////////////
 
 
 
 
-///////////////////////////////
-//    DISPLAY MONITORS
+///////////////////////////////////////////////////////////
+//    SHOW MONITORS
 void showChannelMonitors(){
-	
-	/////////////////////////
-	//    REDUCE FLICKER of monitor view by looping through 2x
-	for (int i = 0; i < 2; i++){
+	if (SHOW_MONITORS) {
 
-	chnl_1_journals.monitor(MONITOR_SCALE, 0);
-
-	//chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
-	chnl_2_emblems.monitor(MONITOR_SCALE, .2);
-	chnl_3.monitor(MONITOR_SCALE, .4);
+//DEBUG::    REDUCE FLICKER of monitor view by looping through 2x
+		for (int i = 0; i < 2; i++){
+			chnl_1_journals.monitor(MONITOR_SCALE, 0);
+			chnl_2_emblems.monitor(MONITOR_SCALE, .2);
+			chnl_3.monitor(MONITOR_SCALE, .4);
 	}
-
 }
+}
+//    END SHOW MONITORS
+/////////////////////////////////////////////////////////
 
 
 
 ///////////////////////////////////////
-//  GO GET THE SOURCE IMAGE!
-
+//  GO GET THE SOURCE IMAGES!
 PImage getJournalPage(int journalPage) {
 	if (journal[journalPage] == null) {
 		println("loading journal page "+journalPage+" of "+numOfJournalPages);
@@ -209,7 +201,6 @@ PImage getJournalPage(int journalPage) {
     }
 	return journal[journalPage]; 
 }
-
 //
 PImage getEmblem(int anEmblem) {
 	if (emblem[anEmblem] == null) {
@@ -221,32 +212,33 @@ PImage getEmblem(int anEmblem) {
 //  END GET THE SOURCE IMAGE
 ////////////////////////////////////////
 
-
-void mousePressed() {
-	// test for randomly indexing into the array
-	//randomJournalPage();
-
-}
-
-void randomJournalPage(){
-	print("Switching from journal page "+pageNum);
-	pageNum = int(random(numOfJournalPages-1));
-    println(" to "+pageNum);
-}
-
-//
+////////////////////////////////////////
+//   PROVIDE SOME POINTERS
 void printInstructions() {
 	println("");
 	println("                 Keyboard controls");
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
    	println("   TAB	  clears background");
-   	println("   'J'	  selects a new journal page as the source image for chnl_1_journals");
-   	println("   'E'	  selects a new emblem as the source image for chnl_1_journals");
-   	println("   '1'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'Q'	  selects a new emblem as the source image for chnl_2_emblems");
-   	println("   '4'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   '5'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   'Q'	  selects a new journal page as the source image for chnl_1_journals");
+   	println("   'W'	  selects a new emblem as the source image for chnl_1_journals");
+   	println("   'A'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   'S'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   'Z'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   'X'	  selects a new emblem as the source image for chnl_2_emblems");
    	println("          -----------------------------------");
    	println("");
+}
+
+
+
+
+void mousePressed() {
+	// test for randomly indexing into the array
+	//randomJournalPage();
+}
+void randomJournalPage(){
+	print("Switching from journal page "+pageNum);
+	pageNum = int(random(numOfJournalPages-1));
+    println(" to "+pageNum);
 }
