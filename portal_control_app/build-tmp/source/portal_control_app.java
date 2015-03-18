@@ -71,10 +71,12 @@ int pageNum = 0;
 
 
 // Create 1 channel
-Channel[] chnl = new Channel[3];
+Channel[] chnl = new Channel[4];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
+Channel chnl_4_has_controls;
+
 
 PImage feedback_of_chnl_1;
 PImage feedback_of_chnl_2;
@@ -90,7 +92,7 @@ public void setup() {
  	//optional
  	smooth();
 
- 	// 
+ 	////////////////////////////////// 
  	// preload images if necessary
  	//
  	if (PRELOAD_IMAGES) {
@@ -100,22 +102,24 @@ public void setup() {
     		getEmblem(i);
     } 
 
-    // create channels and prepopulate with an image
+    ////////////////////////////////////////////////
+    //    CREATE CHANNELS
     chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
 	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[1]);
 	chnl[2] = chnl_3 = new Channel("  chnl_3", emblem[1]);
-  	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
+  	
+  	/////////////////////
+  	//   TEST OVERLOADED OBJECT WITH vertexX
+  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", emblem[1], 200);
 
+  	//    END CREATE CHANNELS
+  	////////////////////////////////////////////////
 	
 	printInstructions();
 }
 
 public void draw() {
 	
-	//image(getJournalPage(pageNum), 0, 0, width/2, height);
-	//image(getEmblem(pageNum), width/2, 0, width/2, height);
-
-
 	///////////////////////
 	//    display the Channel outputs
 
@@ -126,15 +130,18 @@ public void draw() {
 
 
 	///////////////////////
-	//   ADD SOURCE CHANNELS TO FEEDBACk LOOP
+	//   CREATE FEEDBACK FROM CHANNEL<z>
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
-	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
-	
+	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
+	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
+	chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+
+
 
 	///////////////////////
 	//    DISPLAY FEEDBACK LOOPS
 	//chnl_3.display(feedback_of_chnl_1);
-	chnl_3.display(feedback_of_chnl_2);
+	//chnl_3.display(feedback_of_chnl_2);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
@@ -142,10 +149,8 @@ public void draw() {
 
 	///////////////////////
 	//    display the Channel Monitors
-
-	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
-	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2f);
-	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4f);
+	//displayChannelMonitors();
+	
 
 
 	// checks for button press
@@ -155,6 +160,21 @@ public void draw() {
 
 
 
+
+
+
+
+
+
+
+///////////////////////////////
+//    DISPLAY MONITORS
+public void displayChannelMonitors(){
+	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
+	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2f);
+	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4f);
+
+}
 
 
 
@@ -189,7 +209,7 @@ public PImage getEmblem(int anEmblem) {
 
 public void mousePressed() {
 	// test for randomly indexing into the array
-	randomJournalPage();
+	//randomJournalPage();
 
 }
 
@@ -210,6 +230,8 @@ public void printInstructions() {
    	println("   'E'	  selects a new emblem as the source image for chnl_1_journals");
    	println("   '1'	  selects a new journal page as the source image for chnl_2_emblems");
    	println("   'Q'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   '4'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   '5'	  selects a new emblem as the source image for chnl_2_emblems");
    	println("          -----------------------------------");
    	println("");
 }
@@ -233,15 +255,31 @@ class Channel {
 	float monitorX;				// x cordinate of the channel's monitor image
 	float monitorY;				// y cordinate of the channel's monitor image
 
+	float vertexX; 
 	
 	
-	
+	/////////////////////////////////
+	//      CONSTRUCTOR
 	Channel(String _name, PImage _sourceImage)  {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
-		
 	}
+
+	/////////////////////////////////
+	//       CONSTRUCTOR OVERLOAD WITH vertexX instructions
+	Channel(String _name, PImage _sourceImage, float _vertexX)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		chnl_feedback = createImage(width, height, ARGB);
+
+		//////
+		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
+		vertexX = _vertexX;
+		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
+	}
+
+
 
 	public void changeSourceImage(String sourceName) {
     	if (sourceName == "journals") {
@@ -273,7 +311,6 @@ class Channel {
 		// use pixel array here
 		chnl_output = sourceImage;
 
-		
 		//////////////////////
 		//   IMAGE PROCESSING
 
@@ -324,13 +361,10 @@ class Channel {
 
 
 	// Pass a Channel Class and return a feedback loop
-	public PImage getFeedbackFrom(Channel chnl) {
-
-		
+	public void createFeedbackFrom(Channel chnl) {
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
-		//image(chnl_output, 0, 0, width, height);
-
+		
 		image(chnl.output(), 0, 0, width, height);
 
 		/////////////////////////
@@ -338,8 +372,6 @@ class Channel {
 		imageMode(CENTER);
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
-
-		
 
 		//////////////////
 		//  START TEXTURE MAP
@@ -349,7 +381,7 @@ class Channel {
         vertex(mouseX, mouseY, 0, 0);
         vertex(width, 0, 1,0);
   		vertex(width, height, 1, 1);
-  		vertex(0, height, 0, 1);
+  		vertex(chnl.vertexX, height, 0, 1);
   		textureMode(IMAGE);
   		endShape(CLOSE);
 
@@ -366,7 +398,7 @@ class Channel {
 		// draw yourself to something that changes, then get yourself
 
 
-		return chnl_feedback;
+		//return chnl_feedback;
 	}
 }
 
@@ -542,6 +574,12 @@ public void updateControlsFromKeyboard() {
     chnl_2_emblems.changeSourceImage("journals");
   } else if (currentKey == 'Q') {
     chnl_2_emblems.changeSourceImage("emblems");
+  }
+
+  else if (currentKey == '4') {
+    chnl_4_has_controls.changeSourceImage("journals");
+  } else if (currentKey == '5') {
+    chnl_4_has_controls.changeSourceImage("emblems");
   }
 }
 //  END KEYCODE FOR EVENTS

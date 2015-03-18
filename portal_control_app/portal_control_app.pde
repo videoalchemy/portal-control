@@ -55,10 +55,12 @@ int pageNum = 0;
 
 
 // Create 1 channel
-Channel[] chnl = new Channel[3];
+Channel[] chnl = new Channel[4];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
+Channel chnl_4_has_controls;
+
 
 PImage feedback_of_chnl_1;
 PImage feedback_of_chnl_2;
@@ -74,7 +76,7 @@ void setup() {
  	//optional
  	smooth();
 
- 	// 
+ 	////////////////////////////////// 
  	// preload images if necessary
  	//
  	if (PRELOAD_IMAGES) {
@@ -84,22 +86,24 @@ void setup() {
     		getEmblem(i);
     } 
 
-    // create channels and prepopulate with an image
+    ////////////////////////////////////////////////
+    //    CREATE CHANNELS
     chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
 	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[1]);
 	chnl[2] = chnl_3 = new Channel("  chnl_3", emblem[1]);
-  	//chnl[2] = blueArm = new Arm(" blue", blueLeft, blueRight, BLUE_OPACITY);
+  	
+  	/////////////////////
+  	//   TEST OVERLOADED OBJECT WITH vertexX
+  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", emblem[1], 200);
 
+  	//    END CREATE CHANNELS
+  	////////////////////////////////////////////////
 	
 	printInstructions();
 }
 
 void draw() {
 	
-	//image(getJournalPage(pageNum), 0, 0, width/2, height);
-	//image(getEmblem(pageNum), width/2, 0, width/2, height);
-
-
 	///////////////////////
 	//    display the Channel outputs
 
@@ -110,15 +114,18 @@ void draw() {
 
 
 	///////////////////////
-	//   ADD SOURCE CHANNELS TO FEEDBACk LOOP
+	//   CREATE FEEDBACK FROM CHANNEL<z>
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
-	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
-	
+	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
+	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
+	chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+
+
 
 	///////////////////////
 	//    DISPLAY FEEDBACK LOOPS
 	//chnl_3.display(feedback_of_chnl_1);
-	chnl_3.display(feedback_of_chnl_2);
+	//chnl_3.display(feedback_of_chnl_2);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
@@ -126,10 +133,8 @@ void draw() {
 
 	///////////////////////
 	//    display the Channel Monitors
-
-	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
-	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2);
-	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4);
+	//displayChannelMonitors();
+	
 
 
 	// checks for button press
@@ -139,6 +144,21 @@ void draw() {
 
 
 
+
+
+
+
+
+
+
+///////////////////////////////
+//    DISPLAY MONITORS
+void displayChannelMonitors(){
+	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
+	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2);
+	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4);
+
+}
 
 
 
@@ -173,7 +193,7 @@ PImage getEmblem(int anEmblem) {
 
 void mousePressed() {
 	// test for randomly indexing into the array
-	randomJournalPage();
+	//randomJournalPage();
 
 }
 
@@ -194,6 +214,8 @@ void printInstructions() {
    	println("   'E'	  selects a new emblem as the source image for chnl_1_journals");
    	println("   '1'	  selects a new journal page as the source image for chnl_2_emblems");
    	println("   'Q'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   '4'	  selects a new journal page as the source image for chnl_2_emblems");
+   	println("   '5'	  selects a new emblem as the source image for chnl_2_emblems");
    	println("          -----------------------------------");
    	println("");
 }

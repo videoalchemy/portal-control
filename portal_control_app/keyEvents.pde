@@ -55,6 +55,12 @@ void updateControlsFromKeyboard() {
   } else if (currentKey == 'Q') {
     chnl_2_emblems.changeSourceImage("emblems");
   }
+
+  else if (currentKey == '4') {
+    chnl_4_has_controls.changeSourceImage("journals");
+  } else if (currentKey == '5') {
+    chnl_4_has_controls.changeSourceImage("emblems");
+  }
 }
 //  END KEYCODE FOR EVENTS
 /////////////////////////

@@ -18,15 +18,31 @@ class Channel {
 	float monitorX;				// x cordinate of the channel's monitor image
 	float monitorY;				// y cordinate of the channel's monitor image
 
+	float vertexX; 
 	
 	
-	
+	/////////////////////////////////
+	//      CONSTRUCTOR
 	Channel(String _name, PImage _sourceImage)  {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
-		
 	}
+
+	/////////////////////////////////
+	//       CONSTRUCTOR OVERLOAD WITH vertexX instructions
+	Channel(String _name, PImage _sourceImage, float _vertexX)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		chnl_feedback = createImage(width, height, ARGB);
+
+		//////
+		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
+		vertexX = _vertexX;
+		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
+	}
+
+
 
 	void changeSourceImage(String sourceName) {
     	if (sourceName == "journals") {
@@ -58,7 +74,6 @@ class Channel {
 		// use pixel array here
 		chnl_output = sourceImage;
 
-		
 		//////////////////////
 		//   IMAGE PROCESSING
 
@@ -109,13 +124,10 @@ class Channel {
 
 
 	// Pass a Channel Class and return a feedback loop
-	PImage getFeedbackFrom(Channel chnl) {
-
-		
+	void createFeedbackFrom(Channel chnl) {
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
-		//image(chnl_output, 0, 0, width, height);
-
+		
 		image(chnl.output(), 0, 0, width, height);
 
 		/////////////////////////
@@ -123,8 +135,6 @@ class Channel {
 		imageMode(CENTER);
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
-
-		
 
 		//////////////////
 		//  START TEXTURE MAP
@@ -134,7 +144,7 @@ class Channel {
         vertex(mouseX, mouseY, 0, 0);
         vertex(width, 0, 1,0);
   		vertex(width, height, 1, 1);
-  		vertex(0, height, 0, 1);
+  		vertex(chnl.vertexX, height, 0, 1);
   		textureMode(IMAGE);
   		endShape(CLOSE);
 
@@ -151,7 +161,7 @@ class Channel {
 		// draw yourself to something that changes, then get yourself
 
 
-		return chnl_feedback;
+		//return chnl_feedback;
 	}
 }
 
