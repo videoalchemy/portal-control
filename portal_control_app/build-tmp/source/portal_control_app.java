@@ -85,7 +85,7 @@ public void setup() {
  	feedback_of_chnl_2 = createImage(width, height, ARGB);
 
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- 	size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ 	size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
 
  	//optional
  	smooth();
@@ -126,12 +126,15 @@ public void draw() {
 
 
 	///////////////////////
-	//   get FEEDBACk
-	feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output());
-	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems);
+	//   ADD SOURCE CHANNELS TO FEEDBACk LOOP
+	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
+	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	
 
-	chnl_3.display(feedback_of_chnl_1);
+	///////////////////////
+	//    DISPLAY FEEDBACK LOOPS
+	//chnl_3.display(feedback_of_chnl_1);
+	chnl_3.display(feedback_of_chnl_2);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
@@ -328,16 +331,29 @@ class Channel {
 		//chnl_output = this.output();
 		//image(chnl_output, 0, 0, width, height);
 
-		image(chnl.output(), 100, 100, width-100, height-100);
+		image(chnl.output(), 0, 0, width, height);
 
 		/////////////////////////
 		//  GENERATE FEEDBACK
 		imageMode(CENTER);
 
-		image(chnl_feedback, mouseX, mouseY, width-150, height-150);
+		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
 
-		imageMode(CORNER);
+		
 
+		//////////////////
+		//  START TEXTURE MAP
+  		beginShape();
+   		textureMode(NORMAL);
+  		texture(chnl_feedback);
+        vertex(mouseX, mouseY, 0, 0);
+        vertex(width, 0, 1,0);
+  		vertex(width, height, 1, 1);
+  		vertex(0, height, 0, 1);
+  		textureMode(IMAGE);
+  		endShape(CLOSE);
+
+  		imageMode(CORNER);
 
 		chnl_feedback = get();
 

@@ -69,7 +69,7 @@ void setup() {
  	feedback_of_chnl_2 = createImage(width, height, ARGB);
 
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- 	size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ 	size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
 
  	//optional
  	smooth();
@@ -110,12 +110,15 @@ void draw() {
 
 
 	///////////////////////
-	//   get FEEDBACk
-	feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output());
-	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems);
+	//   ADD SOURCE CHANNELS TO FEEDBACk LOOP
+	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
+	feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	
 
-	chnl_3.display(feedback_of_chnl_1);
+	///////////////////////
+	//    DISPLAY FEEDBACK LOOPS
+	//chnl_3.display(feedback_of_chnl_1);
+	chnl_3.display(feedback_of_chnl_2);
 
 
 	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
