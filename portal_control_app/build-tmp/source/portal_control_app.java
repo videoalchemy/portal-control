@@ -49,7 +49,7 @@ boolean PRELOAD_IMAGES 	= true;
 boolean SHOW_MONITORS = true;
 
 //  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
-int DISPLAY_CHANNEL = 1;   
+int DISPLAY_CHANNEL = 0;   
 
 // Size of the output screen.  Use 'displayWidth' and 'displayHeight' for full screen size, or specify explicit size.
 int SCREEN_WIDTH 		= 1024; 
@@ -133,9 +133,11 @@ public void setup() {
 
 public void draw() {
 	
-	///////////////////////
-	//   CREATE FEEDBACK FROM CHANNEL<z>
-	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
+	////////////////////////////////////////////////////////////////
+	//   CREATE FEEDBACK FROM CHANNEL
+	//         by pass Channel object to the feedback channel /////
+	            /////////////////////////////////////////////////////
+	chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
 
@@ -166,7 +168,10 @@ public void draw() {
 //      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
 ////////     ----this is screaming for an awesome interface--------
 public void switchDisplayChannel(){
+	println(DISPLAY_CHANNEL);
 	switch(DISPLAY_CHANNEL){
+		case 0:
+			break;
 		case 1:
 			chnl_1_journals.display();
 			break;
@@ -192,7 +197,7 @@ public void showChannelMonitors(){
 	if (SHOW_MONITORS) {
 
 //DEBUG::    REDUCE FLICKER of monitor view by looping through 2x
-		for (int i = 0; i < 2; i++){
+		for (int i = 0; i < 1; i++){
 			chnl_1_journals.monitor(MONITOR_SCALE, 0);
 			chnl_2_emblems.monitor(MONITOR_SCALE, .2f);
 			chnl_3.monitor(MONITOR_SCALE, .4f);
