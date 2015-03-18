@@ -8,14 +8,55 @@
 //////////////////////////////////////
 //  CREATE MOMENTARY SWITCH 
 // Current keyCode for the pressed key
-int currentKey = -1;
+char currentKey;
+int currentKeyCode = -1;
 // Remember the current key when it goes down.
-void keyPressed() {
-  currentKey = keyCode;
+void keyPressed() { 
+  currentKeyCode = keyCode; 
+  currentKey = key;
+//DEBUG: println("keyCode = "+keyCode+ " key = "+key);
+
+
+  switch(currentKey){
+    case '-':
+      SHOW_MONITORS = !SHOW_MONITORS;
+      break;
+    case '1':
+      DISPLAY_CHANNEL = 1;
+      break;
+    case '2':
+      DISPLAY_CHANNEL = 2;
+      break;
+    case '3':
+      DISPLAY_CHANNEL = 3;
+      break;
+    case '4':
+      DISPLAY_CHANNEL = 4;
+      break;
+    case '5':
+      DISPLAY_CHANNEL = 5;
+      break;
+    case '6':
+      DISPLAY_CHANNEL = 6;
+      break;
+    case '7':
+      DISPLAY_CHANNEL = 7;
+      break;
+    case '8':
+      DISPLAY_CHANNEL = 8;
+      break;
+    case '9':
+      DISPLAY_CHANNEL = 9;
+      break;
+    case '0':
+      DISPLAY_CHANNEL = 0;
+      break;
+  }
+
 }
 // Clear the current key when it goes up.
 void keyReleased() {
-  currentKey = -1;
+  currentKeyCode = -1;
 }
 //  END MOMENTARY SWITCH
 //////////////////////////////////////
@@ -23,31 +64,26 @@ void keyReleased() {
 
 void updateControlsFromKeyboard() {
   // if no key is currently down, make sure all of the buttons are up and bail  
-  if (currentKey == -1) {
+  if (currentKeyCode == -1) {
     //clearButtons();
     return;
   }
-
-  ////////////////////////////////////////////////////////////
-  ////     --------------- SCREEN ADMIN ------------------
   //////////////////////////////////////////////////
   //  SCREEN CAPTURE  =  ENTER
   //////////////////////////////////////////////////
-  if (currentKey==ENTER) {
+  if (currentKeyCode==ENTER) {
     String filename = nowAsString() + ".png";
     println("SAVED AS "+filename);
     saveFrame(SNAP_FOLDER_PATH + filename);
     //saveFrame(SNAP_FOLDER_PATH + "screen-####.png");
     noCursor();
   } else {
-    //println(currentKey);rg
     cursor();
   }
-
   /////////////////////////////////////////////////
   //  CLEAR BACKGROUND = TAB 
   /////////////////////////////////////////////////
-  if (currentKey==TAB) {
+  if (currentKeyCode==TAB) {
     background(0);
   } 
 
@@ -55,46 +91,28 @@ void updateControlsFromKeyboard() {
   //     SELECT NEW SOURCE IMAGES FOR CHANNELS 1-4
   /////////////////////////////////////////////////
   //select source for chnl 1
-  else if (currentKey == 'Q') {
+  if (currentKey == 'q') {
     chnl_1_journals.changeSourceImage("journals");
-  } else if (currentKey == 'W') {
+  } else if (currentKey == 'w') {
     chnl_1_journals.changeSourceImage("emblems");
   }
   //select source for chnl 2
-   else if (currentKey == 'A') {
+   else if (currentKey == 'e') {
     chnl_2_emblems.changeSourceImage("journals");
-  } else if (currentKey == 'S') {
+  } else if (currentKey == 'r') {
     chnl_2_emblems.changeSourceImage("emblems");
   }
   //select source for chnl 4
-  else if (currentKey == 'Z') {
+  else if (currentKey == 't') {
     chnl_4_has_controls.changeSourceImage("journals");
-  } else if (currentKey == 'X') {
+  } else if (currentKey == 'y') {
     chnl_4_has_controls.changeSourceImage("emblems");
   }
   //     END SELECT NEW SOURCE IMAGE
   ////////////////////////////////////////////////
-
-  else if (currentKey == '0') {
-    SHOW_MONITORS = !SHOW_MONITORS;
-  }
-
-
-
-
 }
-
-
-
-
-
-
 //  END KEYCODE FOR EVENTS
-/////////////////////////
-
-
-
-
+/////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////
@@ -127,8 +145,6 @@ String saveScreen(String fileName) {
   println("SAVED AS "+fileName);
   return fileName;
 }
-
-
 //   END SCREEN SNAPS
 ////////////////////////////////////////////////////////////
 

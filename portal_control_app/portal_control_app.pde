@@ -32,6 +32,9 @@ boolean PRELOAD_IMAGES 	= true;
 // Toggle the showMonitors feature. Default to on
 boolean SHOW_MONITORS = true;
 
+//  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
+int DISPLAY_CHANNEL = 1;   
+
 // Size of the output screen.  Use 'displayWidth' and 'displayHeight' for full screen size, or specify explicit size.
 int SCREEN_WIDTH 		= 1024; 
 int SCREEN_HEIGHT 		= 768; 
@@ -48,8 +51,7 @@ float SCALE_FACTOR 		= 1.5;
 // Location where we'll save snapshots.
 String SNAP_FOLDER_PATH = "../../snaps/portal_control_snaps/";
 
-//  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
-int DISPLAY_CHANNEL = 0;   
+
 
 //
 //  END GLOBALS FOR DRAWING 
@@ -75,14 +77,10 @@ Channel chnl_3;
 Channel chnl_4_has_controls;
 
 
-PImage feedback_of_chnl_1;
-PImage feedback_of_chnl_2;
+
 
  
 void setup() {
- 	feedback_of_chnl_1 = createImage(width, height, ARGB);
- 	feedback_of_chnl_2 = createImage(width, height, ARGB);
-
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
  	size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
 
@@ -98,6 +96,8 @@ void setup() {
     	for (int i = 0; i < numOfEmblems; i++)      
     		getEmblem(i);
     } 
+
+
 
     ////////////////////////////////////////////////
     //    CREATE CHANNELS
@@ -119,11 +119,7 @@ void draw() {
 	
 	///////////////////////
 	//   CREATE FEEDBACK FROM CHANNEL<z>
-	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
-	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
-	
-
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
 
@@ -219,13 +215,17 @@ void printInstructions() {
 	println("                 Keyboard controls");
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
-   	println("   TAB	  clears background");
-   	println("   'Q'	  selects a new journal page as the source image for chnl_1_journals");
-   	println("   'W'	  selects a new emblem as the source image for chnl_1_journals");
-   	println("   'A'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'S'	  selects a new emblem as the source image for chnl_2_emblems");
-   	println("   'Z'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'X'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   TAB	   clears background");
+   	println("   'q'	   grabs journal page for chnl_1");
+   	println("   'w'	   grabs emblem for chnl_1");
+   	println("   'e'	   grabs journal page for chnl_2");
+   	println("   'r'	   grabs emblem for chnl_2");
+   	println("   't'	   grabs journal page for chnl_3");
+   	println("   'y'	   grabs emblem for chnl_3");
+   	println("   1-9	   sends DISPLAY_CHANNEL to MAIN screen");
+   	println("   '0'    removes DISPLAY_CHANNEL from MAIN screen");
+   	println("   '-'     ");
+
    	println("          -----------------------------------");
    	println("");
 }

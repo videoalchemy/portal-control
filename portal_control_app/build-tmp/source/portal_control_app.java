@@ -48,6 +48,9 @@ boolean PRELOAD_IMAGES 	= true;
 // Toggle the showMonitors feature. Default to on
 boolean SHOW_MONITORS = true;
 
+//  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
+int DISPLAY_CHANNEL = 1;   
+
 // Size of the output screen.  Use 'displayWidth' and 'displayHeight' for full screen size, or specify explicit size.
 int SCREEN_WIDTH 		= 1024; 
 int SCREEN_HEIGHT 		= 768; 
@@ -64,8 +67,7 @@ float SCALE_FACTOR 		= 1.5f;
 // Location where we'll save snapshots.
 String SNAP_FOLDER_PATH = "../../snaps/portal_control_snaps/";
 
-//  OVERRIDE THE MAIN OUTPUT DISPLAY WITH A SINGlE CHANNEL OUTPUT
-int DISPLAY_CHANNEL = 0;   
+
 
 //
 //  END GLOBALS FOR DRAWING 
@@ -91,14 +93,10 @@ Channel chnl_3;
 Channel chnl_4_has_controls;
 
 
-PImage feedback_of_chnl_1;
-PImage feedback_of_chnl_2;
+
 
  
 public void setup() {
- 	feedback_of_chnl_1 = createImage(width, height, ARGB);
- 	feedback_of_chnl_2 = createImage(width, height, ARGB);
-
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
  	size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
 
@@ -114,6 +112,8 @@ public void setup() {
     	for (int i = 0; i < numOfEmblems; i++)      
     		getEmblem(i);
     } 
+
+
 
     ////////////////////////////////////////////////
     //    CREATE CHANNELS
@@ -135,11 +135,7 @@ public void draw() {
 	
 	///////////////////////
 	//   CREATE FEEDBACK FROM CHANNEL<z>
-	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
-	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
-	
-
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
 
@@ -235,13 +231,17 @@ public void printInstructions() {
 	println("                 Keyboard controls");
   	println("          -----------------------------------");
    	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
-   	println("   TAB	  clears background");
-   	println("   'Q'	  selects a new journal page as the source image for chnl_1_journals");
-   	println("   'W'	  selects a new emblem as the source image for chnl_1_journals");
-   	println("   'A'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'S'	  selects a new emblem as the source image for chnl_2_emblems");
-   	println("   'Z'	  selects a new journal page as the source image for chnl_2_emblems");
-   	println("   'X'	  selects a new emblem as the source image for chnl_2_emblems");
+   	println("   TAB	   clears background");
+   	println("   'q'	   grabs journal page for chnl_1");
+   	println("   'w'	   grabs emblem for chnl_1");
+   	println("   'e'	   grabs journal page for chnl_2");
+   	println("   'r'	   grabs emblem for chnl_2");
+   	println("   't'	   grabs journal page for chnl_3");
+   	println("   'y'	   grabs emblem for chnl_3");
+   	println("   1-9	   sends DISPLAY_CHANNEL to MAIN screen");
+   	println("   '0'    removes DISPLAY_CHANNEL from MAIN screen");
+   	println("   '-'     ");
+
    	println("          -----------------------------------");
    	println("");
 }
@@ -555,14 +555,55 @@ class FeedbackChannel {
 //////////////////////////////////////
 //  CREATE MOMENTARY SWITCH 
 // Current keyCode for the pressed key
-int currentKey = -1;
+char currentKey;
+int currentKeyCode = -1;
 // Remember the current key when it goes down.
-public void keyPressed() {
-  currentKey = keyCode;
+public void keyPressed() { 
+  currentKeyCode = keyCode; 
+  currentKey = key;
+//DEBUG: println("keyCode = "+keyCode+ " key = "+key);
+
+
+  switch(currentKey){
+    case '-':
+      SHOW_MONITORS = !SHOW_MONITORS;
+      break;
+    case '1':
+      DISPLAY_CHANNEL = 1;
+      break;
+    case '2':
+      DISPLAY_CHANNEL = 2;
+      break;
+    case '3':
+      DISPLAY_CHANNEL = 3;
+      break;
+    case '4':
+      DISPLAY_CHANNEL = 4;
+      break;
+    case '5':
+      DISPLAY_CHANNEL = 5;
+      break;
+    case '6':
+      DISPLAY_CHANNEL = 6;
+      break;
+    case '7':
+      DISPLAY_CHANNEL = 7;
+      break;
+    case '8':
+      DISPLAY_CHANNEL = 8;
+      break;
+    case '9':
+      DISPLAY_CHANNEL = 9;
+      break;
+    case '0':
+      DISPLAY_CHANNEL = 0;
+      break;
+  }
+
 }
 // Clear the current key when it goes up.
 public void keyReleased() {
-  currentKey = -1;
+  currentKeyCode = -1;
 }
 //  END MOMENTARY SWITCH
 //////////////////////////////////////
@@ -570,31 +611,26 @@ public void keyReleased() {
 
 public void updateControlsFromKeyboard() {
   // if no key is currently down, make sure all of the buttons are up and bail  
-  if (currentKey == -1) {
+  if (currentKeyCode == -1) {
     //clearButtons();
     return;
   }
-
-  ////////////////////////////////////////////////////////////
-  ////     --------------- SCREEN ADMIN ------------------
   //////////////////////////////////////////////////
   //  SCREEN CAPTURE  =  ENTER
   //////////////////////////////////////////////////
-  if (currentKey==ENTER) {
+  if (currentKeyCode==ENTER) {
     String filename = nowAsString() + ".png";
     println("SAVED AS "+filename);
     saveFrame(SNAP_FOLDER_PATH + filename);
     //saveFrame(SNAP_FOLDER_PATH + "screen-####.png");
     noCursor();
   } else {
-    //println(currentKey);rg
     cursor();
   }
-
   /////////////////////////////////////////////////
   //  CLEAR BACKGROUND = TAB 
   /////////////////////////////////////////////////
-  if (currentKey==TAB) {
+  if (currentKeyCode==TAB) {
     background(0);
   } 
 
@@ -602,46 +638,28 @@ public void updateControlsFromKeyboard() {
   //     SELECT NEW SOURCE IMAGES FOR CHANNELS 1-4
   /////////////////////////////////////////////////
   //select source for chnl 1
-  else if (currentKey == 'Q') {
+  if (currentKey == 'q') {
     chnl_1_journals.changeSourceImage("journals");
-  } else if (currentKey == 'W') {
+  } else if (currentKey == 'w') {
     chnl_1_journals.changeSourceImage("emblems");
   }
   //select source for chnl 2
-   else if (currentKey == 'A') {
+   else if (currentKey == 'e') {
     chnl_2_emblems.changeSourceImage("journals");
-  } else if (currentKey == 'S') {
+  } else if (currentKey == 'r') {
     chnl_2_emblems.changeSourceImage("emblems");
   }
   //select source for chnl 4
-  else if (currentKey == 'Z') {
+  else if (currentKey == 't') {
     chnl_4_has_controls.changeSourceImage("journals");
-  } else if (currentKey == 'X') {
+  } else if (currentKey == 'y') {
     chnl_4_has_controls.changeSourceImage("emblems");
   }
   //     END SELECT NEW SOURCE IMAGE
   ////////////////////////////////////////////////
-
-  else if (currentKey == '0') {
-    SHOW_MONITORS = !SHOW_MONITORS;
-  }
-
-
-
-
 }
-
-
-
-
-
-
 //  END KEYCODE FOR EVENTS
-/////////////////////////
-
-
-
-
+/////////////////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////
@@ -674,8 +692,6 @@ public String saveScreen(String fileName) {
   println("SAVED AS "+fileName);
   return fileName;
 }
-
-
 //   END SCREEN SNAPS
 ////////////////////////////////////////////////////////////
 
