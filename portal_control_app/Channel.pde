@@ -7,6 +7,8 @@ class Channel {
 	PImage chnl_output;
 	PImage chnl_feedback;
 
+	PVector vertex1;
+
 	int imageNum;  			// index of the displayed image
 
 	float opacity;  		// for use with tint
@@ -20,6 +22,16 @@ class Channel {
 
 	float vertexX; 
 	
+
+
+	/////////////////////////////////
+	//      CONSTRUCTOR
+	Channel(String _name)  {
+		name      		= _name;
+		sourceImage 	= createImage(width, height, ARGB);
+		chnl_feedback 	= createImage(width, height, ARGB);
+		chnl_output 	= createImage(width, height, ARGB);
+	}
 	
 	/////////////////////////////////
 	//      CONSTRUCTOR
@@ -27,8 +39,7 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
-		chnl_output = sourceImage;
-		//chnl_output = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
 	}
 
 	/////////////////////////////////
@@ -44,6 +55,27 @@ class Channel {
 		vertexX = _vertexX;
 		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
 	}
+
+/*
+	/////////////////////////////////
+	//       CONSTRUCTOR OVERLOAD WITH PVECTOR vertex1
+	Channel(String _name, PImage _sourceImage)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
+
+
+		//////
+		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
+		vertexX = _vertexX;
+		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
+	}
+
+*/
+
+
+
 
 
 	///////////////////////////////////////

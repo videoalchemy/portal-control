@@ -86,11 +86,12 @@ int pageNum = 0;
 
 
 // Create 1 channel
-Channel[] chnl = new Channel[4];
+Channel[] chnl = new Channel[5];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
 Channel chnl_4_has_controls;
+Channel chnl_5_vertex1;
 
 
 
@@ -112,12 +113,19 @@ public void setup() {
     	for (int i = 0; i < numOfEmblems; i++)      
     		getEmblem(i);
     } 
+	//
+	printInstructions();
 
-
+ 	
 
     ////////////////////////////////////////////////
     //    CREATE CHANNELS
-    chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
+    //   TEST THE UNDERLOAD
+    //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
+    chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals");
+	
+
+
 	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[1]);
 	chnl[2] = chnl_3 = new Channel("  chnl_3", emblem[1]);
   	
@@ -125,10 +133,13 @@ public void setup() {
   	//   TEST OVERLOADED OBJECT WITH vertexX
   	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", emblem[1], 200);
 
+
+  	/////////////////////
+  	//   TEST OVERLOADED OBJECT WITH PVECTOR for vertex 1
+//  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", emblem[1], PVector vertex1);
+
   	//    END CREATE CHANNELS
   	////////////////////////////////////////////////
-	
-	printInstructions();
 }
 
 public void draw() {
@@ -142,41 +153,44 @@ public void draw() {
 
 
 
-	///////////////////////
-	//    DISPLAY FEEDBACK LOOPS
-	//chnl_3.display(feedback_of_chnl_1);
-	//chnl_3.display(feedback_of_chnl_2);
 
 
-	//chnl_3.display(chnl_3.feedback(chnl_1_journals.output()));
-	
-	///////////////////////
+
+
+
+
+
+/////////////////////////////////////
+//      UPDATE TOOLS AND MONITORS	
+update_PortalTools();
+/////////////////////////////////////
+}	
+
+
+///////
+// check_KeyboardControls_ChannelMonitors_ChannelDisplayOverrideSwitches
+public void update_PortalTools(){
 	//    SWITCH BETWEEN CHANNEL DISPLAYS - for testing or in case you get lost
 	switchDisplayChannel();
-	
-
 	///////////////////////
 	//    SHOW the Channel Monitors
 	showChannelMonitors();
-	
 	// checks for button press
 	updateControlsFromKeyboard();
-}	
-
+}
 
 /////////////////////////////////////////////////////////////////
 //      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
 ////////     ----this is screaming for an awesome interface--------
 public void switchDisplayChannel(){
-	println(DISPLAY_CHANNEL);
 	switch(DISPLAY_CHANNEL){
 		case 0:
 			break;
 		case 1:
-			chnl_1_journals.display();
+			//chnl_1_journals.display();
 			break;
 		case 2:
-			chnl_2_emblems.display();
+			//chnl_2_emblems.display();
 			break;
 		//////////////
 		// ADD ALL CHANNELS HERE
@@ -272,6 +286,8 @@ class Channel {
 	PImage chnl_output;
 	PImage chnl_feedback;
 
+	PVector vertex1;
+
 	int imageNum;  			// index of the displayed image
 
 	float opacity;  		// for use with tint
@@ -285,6 +301,16 @@ class Channel {
 
 	float vertexX; 
 	
+
+
+	/////////////////////////////////
+	//      CONSTRUCTOR
+	Channel(String _name)  {
+		name      		= _name;
+		sourceImage 	= createImage(width, height, ARGB);
+		chnl_feedback 	= createImage(width, height, ARGB);
+		chnl_output 	= createImage(width, height, ARGB);
+	}
 	
 	/////////////////////////////////
 	//      CONSTRUCTOR
@@ -292,8 +318,7 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
-		chnl_output = sourceImage;
-		//chnl_output = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
 	}
 
 	/////////////////////////////////
@@ -309,6 +334,27 @@ class Channel {
 		vertexX = _vertexX;
 		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
 	}
+
+/*
+	/////////////////////////////////
+	//       CONSTRUCTOR OVERLOAD WITH PVECTOR vertex1
+	Channel(String _name, PImage _sourceImage)  {
+		name      = _name;
+		sourceImage = _sourceImage;
+		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
+
+
+		//////
+		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
+		vertexX = _vertexX;
+		//	NOW MAKE A NEW CHANNEL WITH AN EXTRA ARGUMENNT
+	}
+
+*/
+
+
+
 
 
 	///////////////////////////////////////
