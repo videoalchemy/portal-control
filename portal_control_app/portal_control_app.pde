@@ -107,7 +107,17 @@ void draw() {
 	///////////////////////
 	//    display the Channel outputs
 
+	
+
+	////////////////////////
+	//     
+	//chnl_1_journals.monitor();
+	
+
 	//chnl_1_journals.display(chnl_1_journals.output());
+	chnl_1_journals.display();
+
+
 	//chnl_2_emblems.display(chnl_2_emblems.output());
 	
 
@@ -118,7 +128,9 @@ void draw() {
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
 	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
-	chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+	
+
+	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
 
 
@@ -133,7 +145,9 @@ void draw() {
 
 	///////////////////////
 	//    display the Channel Monitors
-	//displayChannelMonitors();
+	//         maybe calling twice will eliminate the flicker.  Seemed to work
+	displayChannelMonitors();
+	
 	
 
 
@@ -154,9 +168,17 @@ void draw() {
 ///////////////////////////////
 //    DISPLAY MONITORS
 void displayChannelMonitors(){
-	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
+	
+	/////////////////////////
+	//    REDUCE FLICKER of monitor view by looping through 2x
+	for (int i = 0; i < 2; i++){
+
+	chnl_1_journals.monitor(MONITOR_SCALE, 0);
+
+	//chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
 	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2);
 	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4);
+	}
 
 }
 

@@ -123,7 +123,17 @@ public void draw() {
 	///////////////////////
 	//    display the Channel outputs
 
+	
+
+	////////////////////////
+	//     
+	//chnl_1_journals.monitor();
+	
+
 	//chnl_1_journals.display(chnl_1_journals.output());
+	chnl_1_journals.display();
+
+
 	//chnl_2_emblems.display(chnl_2_emblems.output());
 	
 
@@ -134,7 +144,9 @@ public void draw() {
 	//feedback_of_chnl_1 = chnl_3.getFeedbackFrom(chnl_1_journals.output()); // ask for PImage
 	//feedback_of_chnl_2 = chnl_3.getFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
-	chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+	
+
+	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
 
 
@@ -149,7 +161,9 @@ public void draw() {
 
 	///////////////////////
 	//    display the Channel Monitors
-	//displayChannelMonitors();
+	//         maybe calling twice will eliminate the flicker.  Seemed to work
+	displayChannelMonitors();
+	
 	
 
 
@@ -170,9 +184,17 @@ public void draw() {
 ///////////////////////////////
 //    DISPLAY MONITORS
 public void displayChannelMonitors(){
-	chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
+	
+	/////////////////////////
+	//    REDUCE FLICKER of monitor view by looping through 2x
+	for (int i = 0; i < 2; i++){
+
+	chnl_1_journals.monitor(MONITOR_SCALE, 0);
+
+	//chnl_1_journals.monitor(chnl_1_journals.output(), MONITOR_SCALE, 0);
 	chnl_2_emblems.monitor(chnl_2_emblems.output(), MONITOR_SCALE, .2f);
 	chnl_3.monitor(feedback_of_chnl_1, MONITOR_SCALE, .4f);
+	}
 
 }
 
@@ -264,6 +286,8 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = sourceImage;
+		//chnl_output = createImage(width, height, ARGB);
 	}
 
 	/////////////////////////////////
@@ -272,6 +296,7 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
 
 		//////
 		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
@@ -280,47 +305,63 @@ class Channel {
 	}
 
 
-
+	///////////////////////////////////////
+	//    SOURCE CONTENT PROVIDERS
 	public void changeSourceImage(String sourceName) {
     	if (sourceName == "journals") {
     		int journalPage = PApplet.parseInt(random(numOfJournalPages-1));
     		sourceImage 	= journal[journalPage];
+    		// Make the the new source image the OUTPUT for this source provider
+    		chnl_output = sourceImage;
     	} else if (sourceName == "emblems") {
     		int anEmblem 	= PApplet.parseInt(random(numOfEmblems-1));
     		sourceImage 	=  emblem[anEmblem];
+    		// Set this channel's output to the source image if we find ourselves asking for a source image from this object.
+    		// If we're pulling a source image, that must mean the output for this channel is sourceImage
+    		chnl_output = sourceImage;	
     	}
 	}
+	//     END SOURCE CONTENT SELECTION
+	/////////////////////////////////////////////////
 
+
+
+
+	////////////////////////////////////////////
+	//    SMALL MONITOR SCREENS - so we can see what we're doing
 	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
 	public void monitor(PImage monitor, float monitorScale, float monitorPosition) {
 		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
 		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
 	}
 
-	// use this to view a channel's processed OUTPUT at full screen size
-	// this function internally calls the PImage OUTPUT function used by 
-	// other channels and mixers 
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	public void monitor(float monitorScale, float monitorPosition) {
+		image(this.output(), width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
+	}
+	//      END MONITORS
+	/////////////////////////////////////////////
+
+	
+	/////////////////////////////////////////
+	//   CHANNELS CAN DISPLAY THEMSEVES 
+	public void display() {
+		image(this.output(), 0, 0, width, height);
+	}
+
 	public void display(PImage display) {
 		image(display, 0, 0, width, height);
 	}
 
+	
+	/////////////////////////////
+	//    FOR USE WITH SourceChannels.  These should really have their own class
+	public PImage getSourceImage(){
+		return sourceImage;
+	}
 
 	public PImage output(){
-		
-		/////////////////////
-		// use pixel array here
-		chnl_output = sourceImage;
-
-		//////////////////////
-		//   IMAGE PROCESSING
-
-
-		///////////////////////
-		//   
-
-		/////////////////////////
-		//   ROTATE SCALE TRANSFORM
-
 		return chnl_output;
 	}
 
@@ -328,8 +369,6 @@ class Channel {
 
 
 	public PImage getFeedbackFrom(PImage channelIn) {
-
-		
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
 		//image(chnl_output, 0, 0, width, height);
@@ -339,25 +378,13 @@ class Channel {
 		/////////////////////////
 		//  GENERATE FEEDBACK
 		imageMode(CENTER);
-
 		image(chnl_feedback, mouseX, mouseY, width, height);
-
 		imageMode(CORNER);
-
-
 		chnl_feedback = get();
-
-		//  END FEEDBACK
-		//////////////////////////
-
-
-		/////////////////
-		// add some simple feedback here
-		// draw yourself to something that changes, then get yourself
-
-
 		return chnl_feedback;
 	}
+
+
 
 
 	// Pass a Channel Class and return a feedback loop
@@ -393,12 +420,11 @@ class Channel {
 		//////////////////////////
 
 
-		/////////////////
-		// add some simple feedback here
-		// draw yourself to something that changes, then get yourself
-
-
-		//return chnl_feedback;
+		/////////////////////////////
+		//  SET THE OBJECT's OUTPUT SIGNAL to the RESULT of this FEEDBACK LOOP
+		//  				If we're creating feedback, then we're likely not also serving SourceImages
+		chnl_output = chnl_feedback;
+		
 	}
 }
 

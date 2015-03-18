@@ -27,6 +27,8 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = sourceImage;
+		//chnl_output = createImage(width, height, ARGB);
 	}
 
 	/////////////////////////////////
@@ -35,6 +37,7 @@ class Channel {
 		name      = _name;
 		sourceImage = _sourceImage;
 		chnl_feedback = createImage(width, height, ARGB);
+		chnl_output = createImage(width, height, ARGB);
 
 		//////
 		//  TEST PASSING verteX THROUGH OBJECT AND INTO FEEDBACK CONTROL
@@ -43,47 +46,63 @@ class Channel {
 	}
 
 
-
+	///////////////////////////////////////
+	//    SOURCE CONTENT PROVIDERS
 	void changeSourceImage(String sourceName) {
     	if (sourceName == "journals") {
     		int journalPage = int(random(numOfJournalPages-1));
     		sourceImage 	= journal[journalPage];
+    		// Make the the new source image the OUTPUT for this source provider
+    		chnl_output = sourceImage;
     	} else if (sourceName == "emblems") {
     		int anEmblem 	= int(random(numOfEmblems-1));
     		sourceImage 	=  emblem[anEmblem];
+    		// Set this channel's output to the source image if we find ourselves asking for a source image from this object.
+    		// If we're pulling a source image, that must mean the output for this channel is sourceImage
+    		chnl_output = sourceImage;	
     	}
 	}
+	//     END SOURCE CONTENT SELECTION
+	/////////////////////////////////////////////////
 
+
+
+
+	////////////////////////////////////////////
+	//    SMALL MONITOR SCREENS - so we can see what we're doing
 	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
 	void monitor(PImage monitor, float monitorScale, float monitorPosition) {
 		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
 		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
 	}
 
-	// use this to view a channel's processed OUTPUT at full screen size
-	// this function internally calls the PImage OUTPUT function used by 
-	// other channels and mixers 
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	void monitor(float monitorScale, float monitorPosition) {
+		image(this.output(), width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
+	}
+	//      END MONITORS
+	/////////////////////////////////////////////
+
+	
+	/////////////////////////////////////////
+	//   CHANNELS CAN DISPLAY THEMSEVES 
+	void display() {
+		image(this.output(), 0, 0, width, height);
+	}
+
 	void display(PImage display) {
 		image(display, 0, 0, width, height);
 	}
 
+	
+	/////////////////////////////
+	//    FOR USE WITH SourceChannels.  These should really have their own class
+	PImage getSourceImage(){
+		return sourceImage;
+	}
 
 	PImage output(){
-		
-		/////////////////////
-		// use pixel array here
-		chnl_output = sourceImage;
-
-		//////////////////////
-		//   IMAGE PROCESSING
-
-
-		///////////////////////
-		//   
-
-		/////////////////////////
-		//   ROTATE SCALE TRANSFORM
-
 		return chnl_output;
 	}
 
@@ -91,8 +110,6 @@ class Channel {
 
 
 	PImage getFeedbackFrom(PImage channelIn) {
-
-		
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
 		//image(chnl_output, 0, 0, width, height);
@@ -102,25 +119,13 @@ class Channel {
 		/////////////////////////
 		//  GENERATE FEEDBACK
 		imageMode(CENTER);
-
 		image(chnl_feedback, mouseX, mouseY, width, height);
-
 		imageMode(CORNER);
-
-
 		chnl_feedback = get();
-
-		//  END FEEDBACK
-		//////////////////////////
-
-
-		/////////////////
-		// add some simple feedback here
-		// draw yourself to something that changes, then get yourself
-
-
 		return chnl_feedback;
 	}
+
+
 
 
 	// Pass a Channel Class and return a feedback loop
@@ -156,12 +161,11 @@ class Channel {
 		//////////////////////////
 
 
-		/////////////////
-		// add some simple feedback here
-		// draw yourself to something that changes, then get yourself
-
-
-		//return chnl_feedback;
+		/////////////////////////////
+		//  SET THE OBJECT's OUTPUT SIGNAL to the RESULT of this FEEDBACK LOOP
+		//  				If we're creating feedback, then we're likely not also serving SourceImages
+		chnl_output = chnl_feedback;
+		
 	}
 }
 
