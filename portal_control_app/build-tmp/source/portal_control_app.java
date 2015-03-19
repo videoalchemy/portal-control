@@ -92,12 +92,13 @@ int pageNum = 0;
 
 
 // Create 1 channel
-Channel[] chnl = new Channel[5];
+Channel[] chnl = new Channel[6];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
 Channel chnl_4_has_controls;
 Channel chnl_5_vertex1;
+Channel chnl_6_shape;
 
 
 
@@ -134,9 +135,10 @@ public void setup() {
   	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls");
   	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1");
 
-  	/////////////////////
-  	//   TEST OVERLOADED OBJECT WITH PVECTOR for vertex 1
 
+  	/////////////////////
+  	//   TEST OVERLOADED OBJECT WITH PVECTOR for PShape
+  	chnl[5] = chnl_6_shape = new Channel(" chnl_6_chnl_shape", 1 );
 
   	//    END CREATE CHANNELS
   	////////////////////////////////////////////////
@@ -148,8 +150,12 @@ public void draw() {
 	//   CREATE FEEDBACK FROM CHANNEL
 	//         by pass Channel object to the feedback channel /////
 	            /////////////////////////////////////////////////////
-	chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
+	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+
+
+	chnl_6_shape.drawChannelShape();
+	chnl_6_shape.updateChannelShapeVertices();
 
 
 
@@ -281,7 +287,29 @@ class Channel {
 
 	String name;
 
+////////////////////////////////////////////////
+///// PShape for the texture mapped chnl_output;
+	PShape chnl_shape;					// Channels are textured PShapes
+		PVector shape_center_location;
 
+		PVector vertex_1;
+		PVector vertex_2;
+		PVector vertex_3;
+		PVector vertex_4;
+		float 	vertexX; 				// part of the initial test.  leaving it in so as to not break something
+
+		float randomVertexX;			// provide some random starting point
+		float randomVertexY;
+
+		float theta_channel;			// to populate the rotate function.  NO ANIMATION FOR v1.0.0
+		float scale_channel;
+		float alpha_threshold;
+///////
+////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////
+//////      Channel OUTPUT IMAGES
 	PImage sourceImage;
 	PImage chnl_output;
 	PImage chnl_feedback;
@@ -299,7 +327,7 @@ class Channel {
 							//  that would ignore the feedback loops isolated above nestled inside 
 							//  their channel's basePlate
 
-	PVector vertex1;
+	
 
 	int imageNum;  			// index of the displayed image
 
@@ -312,18 +340,82 @@ class Channel {
 	float monitorX;				// x cordinate of the channel's monitor image
 	float monitorY;				// y cordinate of the channel's monitor image
 
-	float vertexX; 
+	
 	
 
 
-	/////////////////////////////////
-	//      CONSTRUCTOR
+	////////////////////////////////////////////////
+	//      CHANNELS ARE SHAPES TEXTURED BY PIMAGES
 	Channel(String _name)  {
 		name      		= _name;
 		sourceImage 	= createImage(width, height, ARGB);
 		chnl_feedback 	= createImage(width, height, ARGB);
 		chnl_output 	= createImage(width, height, ARGB);
+
+	
 	}
+
+
+	/////////////////////////////////////////////
+	//   CONSTRUCTOR FOR THE SHAPE VERSION
+	Channel(String _name, int extraArgumentToDistinguishShapes) {
+		name      		= _name;
+		sourceImage 	= createImage(width, height, ARGB);
+		chnl_feedback 	= loadImage("../images/journal-pages/044.png");
+		chnl_output 	= createImage(width, height, ARGB);
+
+		randomVertexX = random(0, width);
+		randomVertexY = random(0, height);
+
+		// these belong in draw
+		//imageMode(CENTER);
+
+		// Channels are textured PShapes
+		chnl_shape = createShape();
+   	    chnl_shape.beginShape();
+   	    chnl_shape.textureMode(NORMAL);
+    	chnl_shape.noStroke();
+    	chnl_shape.texture(chnl_feedback);
+    	
+    	chnl_shape.vertex(mouseX, mouseY, 0, 0);
+        chnl_shape.vertex(randomVertexX, 0, 1,0);
+  		chnl_shape.vertex(width-mouseX, height-mouseY, 1, 1);
+  		chnl_shape.vertex(randomVertexX, randomVertexY, 0, 1);
+    	chnl_shape.endShape(CLOSE);
+  		
+  		// these belong in draw
+  		//textureMode(IMAGE);
+  		//imageMode(CORNER);
+	}
+    
+
+	////////////////////////////
+	//  Test drawing shape
+  public void drawChannelShape() {
+  		background(102);
+  		translate(width/2, height/2);
+  		float zoom = map(mouseX, 0, width, 0.1f, 4.5f);
+  		scale(zoom);
+  		shape(chnl_shape, -140, -140);
+	}
+
+
+/*
+    // Initialize center vector
+    center = new PVector(); 
+    
+    // Set the Channel's starting position
+    rebirth(width/2, height/2);
+  }
+
+  PShape getShape() {
+    return part;
+  }
+*/
+
+
+
+	
 	
 	
 
@@ -384,16 +476,19 @@ class Channel {
 
 		/////////////////////////
 		//  GENERATE FEEDBACK
-		imageMode(CENTER);
+		
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
 
 		/////////////////////////////////
 		//  ---------APPLYING TEXTURE MAPS---------------
 		
+////////REPLACE WITH PShape object
+
 		///////////////
 		// THIS TEXTURE MAP currently employs 'immediate drawing' which is WAY slower
 		//  START TEXTURE MAP
+  		imageMode(CENTER);
   		beginShape();
    		textureMode(NORMAL);
   		texture(chnl_feedback);
@@ -410,6 +505,7 @@ class Channel {
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
 
+
   		
   		////////////////////////
   		//
@@ -421,8 +517,7 @@ class Channel {
 		/////////////////////////////
 		//  SET THE OBJECT's OUTPUT SIGNAL to the RESULT of this FEEDBACK LOOP
 		//  				If we're creating feedback, then we're likely not also serving SourceImages
-		chnl_output = chnl_feedback;
-		
+		chnl_output = chnl_feedback;		
 	}
 
 /*
@@ -441,8 +536,6 @@ class Channel {
 	//      - Moving the PImage that makes up the texture moves the texture without moving the shape 
 	//				- updated the method name to reflect this added and unaccounted for level of complexity
 	void applyRotateAndScaleToChannelOutputTextureImage(){
-
-
 }
 
 	/////////////////////////
@@ -451,8 +544,6 @@ class Channel {
 
 
 	}
-
-	
 	/////////////      END TRANSOMATIONS
 	///////////////////////////////////////////////////////////////////////////
 */
@@ -472,15 +563,55 @@ class Channel {
     		int anEmblem 	= PApplet.parseInt(random(numOfEmblems-1));
     		sourceImage 	=  emblem[anEmblem];
     		// Set this channel's output to the source image if we find ourselves asking for a source image from this object.
-    		// If we're pulling a source image, that must mean the output for this channel is sourceImage
+    		// If we're pulling a source image, that must mean the output for this channel is a sourceImage and NOT a feedback loop
     		chnl_output = sourceImage;	
     	}
 	}
 	//     END SOURCE CONTENT SELECTION
 	/////////////////////////////////////////////////
 
-}
 
+
+/////////////////////////////////////////////////////////
+//////
+	public void updateChannelShapeVertices() {
+
+			//   Manipulating the Vertices of a PShape in Real-Time
+
+			//   PShape allows you to dynamically access and alter the vertices through the methods getVertex() and setVertex().
+
+			//   To iterate over the vertices of a PShape, you can loop from 0 to the total number of vertices (getVertexCount()). 
+			//   The vertices can be retrieved as PVector objects with getVertexCount().
+
+	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
+  		PVector v = chnl_shape.getVertex(i);
+		}
+
+			//You could then move that vertex by manipulating the PVector and setting new values with setVertex().
+/* SHIFFMANS EXAMPLE
+	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
+  		PVector v = chnl_shape.getVertex(i);
+  		//println(i);
+  		v.x += random(-1,1);
+  		v.y += random(-1,1);
+  		chnl_shape.setVertex(i,v.x,v.y);
+		}
+*/
+// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
+	for (int i = 0; i < chnl_shape.getVertexCount() - 1; i++) {
+  		PVector v = chnl_shape.getVertex(i);
+  		v.x += random(-1,1);
+  		v.y += random(-1,1);
+  		chnl_shape.setVertex(i,v.x,v.y);
+		}
+	chnl_shape.setVertex(3, mouseX, mouseY);
+	}
+
+
+
+///////////////
+} //// END OF THE LINE
+///////////////
 
 
 

@@ -76,12 +76,13 @@ int pageNum = 0;
 
 
 // Create 1 channel
-Channel[] chnl = new Channel[5];
+Channel[] chnl = new Channel[6];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
 Channel chnl_4_has_controls;
 Channel chnl_5_vertex1;
+Channel chnl_6_shape;
 
 
 
@@ -118,9 +119,10 @@ void setup() {
   	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls");
   	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1");
 
-  	/////////////////////
-  	//   TEST OVERLOADED OBJECT WITH PVECTOR for vertex 1
 
+  	/////////////////////
+  	//   TEST OVERLOADED OBJECT WITH PVECTOR for PShape
+  	chnl[5] = chnl_6_shape = new Channel(" chnl_6_chnl_shape", 1 );
 
   	//    END CREATE CHANNELS
   	////////////////////////////////////////////////
@@ -132,8 +134,12 @@ void draw() {
 	//   CREATE FEEDBACK FROM CHANNEL
 	//         by pass Channel object to the feedback channel /////
 	            /////////////////////////////////////////////////////
-	chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
+	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
+
+
+	chnl_6_shape.drawChannelShape();
+	chnl_6_shape.updateChannelShapeVertices();
 
 
 
