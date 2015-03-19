@@ -108,6 +108,18 @@ void updateControlsFromKeyboard() {
   } else if (currentKey == 'y') {
     chnl_4_has_controls.changeSourceImage("emblems");
   }
+  //select source for chnl 4
+  else if (currentKey == 'u') {
+    chnl_6_shape.changeSourceImage("journals");
+  } else if (currentKey == 'i') {
+    chnl_6_shape.changeSourceImage("emblems");
+  }
+  //select source for chnl 4
+  else if (currentKey == 'o') {
+    chnl_3.changeSourceImage("journals");
+  } else if (currentKey == 'p') {
+    chnl_3.changeSourceImage("emblems");
+  }
   //     END SELECT NEW SOURCE IMAGE
   ////////////////////////////////////////////////
 }

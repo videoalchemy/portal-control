@@ -94,7 +94,7 @@ class Channel {
     	
     	chnl_shape.vertex(mouseX, mouseY, 0, 0);
         chnl_shape.vertex(randomVertexX, 0, 1,0);
-  		chnl_shape.vertex(width-mouseX, height-mouseY, 1, 1);
+  		chnl_shape.vertex(width-mouseX*.5, height-mouseY*.5, 1, 1);
   		chnl_shape.vertex(randomVertexX, randomVertexY, 0, 1);
     	chnl_shape.endShape(CLOSE);
   		
@@ -107,11 +107,13 @@ class Channel {
 	////////////////////////////
 	//  Test drawing shape
   void drawChannelShape() {
-  		background(102);
+  		//background(102);
+  		pushMatrix();
   		translate(width/2, height/2);
   		float zoom = map(mouseX, 0, width, 0.1, 4.5);
   		scale(zoom);
   		shape(chnl_shape, -140, -140);
+  		popMatrix();
 	}
 
 
@@ -187,11 +189,29 @@ class Channel {
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
 		
+
+		/////////
+		// Introduce the basePlateImage
 		image(chnl.output(), 0, 0, width, height);
+
+
+		/*		
+		/////////////////////////////
+		// INTRODUCING THE PSHAPE
+		pushMatrix();
+  		translate(width/2, height/2);
+  		float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		scale(zoom);
+  		shape(chnl_shape, -140, -140);
+  		popMatrix();
+  		//////////////////////////////
+		*/
+	
 
 		/////////////////////////
 		//  GENERATE FEEDBACK
-		
+
+
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
 
@@ -199,7 +219,7 @@ class Channel {
 		//  ---------APPLYING TEXTURE MAPS---------------
 		
 ////////REPLACE WITH PShape object
-
+		
 		///////////////
 		// THIS TEXTURE MAP currently employs 'immediate drawing' which is WAY slower
 		//  START TEXTURE MAP
@@ -207,10 +227,10 @@ class Channel {
   		beginShape();
    		textureMode(NORMAL);
   		texture(chnl_feedback);
-        vertex(mouseX, mouseY, 0, 0);
-        vertex(width, 0, 1,0);
-  		vertex(width-mouseX, height-mouseY, 1, 1);
-  		vertex(chnl.vertexX, height, 0, 1);
+        vertex(mouseX*1.5, mouseY*1.5, 0, 0);
+        vertex(randomVertexX, 0, 1,0);
+  		vertex(width-mouseX*1.5, height-mouseY*1.5, 1, 1);
+  		vertex(chnl.vertexX, height-randomVertexY, 0, 1);
   		textureMode(IMAGE);
   		endShape(CLOSE);
   		imageMode(CORNER);
@@ -220,7 +240,24 @@ class Channel {
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
 
+  		chnl_shape.beginShape();
+  		chnl_shape.texture(chnl_feedback);
+  		chnl_shape.endShape(CLOSE);
+  		shape(chnl_shape);
 
+
+  		/*
+		pushMatrix();
+  		translate(width/2, height/2);
+  		float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		scale(zoom);
+  		chnl_shape.beginShape();
+  		chnl_shape.texture(chnl_feedback);
+  		chnl_shape.endShape(CLOSE);
+  		shape(chnl_shape, -140, -140);
+  		popMatrix();
+  		//shape(chnl_shape, -140, -140);
+		*/
   		
   		////////////////////////
   		//
@@ -288,7 +325,7 @@ class Channel {
 
 
 /////////////////////////////////////////////////////////
-//////
+//////      TESTING SHAPE VERTICES UPDATE
 	void updateChannelShapeVertices() {
 
 			//   Manipulating the Vertices of a PShape in Real-Time
@@ -302,16 +339,7 @@ class Channel {
   		PVector v = chnl_shape.getVertex(i);
 		}
 
-			//You could then move that vertex by manipulating the PVector and setting new values with setVertex().
-/* SHIFFMANS EXAMPLE
-	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
-  		PVector v = chnl_shape.getVertex(i);
-  		//println(i);
-  		v.x += random(-1,1);
-  		v.y += random(-1,1);
-  		chnl_shape.setVertex(i,v.x,v.y);
-		}
-*/
+
 // REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
 	for (int i = 0; i < chnl_shape.getVertexCount() - 1; i++) {
   		PVector v = chnl_shape.getVertex(i);
@@ -321,6 +349,7 @@ class Channel {
 		}
 	chnl_shape.setVertex(3, mouseX, mouseY);
 	}
+///////////////////////////////////////////////////////////
 
 
 

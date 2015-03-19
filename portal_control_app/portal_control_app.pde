@@ -115,9 +115,9 @@ void setup() {
     //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
     chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals");
 	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems");
-	chnl[2] = chnl_3 = new Channel("  chnl_3");
-  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls");
-  	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1");
+	chnl[2] = chnl_3 = new Channel("  chnl_3", 1);
+  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", 1);
+  	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1", 1);
 
 
   	/////////////////////
@@ -137,9 +137,15 @@ void draw() {
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
+	//////////////////////////////////////////////////////////
+	//  TELL CHANNELS TO CREATE FEEDBACK FROM EACH OTHER's OUTPUT
+	//chnl_3.createFeedbackFrom(chnl_6_shape);
+	chnl_6_shape.createFeedbackFrom(chnl_1_journals);
 
-	chnl_6_shape.drawChannelShape();
-	chnl_6_shape.updateChannelShapeVertices();
+	//chnl_4_has_controls.createFeedbackFrom(chnl_3);
+	chnl_5_vertex1.createFeedbackFrom(chnl_4_has_controls);
+	chnl_3.createFeedbackFrom(chnl_6_shape);
+	chnl_3.drawChannelShape();
 
 
 
@@ -153,6 +159,7 @@ void draw() {
 /////////////////////////////////////
 //      UPDATE TOOLS AND MONITORS	
 update_PortalTools();
+chnl_6_shape.updateChannelShapeVertices();
 /////////////////////////////////////
 }	
 
@@ -205,6 +212,7 @@ void showChannelMonitors(){
 			chnl_1_journals.monitor(MONITOR_SCALE, 0);
 			chnl_2_emblems.monitor(MONITOR_SCALE, .2);
 			chnl_3.monitor(MONITOR_SCALE, .4);
+			chnl_6_shape.monitor(MONITOR_SCALE, .6);
 	}
 }
 }

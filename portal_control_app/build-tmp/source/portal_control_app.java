@@ -131,9 +131,9 @@ public void setup() {
     //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
     chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals");
 	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems");
-	chnl[2] = chnl_3 = new Channel("  chnl_3");
-  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls");
-  	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1");
+	chnl[2] = chnl_3 = new Channel("  chnl_3", 1);
+  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", 1);
+  	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1", 1);
 
 
   	/////////////////////
@@ -153,9 +153,15 @@ public void draw() {
 	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
 	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
 
+	//////////////////////////////////////////////////////////
+	//  TELL CHANNELS TO CREATE FEEDBACK FROM EACH OTHER's OUTPUT
+	//chnl_3.createFeedbackFrom(chnl_6_shape);
+	chnl_6_shape.createFeedbackFrom(chnl_1_journals);
 
-	chnl_6_shape.drawChannelShape();
-	chnl_6_shape.updateChannelShapeVertices();
+	//chnl_4_has_controls.createFeedbackFrom(chnl_3);
+	chnl_5_vertex1.createFeedbackFrom(chnl_4_has_controls);
+	chnl_3.createFeedbackFrom(chnl_6_shape);
+	chnl_3.drawChannelShape();
 
 
 
@@ -169,6 +175,7 @@ public void draw() {
 /////////////////////////////////////
 //      UPDATE TOOLS AND MONITORS	
 update_PortalTools();
+chnl_6_shape.updateChannelShapeVertices();
 /////////////////////////////////////
 }	
 
@@ -221,6 +228,7 @@ public void showChannelMonitors(){
 			chnl_1_journals.monitor(MONITOR_SCALE, 0);
 			chnl_2_emblems.monitor(MONITOR_SCALE, .2f);
 			chnl_3.monitor(MONITOR_SCALE, .4f);
+			chnl_6_shape.monitor(MONITOR_SCALE, .6f);
 	}
 }
 }
@@ -379,7 +387,7 @@ class Channel {
     	
     	chnl_shape.vertex(mouseX, mouseY, 0, 0);
         chnl_shape.vertex(randomVertexX, 0, 1,0);
-  		chnl_shape.vertex(width-mouseX, height-mouseY, 1, 1);
+  		chnl_shape.vertex(width-mouseX*.5f, height-mouseY*.5f, 1, 1);
   		chnl_shape.vertex(randomVertexX, randomVertexY, 0, 1);
     	chnl_shape.endShape(CLOSE);
   		
@@ -392,11 +400,13 @@ class Channel {
 	////////////////////////////
 	//  Test drawing shape
   public void drawChannelShape() {
-  		background(102);
+  		//background(102);
+  		pushMatrix();
   		translate(width/2, height/2);
   		float zoom = map(mouseX, 0, width, 0.1f, 4.5f);
   		scale(zoom);
   		shape(chnl_shape, -140, -140);
+  		popMatrix();
 	}
 
 
@@ -472,11 +482,29 @@ class Channel {
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
 		
+
+		/////////
+		// Introduce the basePlateImage
 		image(chnl.output(), 0, 0, width, height);
+
+
+		/*		
+		/////////////////////////////
+		// INTRODUCING THE PSHAPE
+		pushMatrix();
+  		translate(width/2, height/2);
+  		float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		scale(zoom);
+  		shape(chnl_shape, -140, -140);
+  		popMatrix();
+  		//////////////////////////////
+		*/
+	
 
 		/////////////////////////
 		//  GENERATE FEEDBACK
-		
+
+
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
 
@@ -484,7 +512,7 @@ class Channel {
 		//  ---------APPLYING TEXTURE MAPS---------------
 		
 ////////REPLACE WITH PShape object
-
+		
 		///////////////
 		// THIS TEXTURE MAP currently employs 'immediate drawing' which is WAY slower
 		//  START TEXTURE MAP
@@ -492,10 +520,10 @@ class Channel {
   		beginShape();
    		textureMode(NORMAL);
   		texture(chnl_feedback);
-        vertex(mouseX, mouseY, 0, 0);
-        vertex(width, 0, 1,0);
-  		vertex(width-mouseX, height-mouseY, 1, 1);
-  		vertex(chnl.vertexX, height, 0, 1);
+        vertex(mouseX*1.5f, mouseY*1.5f, 0, 0);
+        vertex(randomVertexX, 0, 1,0);
+  		vertex(width-mouseX*1.5f, height-mouseY*1.5f, 1, 1);
+  		vertex(chnl.vertexX, height-randomVertexY, 0, 1);
   		textureMode(IMAGE);
   		endShape(CLOSE);
   		imageMode(CORNER);
@@ -505,7 +533,24 @@ class Channel {
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
 
+  		chnl_shape.beginShape();
+  		chnl_shape.texture(chnl_feedback);
+  		chnl_shape.endShape(CLOSE);
+  		shape(chnl_shape);
 
+
+  		/*
+		pushMatrix();
+  		translate(width/2, height/2);
+  		float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		scale(zoom);
+  		chnl_shape.beginShape();
+  		chnl_shape.texture(chnl_feedback);
+  		chnl_shape.endShape(CLOSE);
+  		shape(chnl_shape, -140, -140);
+  		popMatrix();
+  		//shape(chnl_shape, -140, -140);
+		*/
   		
   		////////////////////////
   		//
@@ -573,7 +618,7 @@ class Channel {
 
 
 /////////////////////////////////////////////////////////
-//////
+//////      TESTING SHAPE VERTICES UPDATE
 	public void updateChannelShapeVertices() {
 
 			//   Manipulating the Vertices of a PShape in Real-Time
@@ -587,16 +632,7 @@ class Channel {
   		PVector v = chnl_shape.getVertex(i);
 		}
 
-			//You could then move that vertex by manipulating the PVector and setting new values with setVertex().
-/* SHIFFMANS EXAMPLE
-	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
-  		PVector v = chnl_shape.getVertex(i);
-  		//println(i);
-  		v.x += random(-1,1);
-  		v.y += random(-1,1);
-  		chnl_shape.setVertex(i,v.x,v.y);
-		}
-*/
+
 // REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
 	for (int i = 0; i < chnl_shape.getVertexCount() - 1; i++) {
   		PVector v = chnl_shape.getVertex(i);
@@ -606,6 +642,7 @@ class Channel {
 		}
 	chnl_shape.setVertex(3, mouseX, mouseY);
 	}
+///////////////////////////////////////////////////////////
 
 
 
@@ -861,6 +898,18 @@ public void updateControlsFromKeyboard() {
     chnl_4_has_controls.changeSourceImage("journals");
   } else if (currentKey == 'y') {
     chnl_4_has_controls.changeSourceImage("emblems");
+  }
+  //select source for chnl 4
+  else if (currentKey == 'u') {
+    chnl_6_shape.changeSourceImage("journals");
+  } else if (currentKey == 'i') {
+    chnl_6_shape.changeSourceImage("emblems");
+  }
+  //select source for chnl 4
+  else if (currentKey == 'o') {
+    chnl_3.changeSourceImage("journals");
+  } else if (currentKey == 'p') {
+    chnl_3.changeSourceImage("emblems");
   }
   //     END SELECT NEW SOURCE IMAGE
   ////////////////////////////////////////////////
