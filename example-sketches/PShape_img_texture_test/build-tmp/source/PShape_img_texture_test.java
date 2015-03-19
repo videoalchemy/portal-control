@@ -20,7 +20,7 @@ PImage testImg;
 PImage buffer;
 
 PGraphics pg;
-
+PGraphics bufferGraphics;
 
 int screenScale = 3;
 
@@ -29,7 +29,7 @@ public void setup() {
   pg = createGraphics(40*screenScale, 40*screenScale);
   buffer = createImage(width, height, ARGB);
   testImg = loadImage("../../images/angels/angel000.png");
-
+  bufferGraphics = createGraphics(width,height);
 
   // First create the shape
   star = createShape();
@@ -42,10 +42,10 @@ public void setup() {
   //star.stroke(255);
   star.strokeWeight(2);
   // Here, we are hardcoding a series of vertices
-  star.vertex(100, 100,0,0);
+  star.vertex(0, 0,0,0);
   star.vertex(200, 100,1,0);
   star.vertex(200, 200,1,1);
-  star.vertex(100, 200,0,1);
+  star.vertex(0,700,0,1);
 
   /*
   star.vertex(29, 40);
@@ -59,17 +59,17 @@ public void setup() {
   star.endShape(CLOSE);
 }
 
-
 public void draw() {
   background(51);
   
-  pushMatrix();
-  image(testImg, mouseX, mouseY,51*screenScale, 30);
-  popMatrix();
-
-  
   translate(mouseX, mouseY);
-  shape(star);
+  bufferGraphics.beginDraw();
+  
+  bufferGraphics.shape(star);
+
+  bufferGraphics.endDraw();
+
+  image(bufferGraphics, 0,0, width,height);
 
 
 }

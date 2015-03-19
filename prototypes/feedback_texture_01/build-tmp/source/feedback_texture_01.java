@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class rota_feedback_cam extends PApplet {
+public class feedback_texture_01 extends PApplet {
 
 
 
@@ -114,7 +114,7 @@ public void captureEvent(Capture cam){
   cam.read();
 }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "rota_feedback_cam" };
+    String[] appletArgs = new String[] { "feedback_texture_01" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

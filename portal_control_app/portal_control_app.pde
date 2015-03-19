@@ -25,6 +25,12 @@ String version = "v0.6.0_dev";
 //  GLOBALS FOR DRAWING 
 //
 
+/*
+boolean sketchFullScreen() {
+  return true;
+}
+*/
+
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
 boolean PRELOAD_IMAGES 	= true;
