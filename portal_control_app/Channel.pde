@@ -4,13 +4,18 @@ class Channel {
 
 ////////////////////////////////////////////////
 ///// PShape for the texture mapped chnl_output;
+	PShape chnl_plate;
+	
 	PShape chnl_shape;					// Channels are textured PShapes
 		PVector shape_center_location;
 
-		PVector vertex_1;
+		PVector vertex_1_location;
 		PVector vertex_2;
 		PVector vertex_3;
 		PVector vertex_4;
+		PVector vertexOffSet;
+		PVector move;
+
 		float 	vertexX; 				// part of the initial test.  leaving it in so as to not break something
 
 		float randomVertexX;			// provide some random starting point
@@ -56,27 +61,23 @@ class Channel {
 	float monitorY;				// y cordinate of the channel's monitor image
 
 	
+	////////////////////////////
+	//  NOISE
+	float xoff = 0.0;
+	float xincrement = 0.01; 
 	
-
-
-	////////////////////////////////////////////////
-	//      CHANNELS ARE SHAPES TEXTURED BY PIMAGES
-	Channel(String _name)  {
-		name      		= _name;
-		sourceImage 	= createImage(width, height, ARGB);
-		chnl_feedback 	= createImage(width, height, ARGB);
-		chnl_output 	= createImage(width, height, ARGB);
-
+	////////////////////////////
 	
-	}
-
 
 	/////////////////////////////////////////////
 	//   CONSTRUCTOR FOR THE SHAPE VERSION
-	Channel(String _name, int extraArgumentToDistinguishShapes) {
+	Channel(String _name, PImage _preloadImage, int extraArgumentToDistinguishShapes) {
 		name      		= _name;
+		
+		// PRELOAD THE IMAGE
+		chnl_feedback		= _preloadImage;
+		//chnl_feedback 	= loadImage("../images/journal-pages/044.png");
 		sourceImage 	= createImage(width, height, ARGB);
-		chnl_feedback 	= loadImage("../images/journal-pages/044.png");
 		chnl_output 	= createImage(width, height, ARGB);
 
 		randomVertexX = random(0, width);
@@ -85,6 +86,22 @@ class Channel {
 		// these belong in draw
 		//imageMode(CENTER);
 
+		PVector vertex_1_location = new PVector(random(100), random(100));
+	//	PVector vertex_2;
+	//	PVector vertex_3;
+	//	PVector vertex_4;
+		PVector vertexOffSet = new PVector(random(100), random(100),0);   //random value to use as noise scale	
+		PVector move = new PVector();	
+
+		/*
+		noff = new PVector(random(1000), random(1000));
+    	velocity = new PVector();
+		*/
+
+
+
+
+
 		// Channels are textured PShapes
 		chnl_shape = createShape();
    	    chnl_shape.beginShape();
@@ -92,12 +109,24 @@ class Channel {
     	chnl_shape.noStroke();
     	chnl_shape.texture(chnl_feedback);
     	
-    	chnl_shape.vertex(mouseX, mouseY, 0, 0);
-        chnl_shape.vertex(randomVertexX, 0, 1,0);
-  		chnl_shape.vertex(width-mouseX*.5, height-mouseY*.5, 1, 1);
-  		chnl_shape.vertex(randomVertexX, randomVertexY, 0, 1);
+    	chnl_shape.vertex(100, 100, 0, 0);
+        chnl_shape.vertex(width-100, 100, 1,0);
+  		chnl_shape.vertex(width-100, height-100, 1, 1);
+  		chnl_shape.vertex(100, height-100, 0, 1);
     	chnl_shape.endShape(CLOSE);
   		
+
+  		chnl_plate = createShape();
+   	    chnl_plate.beginShape();
+   	    chnl_plate.textureMode(NORMAL);
+    	chnl_plate.noStroke();
+    	chnl_plate.texture(chnl_output);
+    	
+    	chnl_plate.vertex(0,0, 0, 0);
+        chnl_plate.vertex(width, 0, 1,0);
+  		chnl_plate.vertex(width, height, 1, 1);
+  		chnl_plate.vertex(0, height, 0, 1);
+    	chnl_plate.endShape(CLOSE);
   		// these belong in draw
   		//textureMode(IMAGE);
   		//imageMode(CORNER);
@@ -109,10 +138,12 @@ class Channel {
   void drawChannelShape() {
   		//background(102);
   		pushMatrix();
-  		translate(width/2, height/2);
-  		float zoom = map(mouseX, 0, width, 0.1, 4.5);
-  		scale(zoom);
-  		shape(chnl_shape, -140, -140);
+  		translate(0,0);
+  		translate(mouseX, mouseY);
+  		//float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		//scale(zoom);
+  		shape(chnl_shape);
+  		//shape(chnl_shape, -140, 140);
   		popMatrix();
 	}
 
@@ -133,45 +164,6 @@ class Channel {
 
 
 	
-	
-	
-
-	
-
-
-
-
-
-
-
-	////////////////////////////////////////////
-	//    SMALL MONITOR SCREENS - so we can see what we're doing
-	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
-	void monitor(PImage monitor, float monitorScale, float monitorPosition) {
-		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
-		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
-	}
-
-	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
-	void monitor(float monitorScale, float monitorPosition) {
-		image(this.output(), width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
-		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
-	}
-	//      END MONITORS
-	/////////////////////////////////////////////
-
-	
-	/////////////////////////////////////////
-	//   CHANNELS CAN DISPLAY THEMSEVES 
-	void display() {
-		image(this.output(), 0, 0, width, height);
-	}
-
-	void display(PImage display) {
-		image(display, 0, 0, width, height);
-	}
-
-	
 	/////////////////////////////
 	//    FOR USE WITH SourceChannels.  These should really have their own class
 	PImage getSourceImage(){
@@ -185,15 +177,15 @@ class Channel {
 
 
 	// Pass a Channel Class and return a feedback loop
-	void createFeedbackFrom(Channel chnl) {
+	void createFeedbackFrom(Channel importedChannel) {
 		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
 		//chnl_output = this.output();
 		
 
 		/////////
 		// Introduce the basePlateImage
-		image(chnl.output(), 0, 0, width, height);
-
+		//image(chnl.output(), 0, 0, width, height);
+		
 
 		/*		
 		/////////////////////////////
@@ -217,16 +209,37 @@ class Channel {
 
 		/////////////////////////////////
 		//  ---------APPLYING TEXTURE MAPS---------------
-		
-////////REPLACE WITH PShape object
-		
+				
 		///////////////
 		// THIS TEXTURE MAP currently employs 'immediate drawing' which is WAY slower
-		//  START TEXTURE MAP
-  		imageMode(CENTER);
-  		beginShape();
-   		textureMode(NORMAL);
-  		texture(chnl_feedback);
+		// START TEXTURE MAP
+  		
+  		
+  		chnl_plate.beginShape();
+  		chnl_plate.texture(importedChannel.output());
+		chnl_plate.endShape(CLOSE);
+		shape(chnl_plate);
+		
+
+		/*
+		//  DISPLAY THIS CHANNEL'S SHAPE OF FEEDBACK
+  		importedChannel.chnl_shape.beginShape();
+  		importedChannel.chnl_shape.texture(importedChannel.chnl_feedback);
+  		importedChannel.chnl_shape.endShape(CLOSE);
+  		shape(importedChannel.chnl_shape);
+		*/
+
+
+		/*
+		vertex(0,0,0,0);
+		vertex(width,0,1,0);
+		vertex(width,height,1,1);
+		vertex(0, height, 0,1);
+		endShape(CLOSE);
+  		imageMode(CORNER);
+		//
+		
+		/*
         vertex(mouseX*1.5, mouseY*1.5, 0, 0);
         vertex(randomVertexX, 0, 1,0);
   		vertex(width-mouseX*1.5, height-mouseY*1.5, 1, 1);
@@ -234,12 +247,17 @@ class Channel {
   		textureMode(IMAGE);
   		endShape(CLOSE);
   		imageMode(CORNER);
+  		*/
   		//   END TEXTURE MAP of IMMEDIATE DRAW METHOD
   		//       - far more efficient to create Vertex Object Buffers 
   		//         by including PShape in the Class definition, then dot syntaxing into the shape
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
+		
 
+
+  		//////////////////////////////
+  		//  DISPLAY THIS CHANNEL'S SHAPE OF FEEDBACK
   		chnl_shape.beginShape();
   		chnl_shape.texture(chnl_feedback);
   		chnl_shape.endShape(CLOSE);
@@ -272,6 +290,117 @@ class Channel {
 		chnl_output = chnl_feedback;		
 	}
 
+/////////////////////////////////////////////////////////
+//////      UPDATE VERTICE CONTROL 
+	void updateChannelShapeVertices() {
+			//   Manipulating the Vertices of a PShape in Real-Time
+			//   PShape allows you to dynamically access and alter the vertices through the methods getVertex() and setVertex().
+			//   To iterate over the vertices of a PShape, you can loop from 0 to the total number of vertices (getVertexCount()). 
+			//   The vertices can be retrieved as PVector objects with getVertexCount().
+/*
+	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
+  		PVector v = chnl_shape.getVertex(i);
+		}
+*/
+
+
+// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
+	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
+  		PVector v = chnl_shape.getVertex(i);
+  		v.x += random(-1,1);
+  		v.y += random(-1,1);
+  		chnl_shape.setVertex(i,v.x,v.y);
+		}
+	//chnl_shape.setVertex(3, mouseX, mouseY);
+}
+
+/*
+////////////////////////////////
+/////////ADDED NOISE
+// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
+	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
+  		PVector v = chnl_shape.getVertex(i);
+  		
+		move.x = map(noise(vertexOffSet.x), 0, 1, -3, 3);
+  		move.y = map(noise(vertexOffSet.y), 0, 1, -3, 3);  		
+  		v.add(move);
+  		chnl_shape.setVertex(i,v.x,v.y);
+		}
+	vertexOffSet.add(0.01, 0.01,0);
+	//chnl_shape.setVertex(3, mouseX, mouseY);
+	}
+	//////////////////
+
+	 // Get a noise value based on xoff and scale it according to the window's width
+  float n = noise(xoff)*width;
+  
+  // With each cycle, increment xoff
+  xoff += xincrement;
+  */
+
+
+/////////////////////////////////////
+	/*
+	velocity.x = map(noise(noff.x), 0, 1, -1, 1);
+    velocity.y = map(noise(noff.y), 0, 1, -1, 1);
+    velocity.mult(5);
+
+    noff.add(0.01, 0.01);
+    */
+///////////////////////////////////////////////////////////
+
+
+	///////////////////////////////////////
+	//    SOURCE CONTENT PROVIDERS
+	void changeSourceImage(String sourceName) {
+    	if (sourceName == "journals") {
+    		int journalPage = int(random(numOfJournalPages-1));
+    		sourceImage 	= journal[journalPage];
+    		// Make the the new source image the OUTPUT for this source provider
+    		chnl_output = sourceImage;
+    	} else if (sourceName == "emblems") {
+    		int anEmblem 	= int(random(numOfEmblems-1));
+    		sourceImage 	=  emblem[anEmblem];
+    		// Set this channel's output to the source image if we find ourselves asking for a source image from this object.
+    		// If we're pulling a source image, that must mean the output for this channel is a sourceImage and NOT a feedback loop
+    		chnl_output = sourceImage;	
+    	}
+	}
+	//     END SOURCE CONTENT SELECTION
+	/////////////////////////////////////////////////
+
+	////////////////////////////////////////////
+	//    SMALL MONITOR SCREENS - so we can see what we're doing
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	void monitor(PImage monitor, float monitorScale, float monitorPosition) {
+		image(monitor, width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
+	}
+
+	// MONITORS THE CHANNELS OWN OUTPUT
+	// use this to view a channel's unaltered source Image input on a small screen for the mixer Monitor view	
+	void monitor(float monitorScale, float monitorPosition) {
+		image(this.output(), width*monitorPosition, height-height*monitorScale, width*monitorScale, height*monitorScale);
+		//image(monitor, 0, 0, width/monitorScale, height/monitorScale);
+	}
+	//      END MONITORS
+	/////////////////////////////////////////////
+
+	
+	/////////////////////////////////////////
+	//   CHANNELS CAN DISPLAY THEMSEVES 
+	void display() {
+		image(this.output(), 0, 0, width, height);
+	}
+
+	void display(PImage display) {
+		image(display, 0, 0, width, height);
+	}
+
+///////////////
+} //// END OF THE LINE
+///////////////
+
 /*
 	///////////////////////////////////////////////////////////////////////////
 	/////////////      START TRANSOMATIONS
@@ -299,65 +428,6 @@ class Channel {
 	/////////////      END TRANSOMATIONS
 	///////////////////////////////////////////////////////////////////////////
 */
-
-
-
-
-	///////////////////////////////////////
-	//    SOURCE CONTENT PROVIDERS
-	void changeSourceImage(String sourceName) {
-    	if (sourceName == "journals") {
-    		int journalPage = int(random(numOfJournalPages-1));
-    		sourceImage 	= journal[journalPage];
-    		// Make the the new source image the OUTPUT for this source provider
-    		chnl_output = sourceImage;
-    	} else if (sourceName == "emblems") {
-    		int anEmblem 	= int(random(numOfEmblems-1));
-    		sourceImage 	=  emblem[anEmblem];
-    		// Set this channel's output to the source image if we find ourselves asking for a source image from this object.
-    		// If we're pulling a source image, that must mean the output for this channel is a sourceImage and NOT a feedback loop
-    		chnl_output = sourceImage;	
-    	}
-	}
-	//     END SOURCE CONTENT SELECTION
-	/////////////////////////////////////////////////
-
-
-
-/////////////////////////////////////////////////////////
-//////      TESTING SHAPE VERTICES UPDATE
-	void updateChannelShapeVertices() {
-
-			//   Manipulating the Vertices of a PShape in Real-Time
-
-			//   PShape allows you to dynamically access and alter the vertices through the methods getVertex() and setVertex().
-
-			//   To iterate over the vertices of a PShape, you can loop from 0 to the total number of vertices (getVertexCount()). 
-			//   The vertices can be retrieved as PVector objects with getVertexCount().
-
-	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
-  		PVector v = chnl_shape.getVertex(i);
-		}
-
-
-// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
-	for (int i = 0; i < chnl_shape.getVertexCount() - 1; i++) {
-  		PVector v = chnl_shape.getVertex(i);
-  		v.x += random(-1,1);
-  		v.y += random(-1,1);
-  		chnl_shape.setVertex(i,v.x,v.y);
-		}
-	chnl_shape.setVertex(3, mouseX, mouseY);
-	}
-///////////////////////////////////////////////////////////
-
-
-
-///////////////
-} //// END OF THE LINE
-///////////////
-
-
 
 ///////////////////////////
 // OUT OF COMMISION 

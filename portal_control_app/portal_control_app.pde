@@ -50,7 +50,7 @@ int SCREEN_HEIGHT 		= 768;
 float VIDEO_SCALE 		= SCREEN_WIDTH/640;      // 1.6
 
 // FACTOR by which the dimensions of source images (640)must be multiplied to match chnl_MONITOR size (SCREEN_WIDTH/5)
-float MONITOR_SCALE 	=  (SCREEN_WIDTH/640) * (.2);		// 20% of full screen should be 5 monitors		// 1.6 * .2 (increase to SCREEN_WIDTH, then reduce by 1/5 the screen size
+float MONITOR_SCALE 	=  (SCREEN_WIDTH/640) * (.16);		// (.2 fits 5 screen)
 
 // FACTOR by which scale +/- at each iteration.  not sure if this will be useful  given touchOSc controls
 float SCALE_FACTOR 		= 1.5;
@@ -75,14 +75,16 @@ PImage[] journal = new PImage[numOfJournalPages];
 int pageNum = 0;
 
 
+//PRELOAD 
+
 // Create 1 channel
 Channel[] chnl = new Channel[6];
 Channel chnl_1_journals;
 Channel chnl_2_emblems;
 Channel chnl_3;
-Channel chnl_4_has_controls;
-Channel chnl_5_vertex1;
-Channel chnl_6_shape;
+Channel chnl_4;
+Channel chnl_5_kinect;
+Channel chnl_6_trackShape;
 
 
 
@@ -113,16 +115,12 @@ void setup() {
     //    CREATE CHANNELS
     //   TEST THE UNDERLOAD
     //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
-    chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals");
-	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems");
-	chnl[2] = chnl_3 = new Channel("  chnl_3", 1);
-  	chnl[3] = chnl_4_has_controls = new Channel("  chnl_4_has_controls", 1);
-  	chnl[4] = chnl_5_vertex1 = new Channel("  chnl_5_vertex1", 1);
-
-
-  	/////////////////////
-  	//   TEST OVERLOADED OBJECT WITH PVECTOR for PShape
-  	chnl[5] = chnl_6_shape = new Channel(" chnl_6_chnl_shape", 1 );
+    chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[8], 1);
+	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[5], 1);
+	chnl[2] = chnl_3 = new Channel("  chnl_3",  journal[5], 1);
+  	chnl[3] = chnl_4 = new Channel("  chnl_4", emblem[3],	1);
+  	chnl[4] = chnl_5_kinect = new Channel("  chnl_5_kinect", journal[3], 1);
+	chnl[5] = chnl_6_trackShape = new Channel(" chnl_6_chnl_shape", emblem[2], 1 );
 
   	//    END CREATE CHANNELS
   	////////////////////////////////////////////////
@@ -130,25 +128,44 @@ void setup() {
 
 void draw() {
 	
-	////////////////////////////////////////////////////////////////
-	//   CREATE FEEDBACK FROM CHANNEL
-	//         by pass Channel object to the feedback channel /////
-	            /////////////////////////////////////////////////////
-	//chnl_3.createFeedbackFrom(chnl_2_emblems); // ask for object
-	//chnl_3.createFeedbackFrom(chnl_4_has_controls); // ask for object
-
-	//////////////////////////////////////////////////////////
-	//  TELL CHANNELS TO CREATE FEEDBACK FROM EACH OTHER's OUTPUT
-	//chnl_3.createFeedbackFrom(chnl_6_shape);
-	chnl_6_shape.createFeedbackFrom(chnl_1_journals);
-
-	//chnl_4_has_controls.createFeedbackFrom(chnl_3);
-	chnl_5_vertex1.createFeedbackFrom(chnl_4_has_controls);
-	chnl_3.createFeedbackFrom(chnl_6_shape);
-	chnl_3.drawChannelShape();
+// Create alpha blended background
+// fill(0, 10);
+// rect(0,0,width,height);
+/////////////////////////
 
 
+///////////////////////////////////////////////////////
+//  SEND IN THE SOURCES
 
+
+	chnl_3.createFeedbackFrom(chnl_1_journals);
+	//chnl_4.createFeedbackFrom(chnl_2_emblems);
+	
+
+	//chnl_3.drawChannelShape();
+	
+
+	
+//////////////////////////////////
+
+///////////////////////////////////////////////////////
+//  SEND CHANNEL TO PERLIN NOISE ITS VERTICES
+// 
+// -->
+// -->
+// -->
+
+
+///////////////////////////////////////////////////////
+//  CALL IN THE KINECT IMAGES
+// ---->
+// ---->
+
+
+/////////////////////////
+//   BLEND THE KINECT IMAGES TO OUTPUT
+// ---->
+// ---->
 
 
 
@@ -159,12 +176,36 @@ void draw() {
 /////////////////////////////////////
 //      UPDATE TOOLS AND MONITORS	
 update_PortalTools();
-chnl_6_shape.updateChannelShapeVertices();
+
 /////////////////////////////////////
+
+////////////////////////////////////
+///     UPDATE CHANNEL SHAPE VERTICES
+updateChannelShapeVertices();
+
+
+
+
 }	
 
 
-///////
+
+////////////////////////////////////////
+// UPDATE VERTICES
+void updateChannelShapeVertices(){
+    chnl_3.updateChannelShapeVertices();
+    chnl_4.updateChannelShapeVertices();
+
+    //chnl_6_trackShape.updateChannelShapeVertices();
+
+}
+//  END UPDATE VETICIES
+////////////////////////////////////////
+
+
+
+////////////////////////////////////////
+//// UPDATE TOOLS
 // check_KeyboardControls_ChannelMonitors_ChannelDisplayOverrideSwitches
 void update_PortalTools(){
 	//    SWITCH BETWEEN CHANNEL DISPLAYS - for testing or in case you get lost
@@ -175,6 +216,10 @@ void update_PortalTools(){
 	// checks for button press
 	updateControlsFromKeyboard();
 }
+////  END UPDATE TOOLS
+/////////////////////////////////////////
+
+
 
 /////////////////////////////////////////////////////////////////
 //      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
@@ -212,7 +257,9 @@ void showChannelMonitors(){
 			chnl_1_journals.monitor(MONITOR_SCALE, 0);
 			chnl_2_emblems.monitor(MONITOR_SCALE, .2);
 			chnl_3.monitor(MONITOR_SCALE, .4);
-			chnl_6_shape.monitor(MONITOR_SCALE, .6);
+			chnl_4.monitor(MONITOR_SCALE, .6);
+			chnl_5_kinect.monitor(MONITOR_SCALE, .8);
+			//chnl_6_trackShape.monitor(MONITOR_SCALE, .6);
 	}
 }
 }

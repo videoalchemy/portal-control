@@ -102,24 +102,31 @@ void updateControlsFromKeyboard() {
   } else if (currentKey == 'r') {
     chnl_2_emblems.changeSourceImage("emblems");
   }
-  //select source for chnl 4
+  //select source for chnl 3
   else if (currentKey == 't') {
-    chnl_4_has_controls.changeSourceImage("journals");
+    chnl_3.changeSourceImage("journals");
   } else if (currentKey == 'y') {
-    chnl_4_has_controls.changeSourceImage("emblems");
+    chnl_3.changeSourceImage("emblems");
   }
   //select source for chnl 4
   else if (currentKey == 'u') {
-    chnl_6_shape.changeSourceImage("journals");
+    chnl_4.changeSourceImage("journals");
   } else if (currentKey == 'i') {
-    chnl_6_shape.changeSourceImage("emblems");
+    chnl_4.changeSourceImage("emblems");
   }
-  //select source for chnl 4
+  //select source for chnl 5
   else if (currentKey == 'o') {
-    chnl_3.changeSourceImage("journals");
+    chnl_5_kinect.changeSourceImage("journals");
   } else if (currentKey == 'p') {
-    chnl_3.changeSourceImage("emblems");
+    chnl_5_kinect.changeSourceImage("emblems");
   }
+  //select source for chnl 6
+  else if (currentKey == '[') {
+    chnl_6_trackShape.changeSourceImage("journals");
+  } else if (currentKey == ']') {
+    chnl_6_trackShape.changeSourceImage("emblems");
+  }
+  
   //     END SELECT NEW SOURCE IMAGE
   ////////////////////////////////////////////////
 }
