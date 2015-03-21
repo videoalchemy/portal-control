@@ -3,6 +3,11 @@ class Channel {
 	boolean changeSource;
 	String name;
 
+
+float growFactorAmount; // for increasing the size of the feedback layer
+
+//float theta;  //rotate
+
 ////////////////////////////////////////////////
 ///// PShape for the texture mapped chnl_output;
 	PShape chnl_plate;
@@ -68,6 +73,7 @@ class Channel {
 	//  NOISE
 	float xoff = 0.0;
 	float xincrement = 0.01; 
+	float growFactor = 0;
 	
 	////////////////////////////
 	
@@ -80,7 +86,7 @@ class Channel {
 		// PRELOAD THE IMAGE
 		chnl_feedback		= _preloadImage;
 		//chnl_feedback 	= loadImage("../images/journal-pages/044.png");
-		sourceImage 	= createImage(width, height, ARGB);
+		sourceImage 	= loadImage("../images/journal-pages/041.png");
 		chnl_output 	= createImage(width, height, ARGB);
 
 		randomVertexX = random(0, width);
@@ -101,6 +107,10 @@ class Channel {
     	velocity = new PVector();
 		*/
 
+
+		float growFactorAmount = random(2.5); // for increasing the size of the feedback layer
+
+		float theta = 0;  //rotate
 
 		// Shapes cordinates
 		shapeX = 0;
@@ -155,7 +165,7 @@ void updateChannelShapeLocation(float xPos, float yPos) {
   		//background(102);
   		pushMatrix();
   		translate(0,0);
-  		translate(mouseX, mouseY);
+  		//translate(mouseX, mouseY);
   		float zoom = map(mouseX, 0, width, 0.1, 4.5);
   		scale(zoom);
   		shape(chnl_shape);
@@ -217,7 +227,8 @@ void updateChannelShapeLocation(float xPos, float yPos) {
   		//////////////////////////////
 		*/
 
-		shape(this.chnl_shape);
+		//shape(importedChannel.chnl_shape);
+		//shape(this.chnl_shape);
 	
 
 		/////////////////////////
@@ -242,8 +253,13 @@ void updateChannelShapeLocation(float xPos, float yPos) {
 		shape(chnl_plate, mouseX, mouseY);
 	*/  		
   		pushMatrix();
+  		
   		translate(0,0);
   		translate(-width/2, -height/2);
+  		rotate(theta);
+
+  		scale(growFactor);
+  		shape(importedChannel.chnl_shape);
   		//translate(mouseX, mouseY);
   		chnl_plate.beginShape();
   		chnl_plate.texture(this.output());
@@ -284,7 +300,7 @@ void updateChannelShapeLocation(float xPos, float yPos) {
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
 		
-
+		//chnl_feedback = get(); 
 
   		//////////////////////////////
   		//  DISPLAY THIS CHANNEL'S SHAPE OF FEEDBACK
@@ -427,6 +443,7 @@ void updateChannelShapeLocation(float xPos, float yPos) {
 	void display(PImage display) {
 		image(display, 0, 0, width, height);
 	}
+
 
 ///////////////
 } //// END OF THE LINE

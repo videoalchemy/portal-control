@@ -80,6 +80,7 @@ PImage[] journal = new PImage[numOfJournalPages];
 int pageNum = 0;
 
 
+
 //PRELOAD 
 
 // Create 1 channel
@@ -357,6 +358,8 @@ void mousePressed() {
 	// test for randomly indexing into the array
 	//randomJournalPage();
 }
+
+
 void randomJournalPage(){
 	print("Switching from journal page "+pageNum);
 	pageNum = int(random(numOfJournalPages-1));

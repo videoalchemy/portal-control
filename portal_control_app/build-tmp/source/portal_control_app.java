@@ -99,6 +99,7 @@ PImage[] journal = new PImage[numOfJournalPages];
 int pageNum = 0;
 
 
+
 //PRELOAD 
 
 // Create 1 channel
@@ -376,6 +377,8 @@ public void mousePressed() {
 	// test for randomly indexing into the array
 	//randomJournalPage();
 }
+
+
 public void randomJournalPage(){
 	print("Switching from journal page "+pageNum);
 	pageNum = PApplet.parseInt(random(numOfJournalPages-1));
@@ -385,6 +388,11 @@ class Channel {
 
 	boolean changeSource;
 	String name;
+
+
+float growFactorAmount; // for increasing the size of the feedback layer
+
+//float theta;  //rotate
 
 ////////////////////////////////////////////////
 ///// PShape for the texture mapped chnl_output;
@@ -451,6 +459,7 @@ class Channel {
 	//  NOISE
 	float xoff = 0.0f;
 	float xincrement = 0.01f; 
+	float growFactor = 0;
 	
 	////////////////////////////
 	
@@ -463,7 +472,7 @@ class Channel {
 		// PRELOAD THE IMAGE
 		chnl_feedback		= _preloadImage;
 		//chnl_feedback 	= loadImage("../images/journal-pages/044.png");
-		sourceImage 	= createImage(width, height, ARGB);
+		sourceImage 	= loadImage("../images/journal-pages/041.png");
 		chnl_output 	= createImage(width, height, ARGB);
 
 		randomVertexX = random(0, width);
@@ -484,6 +493,10 @@ class Channel {
     	velocity = new PVector();
 		*/
 
+
+		float growFactorAmount = random(2.5f); // for increasing the size of the feedback layer
+
+		float theta = 0;  //rotate
 
 		// Shapes cordinates
 		shapeX = 0;
@@ -538,7 +551,7 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
   		//background(102);
   		pushMatrix();
   		translate(0,0);
-  		translate(mouseX, mouseY);
+  		//translate(mouseX, mouseY);
   		float zoom = map(mouseX, 0, width, 0.1f, 4.5f);
   		scale(zoom);
   		shape(chnl_shape);
@@ -600,7 +613,8 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
   		//////////////////////////////
 		*/
 
-		shape(this.chnl_shape);
+		//shape(importedChannel.chnl_shape);
+		//shape(this.chnl_shape);
 	
 
 		/////////////////////////
@@ -625,8 +639,13 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 		shape(chnl_plate, mouseX, mouseY);
 	*/  		
   		pushMatrix();
+  		
   		translate(0,0);
   		translate(-width/2, -height/2);
+  		rotate(theta);
+
+  		scale(growFactor);
+  		shape(importedChannel.chnl_shape);
   		//translate(mouseX, mouseY);
   		chnl_plate.beginShape();
   		chnl_plate.texture(this.output());
@@ -667,7 +686,7 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
   		//          using getVertex and setVertex
   		//////////////////////////////////////////////////////
 		
-
+		//chnl_feedback = get(); 
 
   		//////////////////////////////
   		//  DISPLAY THIS CHANNEL'S SHAPE OF FEEDBACK
@@ -810,6 +829,7 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 	public void display(PImage display) {
 		image(display, 0, 0, width, height);
 	}
+
 
 ///////////////
 } //// END OF THE LINE
@@ -996,6 +1016,33 @@ int currentKeyCode = -1;
 public void keyPressed() { 
   currentKeyCode = keyCode; 
   currentKey = key;
+
+  if (key == CODED) {
+
+    if (keyCode == LEFT) {
+      
+       for (int i = 0; i < chnl.length; i++) {
+           chnl[i].theta += .01f;
+        }
+    } else if (keyCode == RIGHT) {
+         for (int i = 0; i < chnl.length; i++) {
+         chnl[i].theta -= .01f;
+       }
+    } else if (keyCode == UP) {
+         for (int i = 0; i < chnl.length; i++) {
+          chnl[i].growFactor += .03f;
+          println(chnl[i].growFactor);
+      }
+
+    } else if (keyCode == DOWN) {
+       for (int i = 0; i < chnl.length; i++) {
+        chnl[i].growFactor -= .03f;
+        println(chnl[i].growFactor);
+      }
+    }
+
+
+
 //DEBUG: println("keyCode = "+keyCode+ " key = "+key);
 
 
@@ -1034,12 +1081,13 @@ public void keyPressed() {
       DISPLAY_CHANNEL = 0;
       break;
   }
-
 }
+}
+
 // Clear the current key when it goes up.
 public void keyReleased() {
-  currentKeyCode = -1;
-}
+    currentKeyCode = -1;
+  }
 //  END MOMENTARY SWITCH
 //////////////////////////////////////
 
@@ -1149,6 +1197,87 @@ public String saveScreen(String fileName) {
 //   END SCREEN SNAPS
 ////////////////////////////////////////////////////////////
 
+// Elie Zananiri
+// Depth thresholding example
+// http://www.silentlycrashing.net
+/*
+import org.openkinect.*;
+import org.openkinect.processing.*;
+
+Kinect kinect;
+int kWidth  = 640;
+int kHeight = 480;
+int kAngle  =  15;
+
+PImage depthImg;
+int minDepth =  60;
+int maxDepth = 860;
+
+void setup() {
+  size(kWidth, kHeight);
+
+  kinect = new Kinect(this);
+  kinect.start();
+  kinect.enableDepth(true);
+  kinect.tilt(kAngle);
+
+  depthImg = new PImage(kWidth, kHeight);
+}
+
+void draw() {
+  // draw the raw image
+  
+  kinect.getDepthImage();
+  //image(kinect.getDepthImage(), 0, 0);
+
+  // threshold the depth image
+  int[] rawDepth = kinect.getRawDepth();
+  for (int i=0; i < kWidth*kHeight; i++) {
+    if (rawDepth[i] >= minDepth && rawDepth[i] <= maxDepth) {
+      depthImg.pixels[i] = 0xFFFFFFFF;
+    } else {
+      depthImg.pixels[i] = 0;
+    }
+  }
+
+  // draw the thresholded image
+  depthImg.updatePixels();
+  image(depthImg, 0, 0);
+
+  fill(0);
+  text("TILT: " + kAngle, 10, 20);
+  text("THRESHOLD: [" + minDepth + ", " + maxDepth + "]", 10, 36);
+}
+
+void keyPressed() {
+  if (key == CODED) {
+    if (keyCode == UP) {
+      kAngle++;
+    } else if (keyCode == DOWN) {
+      kAngle--;
+    }
+    kAngle = constrain(kAngle, 0, 30);
+    kinect.tilt(kAngle);
+  }
+  
+  else if (key == 'a') {
+    minDepth = constrain(minDepth+10, 0, maxDepth);
+  } else if (key == 's') {
+    minDepth = constrain(minDepth-10, 0, maxDepth);
+  }
+  
+  else if (key == 'z') {
+    maxDepth = constrain(maxDepth+10, minDepth, 2047);
+  } else if (key =='x') {
+    maxDepth = constrain(maxDepth-10, minDepth, 2047);
+  }
+}
+
+void stop() {
+  kinect.quit();
+  super.stop();
+}
+*/
 
 // create function to recv and parse oscP5 messages
 public void oscEvent (OscMessage theOscMessage) {
@@ -1188,6 +1317,7 @@ public void oscEvent (OscMessage theOscMessage) {
     // update chnl_3
     //chnl_1_journals.updateChannelShapeLocation(xPos, yPos);
     chnl_3.updateChannelShapeLocation(xPos, yPos);
+    chnl_4.updateChannelShapeLocation(xPos, yPos);
         
 }
     
@@ -1203,7 +1333,9 @@ else	if(theOscMessage.checkAddrPattern("/3/multipush1/1/1")==true) {
 }
 
 else  if(theOscMessage.checkAddrPattern("/3/fader38")==true) {
-    rotate(1);
+    float rot = theOscMessage.get(0).floatValue();
+    float rotMap = map(rot, 0,1, -1,1);
+    rotate(rotMap);
 
 }
 

@@ -37,6 +37,7 @@ void oscEvent (OscMessage theOscMessage) {
     // update chnl_3
     //chnl_1_journals.updateChannelShapeLocation(xPos, yPos);
     chnl_3.updateChannelShapeLocation(xPos, yPos);
+    chnl_4.updateChannelShapeLocation(xPos, yPos);
         
 }
     
@@ -52,7 +53,9 @@ else	if(theOscMessage.checkAddrPattern("/3/multipush1/1/1")==true) {
 }
 
 else  if(theOscMessage.checkAddrPattern("/3/fader38")==true) {
-    rotate(1);
+    float rot = theOscMessage.get(0).floatValue();
+    float rotMap = map(rot, 0,1, -1,1);
+    rotate(rotMap);
 
 }
 

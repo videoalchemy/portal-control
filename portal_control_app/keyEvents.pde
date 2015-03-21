@@ -14,6 +14,33 @@ int currentKeyCode = -1;
 void keyPressed() { 
   currentKeyCode = keyCode; 
   currentKey = key;
+
+  if (key == CODED) {
+
+    if (keyCode == LEFT) {
+      
+       for (int i = 0; i < chnl.length; i++) {
+           chnl[i].theta += .01;
+        }
+    } else if (keyCode == RIGHT) {
+         for (int i = 0; i < chnl.length; i++) {
+         chnl[i].theta -= .01;
+       }
+    } else if (keyCode == UP) {
+         for (int i = 0; i < chnl.length; i++) {
+          chnl[i].growFactor += .03;
+          println(chnl[i].growFactor);
+      }
+
+    } else if (keyCode == DOWN) {
+       for (int i = 0; i < chnl.length; i++) {
+        chnl[i].growFactor -= .03;
+        println(chnl[i].growFactor);
+      }
+    }
+
+
+
 //DEBUG: println("keyCode = "+keyCode+ " key = "+key);
 
 
@@ -52,12 +79,13 @@ void keyPressed() {
       DISPLAY_CHANNEL = 0;
       break;
   }
-
 }
+}
+
 // Clear the current key when it goes up.
 void keyReleased() {
-  currentKeyCode = -1;
-}
+    currentKeyCode = -1;
+  }
 //  END MOMENTARY SWITCH
 //////////////////////////////////////
 
