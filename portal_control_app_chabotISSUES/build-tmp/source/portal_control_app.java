@@ -54,7 +54,7 @@ boolean sketchFullScreen() {
   return true;
 }
 */
-boolean changeSource = false;
+
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
 boolean PRELOAD_IMAGES 	= true;
@@ -161,46 +161,15 @@ public void draw() {
 /////////////////////////
 
 
-
-/*
 ///////////////////////////////////////////////////////
 //  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-*/
 
-
-
-///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	//blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, SUBTRACT);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-
-
-
-
-//chnl_5_kinect.createFeedbackFrom(chnl_3);
-//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_1_journals.display();
-
-	//shape(chnl_3.chnl_shape);
-
-	//shape(chnl_4.chnl_shape);
-
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	//chnl_3.createFeedbackFrom(chnl_2_emblems);
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
 	
 	//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_5_kinect.createFeedbackFrom(chnl_3);
+	chnl_4.createFeedbackFrom(chnl_2_emblems);
+	chnl_3.createFeedbackFrom(chnl_1_journals);
+	
 
-//
 
 	
 
@@ -383,7 +352,6 @@ public void randomJournalPage(){
 }
 class Channel {
 
-	boolean changeSource;
 	String name;
 
 ////////////////////////////////////////////////
@@ -459,7 +427,7 @@ class Channel {
 	//   CONSTRUCTOR FOR THE SHAPE VERSION
 	Channel(String _name, PImage _preloadImage, int extraArgumentToDistinguishShapes) {
 		name      		= _name;
-		changeSource = false;
+		
 		// PRELOAD THE IMAGE
 		chnl_feedback		= _preloadImage;
 		//chnl_feedback 	= loadImage("../images/journal-pages/044.png");
@@ -497,7 +465,7 @@ class Channel {
     	chnl_shape.noStroke();
     	chnl_shape.texture(chnl_feedback);
     	
-    	chnl_shape.vertex(random(0,100),random(0,100), 0, 0);
+    	chnl_shape.vertex(100, 100, 0, 0);
         chnl_shape.vertex(width-100, 100, 1,0);
   		chnl_shape.vertex(width-100, height-100, 1, 1);
   		chnl_shape.vertex(100, height-100, 0, 1);
@@ -511,7 +479,7 @@ class Channel {
     	chnl_plate.texture(chnl_output);
     	
     	chnl_plate.vertex(0,0, 0, 0);
-        chnl_plate.vertex(width,0, 1,0);
+        chnl_plate.vertex(width, 0, 1,0);
   		chnl_plate.vertex(width, height, 1, 1);
   		chnl_plate.vertex(0, height, 0, 1);
     	chnl_plate.endShape(CLOSE);
@@ -539,8 +507,8 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
   		pushMatrix();
   		translate(0,0);
   		translate(mouseX, mouseY);
-  		float zoom = map(mouseX, 0, width, 0.1f, 4.5f);
-  		scale(zoom);
+  		//float zoom = map(mouseX, 0, width, 0.1, 4.5);
+  		//scale(zoom);
   		shape(chnl_shape);
   		//shape(chnl_shape, -140, 140);
   		popMatrix();
@@ -583,24 +551,20 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 
 		/////////
 		// Introduce the basePlateImage
-		//image(importedChannel.output(), 0, 0, width, height);
-		//blend(importedChannel.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
+		image(importedChannel.output(), 0, 0, width, height);
+		
 
-				
+		/*		
 		/////////////////////////////
 		// INTRODUCING THE PSHAPE
-		/*
 		pushMatrix();
-  		translate(0, 0);
+  		translate(width/2, height/2);
   		float zoom = map(mouseX, 0, width, 0.1, 4.5);
   		scale(zoom);
-  		//shape(this.chnl_shape, -140, -140);
-  		shape(this.chnl_shape, 0, 0);
+  		shape(chnl_shape, -140, -140);
   		popMatrix();
   		//////////////////////////////
 		*/
-
-		shape(this.chnl_shape);
 	
 
 		/////////////////////////
@@ -616,28 +580,18 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 		///////////////
 		// THIS TEXTURE MAP currently employs 'immediate drawing' which is WAY slower
 		// START TEXTURE MAP
-
-
+  		
   		/*
   		chnl_plate.beginShape();
   		chnl_plate.texture(importedChannel.output());
 		chnl_plate.endShape(CLOSE);
-		shape(chnl_plate, mouseX, mouseY);
-	*/  		
-  		pushMatrix();
-  		translate(0,0);
-  		translate(-width/2, -height/2);
-  		//translate(mouseX, mouseY);
-  		chnl_plate.beginShape();
-  		chnl_plate.texture(this.output());
-		chnl_plate.endShape(CLOSE);
-		shape(chnl_plate, mouseX, mouseY);
-		popMatrix();
+		shape(chnl_plate);
+		*/
 
 		/*
 		//  DISPLAY THIS CHANNEL'S SHAPE OF FEEDBACK
   		importedChannel.chnl_shape.beginShape();
-  		importedChannel.chnl_shape.texture(importedChannel.output());
+  		importedChannel.chnl_shape.texture(importedChannel.chnl_feedback);
   		importedChannel.chnl_shape.endShape(CLOSE);
   		shape(importedChannel.chnl_shape);
 		*/
@@ -696,7 +650,6 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 		//							// <-- soo very crude.  Need to pass in the Channel's BaseCasePlate
 		////////////////////////	  						Then do the above drawing in the basePlate
 									//						 - to protect the layer
-
 
 		/////////////////////////////
 		//  SET THE OBJECT's OUTPUT SIGNAL to the RESULT of this FEEDBACK LOOP
@@ -1185,30 +1138,14 @@ public void oscEvent (OscMessage theOscMessage) {
     float xPos = theOscMessage.get(1).floatValue();  
     float yPos = theOscMessage.get(0).floatValue();  
     print ("xPos ="+xPos+" yPos = "+yPos);
+
+
     // update chnl_3
-    //chnl_1_journals.updateChannelShapeLocation(xPos, yPos);
+    chnl_1_journals.updateChannelShapeLocation(xPos, yPos);
     chnl_3.updateChannelShapeLocation(xPos, yPos);
-        
-}
-    
-else	if(theOscMessage.checkAddrPattern("/3/multipush1/1/1")==true) {
-    print ("Yes");
-    //float x = theOscMessage.get(0).floatValue();  
-    changeSource = !changeSource;
 
-    if (changeSource) {
-       chnl_1_journals.changeSourceImage("journals");
-        chnl_2_emblems.changeSourceImage("emblems");
-        chnl_3.changeSourceImage("journals");
-}
-
-else  if(theOscMessage.checkAddrPattern("/3/fader38")==true) {
-    rotate(1);
-
-}
-
-}
-
+    return;
+	}
 
 
 

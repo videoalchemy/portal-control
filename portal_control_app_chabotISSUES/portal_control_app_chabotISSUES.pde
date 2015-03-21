@@ -35,7 +35,7 @@ boolean sketchFullScreen() {
   return true;
 }
 */
-boolean changeSource = false;
+
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
 boolean PRELOAD_IMAGES 	= true;
@@ -142,46 +142,15 @@ void draw() {
 /////////////////////////
 
 
-
-/*
 ///////////////////////////////////////////////////////
 //  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-*/
 
-
-
-///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	//blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, SUBTRACT);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-
-
-
-
-//chnl_5_kinect.createFeedbackFrom(chnl_3);
-//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_1_journals.display();
-
-	//shape(chnl_3.chnl_shape);
-
-	//shape(chnl_4.chnl_shape);
-
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	//chnl_3.createFeedbackFrom(chnl_2_emblems);
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
 	
 	//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_5_kinect.createFeedbackFrom(chnl_3);
+	chnl_4.createFeedbackFrom(chnl_2_emblems);
+	chnl_3.createFeedbackFrom(chnl_1_journals);
+	
 
-//
 
 	
 
