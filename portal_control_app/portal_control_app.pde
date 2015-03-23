@@ -97,6 +97,11 @@ Channel chnl_6_trackShape;
 
  
 void setup() {
+	//////////////////////////////////////
+	//  SHAPE HAS IT"S OWN DAMG MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	shapeMode(CENTER); 
+
+
 	//start oscP5 listening for incoming messages at port 8000
     oscP5 = new OscP5(this, 8000);
 

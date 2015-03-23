@@ -116,6 +116,11 @@ Channel chnl_6_trackShape;
 
  
 public void setup() {
+	//////////////////////////////////////
+	//  SHAPE HAS IT"S OWN DAMG MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	shapeMode(CENTER); 
+
+
 	//start oscP5 listening for incoming messages at port 8000
     oscP5 = new OscP5(this, 8000);
 
@@ -535,8 +540,8 @@ float growFactorAmount; // for increasing the size of the feedback layer
   
 // this meant only for the source channels   
 public void updateChannelShapeLocation(float xPos, float yPos) {
-	shapeX = map(xPos, 0,1, -width/2, width/2);
-	shapeY = map(yPos, 0, 1, -height/2, height/2);
+	shapeX = map(xPos, 0,1, 0, width/2);
+	shapeY = map(yPos, 0, 1, 0, height/2);
 
 	print ("map of shape x = "+shapeX);
 	
@@ -620,7 +625,7 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 		/////////////////////////
 		//  GENERATE FEEDBACK
 
-
+		shape(importedChannel.chnl_shape);
 
 		//image(chnl_feedback, mouseX, mouseY, width-150, height-150);
 
@@ -632,20 +637,24 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 		// START TEXTURE MAP
 
 
-  		/*
+  		
   		chnl_plate.beginShape();
   		chnl_plate.texture(importedChannel.output());
 		chnl_plate.endShape(CLOSE);
 		shape(chnl_plate, mouseX, mouseY);
-	*/  		
+	
+
+
+
+
   		pushMatrix();
   		
-  		translate(0,0);
-  		translate(-width/2, -height/2);
+  		//translate(0,0);
+  		translate(width/2, height/2);
   		rotate(theta);
 
   		scale(growFactor);
-  		shape(importedChannel.chnl_shape);
+  		
   		//translate(mouseX, mouseY);
   		chnl_plate.beginShape();
   		chnl_plate.texture(this.output());
