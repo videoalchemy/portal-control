@@ -345,40 +345,6 @@ void updateChannelShapeLocation(float xPos, float yPos) {
 	//chnl_shape.setVertex(3, mouseX, mouseY);
 }
 
-/*
-////////////////////////////////
-/////////ADDED NOISE
-// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
-	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
-  		PVector v = chnl_shape.getVertex(i);
-  		
-		move.x = map(noise(vertexOffSet.x), 0, 1, -3, 3);
-  		move.y = map(noise(vertexOffSet.y), 0, 1, -3, 3);  		
-  		v.add(move);
-  		chnl_shape.setVertex(i,v.x,v.y);
-		}
-	vertexOffSet.add(0.01, 0.01,0);
-	//chnl_shape.setVertex(3, mouseX, mouseY);
-	}
-	//////////////////
-
-	 // Get a noise value based on xoff and scale it according to the window's width
-  float n = noise(xoff)*width;
-  
-  // With each cycle, increment xoff
-  xoff += xincrement;
-  */
-
-
-/////////////////////////////////////
-	/*
-	velocity.x = map(noise(noff.x), 0, 1, -1, 1);
-    velocity.y = map(noise(noff.y), 0, 1, -1, 1);
-    velocity.mult(5);
-
-    noff.add(0.01, 0.01);
-    */
-///////////////////////////////////////////////////////////
 
 
 	///////////////////////////////////////
@@ -434,7 +400,7 @@ void updateChannelShapeLocation(float xPos, float yPos) {
 
 /*
 	///////////////////////////////////////////////////////////////////////////
-	/////////////      START TRANSOMATIONS
+	/////////////      START TRANSMUTATIONS
 	/////////////////////////
 	//  ROTATE and SCALE APPLIED TO THE PIMAGE LAYER, not the PSHape.
 	//      - this is the simpler earlier method that would work prior to attaching 
@@ -460,25 +426,4 @@ void updateChannelShapeLocation(float xPos, float yPos) {
 	///////////////////////////////////////////////////////////////////////////
 */
 
-///////////////////////////
-// OUT OF COMMISION 
-/*
-	PImage getFeedbackFrom(PImage channelIn) {
-		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
-		//chnl_output = this.output();
-		//image(chnl_output, 0, 0, width, height);
-
-		image(channelIn, 0, 0, width, height);
-
-		/////////////////////////
-		//  GENERATE FEEDBACK
-		imageMode(CENTER);
-		image(chnl_feedback, mouseX, mouseY, width, height);
-		imageMode(CORNER);
-		chnl_feedback = get();
-		return chnl_feedback;
-	}
-
-*/
-///////////////////////////////
 

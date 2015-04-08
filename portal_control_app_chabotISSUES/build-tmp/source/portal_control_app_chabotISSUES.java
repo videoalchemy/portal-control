@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class portal_control_app extends PApplet {
+public class portal_control_app_chabotISSUES extends PApplet {
 
 /*******************************************************************
  *	VideoAlchemy "Portal Control" Computational Feedback Interface
@@ -1174,7 +1174,7 @@ public void oscEvent (OscMessage theOscMessage) {
 }      ///////
 //////////////
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "portal_control_app" };
+    String[] appletArgs = new String[] { "portal_control_app_chabotISSUES" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

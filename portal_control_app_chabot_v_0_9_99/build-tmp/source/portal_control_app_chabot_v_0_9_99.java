@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream; 
 import java.io.IOException; 
 
-public class portal_control_app extends PApplet {
+public class portal_control_app_chabot_v_0_9_99 extends PApplet {
 
 /*******************************************************************
  *	VideoAlchemy "Portal Control" Computational Feedback Interface
@@ -43,7 +43,7 @@ TODO
 OscP5 oscP5;
 
 String project = "portal-control";
-String version = "v0.6.0_dev";
+String version = "v0.9.99_dev";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
@@ -162,18 +162,6 @@ public void draw() {
 
 
 
-/*
-///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-*/
-
-
-
 ///////////////////////////////////////////////////////
 //  SEND IN THE SOURCES
 	chnl_4.createFeedbackFrom(chnl_1_journals);
@@ -181,56 +169,6 @@ public void draw() {
 	chnl_3.createFeedbackFrom(chnl_2_emblems);
 	shape(chnl_4.chnl_shape);
 ////////////////////////////////////////////////////////
-
-
-
-
-//chnl_5_kinect.createFeedbackFrom(chnl_3);
-//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_1_journals.display();
-
-	//shape(chnl_3.chnl_shape);
-
-	//shape(chnl_4.chnl_shape);
-
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	//chnl_3.createFeedbackFrom(chnl_2_emblems);
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	
-	//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_5_kinect.createFeedbackFrom(chnl_3);
-
-//
-
-	
-
-	
-//////////////////////////////////
-
-///////////////////////////////////////////////////////
-//  SEND CHANNEL TO PERLIN NOISE ITS VERTICES
-// 
-// -->
-// -->
-// -->
-
-
-///////////////////////////////////////////////////////
-//  CALL IN THE KINECT IMAGES
-// ---->
-// ---->
-
-
-/////////////////////////
-//   BLEND THE KINECT IMAGES TO OUTPUT
-// ---->
-// ---->
-
-
-
-
-
-
 
 /////////////////////////////////////
 //      UPDATE TOOLS AND MONITORS	
@@ -243,9 +181,6 @@ update_PortalTools();
 updateChannelShapeVertices();
 
 /////////////////////////
-
-
-
 
 }	
 
@@ -319,8 +254,8 @@ public void showChannelMonitors(){
 			chnl_4.monitor(MONITOR_SCALE, .166f*3);
 			chnl_5_kinect.monitor(MONITOR_SCALE, .166f*4);
 			chnl_6_trackShape.monitor(MONITOR_SCALE, .166f*5);
+		}
 	}
-}
 }
 //    END SHOW MONITORS
 /////////////////////////////////////////////////////////
@@ -728,40 +663,6 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 	//chnl_shape.setVertex(3, mouseX, mouseY);
 }
 
-/*
-////////////////////////////////
-/////////ADDED NOISE
-// REWRITE SHIFFMANS EXAMPLE to control vertex #3 of 0,1,2,3 by substracting the conditional by -1 
-	for (int i = 0; i < chnl_shape.getVertexCount(); i++) {
-  		PVector v = chnl_shape.getVertex(i);
-  		
-		move.x = map(noise(vertexOffSet.x), 0, 1, -3, 3);
-  		move.y = map(noise(vertexOffSet.y), 0, 1, -3, 3);  		
-  		v.add(move);
-  		chnl_shape.setVertex(i,v.x,v.y);
-		}
-	vertexOffSet.add(0.01, 0.01,0);
-	//chnl_shape.setVertex(3, mouseX, mouseY);
-	}
-	//////////////////
-
-	 // Get a noise value based on xoff and scale it according to the window's width
-  float n = noise(xoff)*width;
-  
-  // With each cycle, increment xoff
-  xoff += xincrement;
-  */
-
-
-/////////////////////////////////////
-	/*
-	velocity.x = map(noise(noff.x), 0, 1, -1, 1);
-    velocity.y = map(noise(noff.y), 0, 1, -1, 1);
-    velocity.mult(5);
-
-    noff.add(0.01, 0.01);
-    */
-///////////////////////////////////////////////////////////
 
 
 	///////////////////////////////////////
@@ -817,7 +718,7 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 
 /*
 	///////////////////////////////////////////////////////////////////////////
-	/////////////      START TRANSOMATIONS
+	/////////////      START TRANSMUTATIONS
 	/////////////////////////
 	//  ROTATE and SCALE APPLIED TO THE PIMAGE LAYER, not the PSHape.
 	//      - this is the simpler earlier method that would work prior to attaching 
@@ -843,27 +744,6 @@ public void updateChannelShapeLocation(float xPos, float yPos) {
 	///////////////////////////////////////////////////////////////////////////
 */
 
-///////////////////////////
-// OUT OF COMMISION 
-/*
-	PImage getFeedbackFrom(PImage channelIn) {
-		///////////////////////////////////  AWESOME: My first use of self calling class 'this'///////
-		//chnl_output = this.output();
-		//image(chnl_output, 0, 0, width, height);
-
-		image(channelIn, 0, 0, width, height);
-
-		/////////////////////////
-		//  GENERATE FEEDBACK
-		imageMode(CENTER);
-		image(chnl_feedback, mouseX, mouseY, width, height);
-		imageMode(CORNER);
-		chnl_feedback = get();
-		return chnl_feedback;
-	}
-
-*/
-///////////////////////////////
 
 /*
 class FeedbackChannel {
@@ -1237,7 +1117,7 @@ else  if(theOscMessage.checkAddrPattern("/3/fader38")==true) {
 }      ///////
 //////////////
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "portal_control_app" };
+    String[] appletArgs = new String[] { "portal_control_app_chabot_v_0_9_99" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

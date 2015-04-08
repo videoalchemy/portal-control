@@ -24,7 +24,7 @@ import netP5.*;
 OscP5 oscP5;
 
 String project = "portal-control";
-String version = "v0.6.0_dev";
+String version = "v0.9.99_dev";
 
 ////////////////
 //  GLOBALS FOR DRAWING 
@@ -143,18 +143,6 @@ void draw() {
 
 
 
-/*
-///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-*/
-
-
-
 ///////////////////////////////////////////////////////
 //  SEND IN THE SOURCES
 	chnl_4.createFeedbackFrom(chnl_1_journals);
@@ -162,56 +150,6 @@ void draw() {
 	chnl_3.createFeedbackFrom(chnl_2_emblems);
 	shape(chnl_4.chnl_shape);
 ////////////////////////////////////////////////////////
-
-
-
-
-//chnl_5_kinect.createFeedbackFrom(chnl_3);
-//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_1_journals.display();
-
-	//shape(chnl_3.chnl_shape);
-
-	//shape(chnl_4.chnl_shape);
-
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	//chnl_3.createFeedbackFrom(chnl_2_emblems);
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	
-	//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_5_kinect.createFeedbackFrom(chnl_3);
-
-//
-
-	
-
-	
-//////////////////////////////////
-
-///////////////////////////////////////////////////////
-//  SEND CHANNEL TO PERLIN NOISE ITS VERTICES
-// 
-// -->
-// -->
-// -->
-
-
-///////////////////////////////////////////////////////
-//  CALL IN THE KINECT IMAGES
-// ---->
-// ---->
-
-
-/////////////////////////
-//   BLEND THE KINECT IMAGES TO OUTPUT
-// ---->
-// ---->
-
-
-
-
-
-
 
 /////////////////////////////////////
 //      UPDATE TOOLS AND MONITORS	
@@ -224,9 +162,6 @@ update_PortalTools();
 updateChannelShapeVertices();
 
 /////////////////////////
-
-
-
 
 }	
 
@@ -300,8 +235,8 @@ void showChannelMonitors(){
 			chnl_4.monitor(MONITOR_SCALE, .166*3);
 			chnl_5_kinect.monitor(MONITOR_SCALE, .166*4);
 			chnl_6_trackShape.monitor(MONITOR_SCALE, .166*5);
+		}
 	}
-}
 }
 //    END SHOW MONITORS
 /////////////////////////////////////////////////////////
