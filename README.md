@@ -1,6 +1,10 @@
 ## Portal Control
-> gesture controlled video feedback installation
+> A gesture controlled video-feedback installation.
+> Installed April 2015 at the Chabot Space and Science Center
 ___________________
+
+### Vids and Picts
+- [R&D on Flickr](https://www.flickr.com/photos/jaycody9/albums/72157651532556476)
 
 #### repo organization
 ##### portal-control/portal-control 
