@@ -1,21 +1,21 @@
-##Portal Control
+## Portal Control
 > gesture controlled video feedback installation
 ___________________
 
-####repo organization
-#####portal-control/portal-control 
+#### repo organization
+##### portal-control/portal-control 
 - contains the most recent version in development
 
-#####_exhibitions
+##### _exhibitions
 - versions completed for a specific exhibition live here.
 - tags will also be used for each release, including exhibition releases, so you can roll back to an exhibition release
 - however, I may want to compare exhibition / major release versions side by side rather than rolling back each time I want to look at previous versions.  Thus, the _exhibition folder
 - also, the exhibition folder provides some historical context.
 
-#####images
+##### images
 - for any image, inlcuding those used by the app.  going to keep this in place so as to not break the prototypes
 
-#####docs
+##### docs
 - kept the markdown docs here before creating a wiki
 - but as development cycles shortened, the wiki became too slow to use, to cumbersome. 
 - so started using the README again.  
@@ -24,9 +24,9 @@ ___________________
 
 
 __________________________
-#####see [Portal Control wiki](https://github.com/VideoAlchemy/portal-control/wiki) for detailed dev docs, including tech and feature specs, study notes and tutorials.
+##### see [Portal Control wiki](https://github.com/VideoAlchemy/portal-control/wiki) for detailed dev docs, including tech and feature specs, study notes and tutorials.
 
-####requirements
+#### requirements
 1. all displayed images are textures
 2. sources are never altered
 3. pixel manipulation is always via pixels array
@@ -34,9 +34,9 @@ __________________________
 5. pixel manipulation takes place inside mx_OUTPUT
 
 ___________________________
-###var_NAMES and analog videolab metaphor
+### var_NAMES and analog videolab metaphor
 
-#####{source} PImage
+##### {source} PImage
 - pristine original source.  the mother mold
 - provides a copy to a specific channel for DISPLAY and/or MONITOR
 - is never itself altered or displayed
@@ -46,7 +46,7 @@ PImage journals[ ]
 PImage emblems[ ] 
 ```
 
-#####depthImage & silhouette PImage
+##### depthImage & silhouette PImage
 - derived from the depthImage pixel array
 - includes depth info for all pixels within the min max 
 - exludes the floor
@@ -77,24 +77,24 @@ upon iteration through depthImage pixels array,
 ```
 
 
-#####chnl{x}_MONITOR PImage
+##### chnl{x}_MONITOR PImage
 - provides view of unaltered source
 - always appears in the same place in the mx_MONITOR
 - becomes the texture used for the MONITOR shape
 
 
-#####chnl{x}_DISPLAY PImage
+##### chnl{x}_DISPLAY PImage
 - receives a source
 - image processing takes place when pixel values are copied from source to DISPLAY
 - becomes the texture used for DISPLAY
 
 
-#####mx_MONITOR PImage
+##### mx_MONITOR PImage
 - contains all chnl<x>_MONITOR textures
 - has blue background
 - can display each chnl<x>_DISPLAY separately for testing
 
-#####mx_MIXING_BUFFER PImage
+##### mx_MIXING_BUFFER PImage
 - handles all chnl to chnl pixel manipulation, blending between channels
 - returned from a function responsible for mixing chnls:
 ```
@@ -103,7 +103,7 @@ mx_MIXED_BUFFER = returnBlendOf(chnl{x}_DISPLAY, chnl{z}_DISPLAY, blendMode b);
 
 
 
-#####mx_OUTPUT PImage
+##### mx_OUTPUT PImage
 - receives each chnl{x}_DISPLAY
 - home of all image processing algorithms (eg blendColor(), etc)
 - contains the shapes into which the chnl{x}_DISPLAYS are used for texture
@@ -121,24 +121,24 @@ etc
 etc
 ```
 
-#####feedback{x} PImage
+##### feedback{x} PImage
 - TBD
 
 
 
 
 ___________________________
-###Controller Components (touchOSC)
+### Controller Components (touchOSC)
 
-####chnl{x}_CONTROLLER
+#### chnl{x}_CONTROLLER
 
-#####chnl{x}_SEND 
+##### chnl{x}_SEND 
 - select new image
 - send chnl<x>_DISPLAY to mx_MONITOR where it can be isolated for evaluation, test, etc. seen above the blue test background of mx_MONITOR
 - by default, the chnl<x>_MONITOR always appears on mx_MONITOR, so no need to toggle this
 - send chnl<x>_DISPLAY to mx_OUTPUT to view on main screen
 
-#####chnl{x}_POSITION
+##### chnl{x}_POSITION
 - vertex-location-control
      - 4 2D grids, each control one corner
 - image-location-control (used with imageMode(CENTER); )
@@ -147,7 +147,7 @@ ___________________________
 - rotate
 - rotateZ ????
 
-#####chnl{x}_PIXELS
+##### chnl{x}_PIXELS
 - alpha threshold
      - at what level of brightness does alpha go to 100%
      - this forms an irregular shape.  not sure if this will work if the image is a vertex based shape.  it should punch holes in the shape, no?  see the layers underneath? sheet hope so
@@ -160,9 +160,9 @@ ___________________________
 
 
 __________________________
-###Functions to create
+### Functions to create
 
-#####OOP
+##### OOP
 - the question isn't whether or not it's a ggod idea, it's whether or not it can be implemented fast enough to save time in the long run.  Chabot install :: t-minus 4 days.
 - if we did, it would look like this:
 ```
@@ -186,22 +186,22 @@ void display() {
 
 ```
 
-#####returnBlendOf(PImage, PImage, blendMode);
+##### returnBlendOf(PImage, PImage, blendMode);
 - this allows blends to take place prior to display as texture in mx_OUTPUT
 ```
 mx_MIXED_BUFFER = returnBlendOf(chnl{x}_DISPLAY, chnl{z}_DISPLAY, blendMode b);
 ```
 
-#####applyEffectsTo(PImage, effect, amount)
+##### applyEffectsTo(PImage, effect, amount)
 ```
 return applyEffectTo(chnl{x}_DISPLAYS, effectName, amount )
 ```
 
 
 _________________________
-###Existing functions to implement
+### Existing functions to implement
 
-#####blendColor();
+##### blendColor();
 - applies blend from one pixel to another as pixel by pixel are copied over from pixels[]
 - this can be applied from chnl<x> to chnl<z> or from the composite of all non-silhouette chnls to the silhouette in the final steps of mx_OUTPUT.  (Was that an uncontrived use of 'chnl<z>' in a project?  Nice! Gettin' nothin' but static.)
 ```
@@ -221,12 +221,12 @@ updatePixels into a buffer mixerStation
 ```
 
 
-#####blend(img, x,y,h,d, u,v,uw,vh, BLENDMODE);
+##### blend(img, x,y,h,d, u,v,uw,vh, BLENDMODE);
 - apply blend mode from piece of img to piece of graphics window
 
 
 
-#####filter(<filteName>, <factor>);
+##### filter(<filteName>, <factor>);
 - modifies the graphics window directly
 - INVERT may be the most useful, like the old MX-1 Videonics effect
 ```
@@ -238,7 +238,7 @@ updatePixels into a buffer mixerStation
 ```
 
 
-#####tint(r,g,b,a); 
+##### tint(r,g,b,a); 
 - applied directly to graphics window
 - use this to create transparency
 ```
@@ -261,7 +261,7 @@ tint(255,150)
 
 
 
-#####copy(); 
+##### copy(); 
 - copies portion of display window and places it back into display
 - or copies portion of source image and places into display window
 ```
@@ -272,11 +272,11 @@ copy(sx, sy, sw, sh, dx, dy, dw, dh);
 copy(srcImage, sx, sy, sw, sh, dx, dy, dw, dh); 
 ```
 
-#####imageMode(CENTER);
+##### imageMode(CENTER);
 - control the PImage from it's center!
 
 
-#####alphaMask with MASK, from PGraphic
+##### alphaMask with MASK, from PGraphic
 ```
 imgToMask = loadImage("imageToMask.png");
 imgForMasking = loadImage("imageForMasking.png");
@@ -284,7 +284,7 @@ imgToMask.mask(imgForMasking);
 ```
 
 
-#####texture(img);
+##### texture(img);
 ```
 beginShape();
 texture(img);
@@ -294,9 +294,9 @@ endShape(CLOSE); // this last line needs verification
 ```
 
 __________________________________
-##Chabot specs:
+## Chabot specs:
 
-###Chabot Tech Specs:
+### Chabot Tech Specs:
 - 2 [Optima projectors] 1024x768 fed via independent HDMI cables
 - 10 foot extension for Kinect (TBD).  time to test mine
 - remote control of the mac mini:
@@ -304,32 +304,32 @@ __________________________________
      - or controlled from bluetooth keyboard and bluetooth trackpad (preferred but command central may be too far from mac mini, or signal may be impeded.  will require testing)
 
 
-###Chabot feature specs:
+### Chabot feature specs:
 - [ ] videdScale = 1.6  //ratio of source images (640x480) to the output screen (1024x768)
 - [ ] display underlying image
 - [ ] silouette determines the feedback zones of underlying image (w/o emergent shape).  After viewing images of the space, it occurs to me that the image projected on the floor is small compared to the space.  If Kinect and Projector are aligned, the functional interaction space shrinks to the size of the image, eliminating all other in the space.  Potentially a good idea.  
 
 _________________________________________
 
-##[Shared doc for the visuals team](https://docs.google.com/document/d/1Ob_se0SsQ8vo-zfbqum9-aZ8LHm4XTG3tVy2hwaRi_w/edit#)
+## [Shared doc for the visuals team](https://docs.google.com/document/d/1Ob_se0SsQ8vo-zfbqum9-aZ8LHm4XTG3tVy2hwaRi_w/edit#)
 
-##[photos of the site](https://plus.google.com/photos/+PeterTjeerdsma/albums/6113277440510066033)
+## [photos of the site](https://plus.google.com/photos/+PeterTjeerdsma/albums/6113277440510066033)
 
 ________________________________
 
-#####devLog-2015-03-11
+##### devLog-2015-03-11
 - [x] convert images to 1024, 768 at 72 DPI
 - [x] display image
 - [x] create feedback using get
 - [x] create feedback using pixel array
 
-#####devlog-2015-0312
+##### devlog-2015-0312
 - [x] implement analog-rvl metaphor
 - [ ] create an alpha
 
 
 ________________________________
-###Ditched Descriptions
+### Ditched Descriptions
 - Portal Control is an interactive video installation where implicate order and computational feedback emerge from the individual and collective behaviors of participants.
 
 
