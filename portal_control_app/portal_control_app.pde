@@ -5,18 +5,18 @@
  * The MIT License (MIT)
  *******************************************************************/
 /* PROJECT MILESTONES ON GITHUB:
-https://github.com/VideoAlchemy/portal-control/milestones
-
-TODO
-[] verify the existence of a transparent layer transparency
-[] create transparency so that the feedback loop takes the shape of the source image
-	- shape the feeback from the base case shape 
-
-[] create controls for the source image texture maps
-
-[] display random journal at iPhone press
-
-*/
+ https://github.com/VideoAlchemy/portal-control/milestones
+ 
+ TODO
+ [] verify the existence of a transparent layer transparency
+ [] create transparency so that the feedback loop takes the shape of the source image
+ 	- shape the feeback from the base case shape 
+ 
+ [] create controls for the source image texture maps
+ 
+ [] display random journal at iPhone press
+ 
+ */
 
 import oscP5.*;  // ipad action
 import netP5.*;
@@ -32,9 +32,9 @@ String version = "v0.6.0_dev";
 
 /*
 boolean sketchFullScreen() {
-  return true;
-}
-*/
+ return true;
+ }
+ */
 boolean changeSource = false;
 // Set to 'true' to preload all images before starting (slower).
 // Set to 'false' to load images as they're used (good for development).
@@ -95,155 +95,152 @@ Channel chnl_6_trackShape;
 
 
 
- 
+
 void setup() {
-	//////////////////////////////////////
-	//  SHAPE HAS IT"S OWN DAMG MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	shapeMode(CENTER); 
+  //////////////////////////////////////
+  //  SHAPE HAS IT"S OWN DAMG MODE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  shapeMode(CENTER); 
 
 
-	//start oscP5 listening for incoming messages at port 8000
-    oscP5 = new OscP5(this, 8000);
+  //start oscP5 listening for incoming messages at port 8000
+  oscP5 = new OscP5(this, 8000);
 
- 	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- 	size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
+  println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
+  //size (SCREEN_WIDTH, SCREEN_HEIGHT, P2D);  //ditch the 'P2D' if we have Kinect issues
+  size (1024, 768, P2D);  //
 
- 	//optional
- 	smooth();
+  //optional
+  smooth();
 
- 	////////////////////////////////// 
- 	// preload images if necessary
- 	//
- 	if (PRELOAD_IMAGES) {
-    	for (int i = 0; i < numOfJournalPages; i++)      
-    		getJournalPage(i); 
-    	for (int i = 0; i < numOfEmblems; i++)      
-    		getEmblem(i);
-    } 
-	//
-	printInstructions();
+  ////////////////////////////////// 
+  // preload images if necessary
+  //
+  if (PRELOAD_IMAGES) {
+    for (int i = 0; i < numOfJournalPages; i++)      
+      getJournalPage(i); 
+    for (int i = 0; i < numOfEmblems; i++)      
+      getEmblem(i);
+  } 
+  //
+  printInstructions();
 
- 	
 
-    ////////////////////////////////////////////////
-    //    CREATE CHANNELS
-    //   TEST THE UNDERLOAD
-    //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
-    chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[8], 1);
-	chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[5], 1);
-	chnl[2] = chnl_3 = new Channel("  chnl_3",  journal[5], 1);
-  	chnl[3] = chnl_4 = new Channel("  chnl_4", emblem[3],	1);
-  	chnl[4] = chnl_5_kinect = new Channel("  chnl_5_kinect", journal[3], 1);
-	chnl[5] = chnl_6_trackShape = new Channel(" chnl_6_chnl_shape", emblem[2], 1 );
 
-  	//    END CREATE CHANNELS
-  	////////////////////////////////////////////////
+  ////////////////////////////////////////////////
+  //    CREATE CHANNELS
+  //   TEST THE UNDERLOAD
+  //chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[1]);
+  chnl[0] = chnl_1_journals = new Channel("  chnl_1_journals", journal[8], 1);
+  chnl[1] = chnl_2_emblems = new Channel("  chnl_2_emblems", emblem[5], 1);
+  chnl[2] = chnl_3 = new Channel("  chnl_3", journal[5], 1);
+  chnl[3] = chnl_4 = new Channel("  chnl_4", emblem[3], 	1);
+  chnl[4] = chnl_5_kinect = new Channel("  chnl_5_kinect", journal[3], 1);
+  chnl[5] = chnl_6_trackShape = new Channel(" chnl_6_chnl_shape", emblem[2], 1 );
+
+  //    END CREATE CHANNELS
+  ////////////////////////////////////////////////
 }
 
 void draw() {
-	
-// Create alpha blended background
-// fill(0, 10);
-// rect(0,0,width,height);
-/////////////////////////
+
+  // Create alpha blended background
+  // fill(0, 10);
+  // rect(0,0,width,height);
+  /////////////////////////
 
 
 
-/*
+  /*
 ///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-*/
+   //  SEND IN THE SOURCES
+   	chnl_4.createFeedbackFrom(chnl_1_journals);
+   	blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, DARKEST);
+   	chnl_3.createFeedbackFrom(chnl_2_emblems);
+   	shape(chnl_4.chnl_shape);
+   ////////////////////////////////////////////////////////
+   */
 
 
 
-///////////////////////////////////////////////////////
-//  SEND IN THE SOURCES
-	chnl_4.createFeedbackFrom(chnl_1_journals);
-	//blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, SUBTRACT);
-	chnl_3.createFeedbackFrom(chnl_2_emblems);
-	shape(chnl_4.chnl_shape);
-////////////////////////////////////////////////////////
-
-
-
-
-//chnl_5_kinect.createFeedbackFrom(chnl_3);
-//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_1_journals.display();
-
-	//shape(chnl_3.chnl_shape);
-
-	//shape(chnl_4.chnl_shape);
-
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	//chnl_3.createFeedbackFrom(chnl_2_emblems);
-	//chnl_5_kinect.createFeedbackFrom(chnl_4);
-	
-	//chnl_3.createFeedbackFrom(chnl_1_journals);
-	//chnl_5_kinect.createFeedbackFrom(chnl_3);
-
-//
-
-	
-
-	
-//////////////////////////////////
-
-///////////////////////////////////////////////////////
-//  SEND CHANNEL TO PERLIN NOISE ITS VERTICES
-// 
-// -->
-// -->
-// -->
-
-
-///////////////////////////////////////////////////////
-//  CALL IN THE KINECT IMAGES
-// ---->
-// ---->
-
-
-/////////////////////////
-//   BLEND THE KINECT IMAGES TO OUTPUT
-// ---->
-// ---->
+  ///////////////////////////////////////////////////////
+  //  SEND IN THE SOURCES
+  chnl_4.createFeedbackFrom(chnl_1_journals);
+  //blend(chnl_3.output(), 0, 0, width, height, 0, 0, width, height, SUBTRACT);
+  chnl_3.createFeedbackFrom(chnl_2_emblems);
+  shape(chnl_4.chnl_shape);
+  ////////////////////////////////////////////////////////
 
 
 
 
+  //chnl_5_kinect.createFeedbackFrom(chnl_3);
+  //chnl_3.createFeedbackFrom(chnl_1_journals);
+  //chnl_1_journals.display();
+
+  //shape(chnl_3.chnl_shape);
+
+  //shape(chnl_4.chnl_shape);
+
+  //chnl_5_kinect.createFeedbackFrom(chnl_4);
+  //chnl_3.createFeedbackFrom(chnl_2_emblems);
+  //chnl_5_kinect.createFeedbackFrom(chnl_4);
+
+  //chnl_3.createFeedbackFrom(chnl_1_journals);
+  //chnl_5_kinect.createFeedbackFrom(chnl_3);
+
+  //
 
 
 
-/////////////////////////////////////
-//      UPDATE TOOLS AND MONITORS	
-update_PortalTools();
 
-/////////////////////////////////////
+  //////////////////////////////////
 
-////////////////////////////////////
-///     UPDATE CHANNEL SHAPE VERTICES
-updateChannelShapeVertices();
-
-/////////////////////////
+  ///////////////////////////////////////////////////////
+  //  SEND CHANNEL TO PERLIN NOISE ITS VERTICES
+  // 
+  // -->
+  // -->
+  // -->
 
 
+  ///////////////////////////////////////////////////////
+  //  CALL IN THE KINECT IMAGES
+  // ---->
+  // ---->
 
 
+  /////////////////////////
+  //   BLEND THE KINECT IMAGES TO OUTPUT
+  // ---->
+  // ---->
+
+
+
+
+
+
+
+  /////////////////////////////////////
+  //      UPDATE TOOLS AND MONITORS	
+  update_PortalTools();
+
+  /////////////////////////////////////
+
+  ////////////////////////////////////
+  ///     UPDATE CHANNEL SHAPE VERTICES
+  updateChannelShapeVertices();
+
+  /////////////////////////
 }	
 
 
 
 ////////////////////////////////////////
 // UPDATE VERTICES
-void updateChannelShapeVertices(){
-    for (int i = 0; i < chnl.length; i++) {
-    	chnl[i].updateChannelShapeVertices();
-    }
+void updateChannelShapeVertices() {
+  for (int i = 0; i < chnl.length; i++) {
+    chnl[i].updateChannelShapeVertices();
+  }
 }
 //  END UPDATE VETICIES
 ////////////////////////////////////////
@@ -253,14 +250,14 @@ void updateChannelShapeVertices(){
 ////////////////////////////////////////
 //// UPDATE TOOLS
 // check_KeyboardControls_ChannelMonitors_ChannelDisplayOverrideSwitches
-void update_PortalTools(){
-	//    SWITCH BETWEEN CHANNEL DISPLAYS - for testing or in case you get lost
-	switchDisplayChannel();
-	///////////////////////
-	//    SHOW the Channel Monitors
-	showChannelMonitors();
-	// checks for button press
-	updateControlsFromKeyboard();
+void update_PortalTools() {
+  //    SWITCH BETWEEN CHANNEL DISPLAYS - for testing or in case you get lost
+  switchDisplayChannel();
+  ///////////////////////
+  //    SHOW the Channel Monitors
+  showChannelMonitors();
+  // checks for button press
+  updateControlsFromKeyboard();
 }
 ////  END UPDATE TOOLS
 /////////////////////////////////////////
@@ -270,22 +267,22 @@ void update_PortalTools(){
 /////////////////////////////////////////////////////////////////
 //      DISPLAY SELECTED CHANNEL ON MAIN SCREEN
 ////////     ----this is screaming for an awesome interface--------
-void switchDisplayChannel(){
-	switch(DISPLAY_CHANNEL){
-		case 0:
-			break;
-		case 1:
-			//chnl_1_journals.display();
-			break;
-		case 2:
-			//chnl_2_emblems.display();
-			break;
-		//////////////
-		// ADD ALL CHANNELS HERE
-		//////////////
-		default:
-			break;
-	}
+void switchDisplayChannel() {
+  switch(DISPLAY_CHANNEL) {
+  case 0:
+    break;
+  case 1:
+    //chnl_1_journals.display();
+    break;
+  case 2:
+    //chnl_2_emblems.display();
+    break;
+    //////////////
+    // ADD ALL CHANNELS HERE
+    //////////////
+  default:
+    break;
+  }
 }
 //      END DISPLAY CHANNEL
 /////////////////////////////////////////////////////////////////
@@ -295,19 +292,19 @@ void switchDisplayChannel(){
 
 ///////////////////////////////////////////////////////////
 //    SHOW MONITORS
-void showChannelMonitors(){
-	if (SHOW_MONITORS) {
+void showChannelMonitors() {
+  if (SHOW_MONITORS) {
 
-//DEBUG::    REDUCE FLICKER of monitor view by looping through 2x
-		for (int i = 0; i < 1; i++){
-			chnl_1_journals.monitor(MONITOR_SCALE, 0);
-			chnl_2_emblems.monitor(MONITOR_SCALE, .166);
-			chnl_3.monitor(MONITOR_SCALE, .166*2);
-			chnl_4.monitor(MONITOR_SCALE, .166*3);
-			chnl_5_kinect.monitor(MONITOR_SCALE, .166*4);
-			chnl_6_trackShape.monitor(MONITOR_SCALE, .166*5);
-	}
-}
+    //DEBUG::    REDUCE FLICKER of monitor view by looping through 2x
+    for (int i = 0; i < 1; i++) {
+      chnl_1_journals.monitor(MONITOR_SCALE, 0);
+      chnl_2_emblems.monitor(MONITOR_SCALE, .166);
+      chnl_3.monitor(MONITOR_SCALE, .166*2);
+      chnl_4.monitor(MONITOR_SCALE, .166*3);
+      chnl_5_kinect.monitor(MONITOR_SCALE, .166*4);
+      chnl_6_trackShape.monitor(MONITOR_SCALE, .166*5);
+    }
+  }
 }
 //    END SHOW MONITORS
 /////////////////////////////////////////////////////////
@@ -317,19 +314,19 @@ void showChannelMonitors(){
 ///////////////////////////////////////
 //  GO GET THE SOURCE IMAGES!
 PImage getJournalPage(int journalPage) {
-	if (journal[journalPage] == null) {
-		println("loading journal page "+journalPage+" of "+numOfJournalPages);
-        journal[journalPage] = loadImage("../images/journal-pages/00"+journalPage+".png");
-    }
-	return journal[journalPage]; 
+  if (journal[journalPage] == null) {
+    println("loading journal page "+journalPage+" of "+numOfJournalPages);
+    journal[journalPage] = loadImage("../images/journal-pages/00"+journalPage+".png");
+  }
+  return journal[journalPage];
 }
 //
 PImage getEmblem(int anEmblem) {
-	if (emblem[anEmblem] == null) {
-		println("loading emblem "+anEmblem+" of "+numOfEmblems);
-        emblem[anEmblem] = loadImage("../images/angels/angel00"+anEmblem+".png");
-    }
-	return emblem[anEmblem]; 
+  if (emblem[anEmblem] == null) {
+    println("loading emblem "+anEmblem+" of "+numOfEmblems);
+    emblem[anEmblem] = loadImage("../images/angels/angel00"+anEmblem+".png");
+  }
+  return emblem[anEmblem];
 }
 //  END GET THE SOURCE IMAGE
 ////////////////////////////////////////
@@ -337,36 +334,36 @@ PImage getEmblem(int anEmblem) {
 ////////////////////////////////////////
 //   PROVIDE SOME POINTERS
 void printInstructions() {
-	println("");
-	println("                 Keyboard controls");
-  	println("          -----------------------------------");
-   	println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
-   	println("   TAB	   clears background");
-   	println("   'q'	   grabs journal page for chnl_1");
-   	println("   'w'	   grabs emblem for chnl_1");
-   	println("   'e'	   grabs journal page for chnl_2");
-   	println("   'r'	   grabs emblem for chnl_2");
-   	println("   't'	   grabs journal page for chnl_3");
-   	println("   'y'	   grabs emblem for chnl_3");
-   	println("   1-9	   sends DISPLAY_CHANNEL to MAIN screen");
-   	println("   '0'    removes DISPLAY_CHANNEL from MAIN screen");
-   	println("   '-'     ");
+  println("");
+  println("                 Keyboard controls");
+  println("          -----------------------------------");
+  println("   ENTER  takes a snapshot and saves it to "+SNAP_FOLDER_PATH);
+  println("   TAB	   clears background");
+  println("   'q'	   grabs journal page for chnl_1");
+  println("   'w'	   grabs emblem for chnl_1");
+  println("   'e'	   grabs journal page for chnl_2");
+  println("   'r'	   grabs emblem for chnl_2");
+  println("   't'	   grabs journal page for chnl_3");
+  println("   'y'	   grabs emblem for chnl_3");
+  println("   1-9	   sends DISPLAY_CHANNEL to MAIN screen");
+  println("   '0'    removes DISPLAY_CHANNEL from MAIN screen");
+  println("   '-'     ");
 
-   	println("          -----------------------------------");
-   	println("");
+  println("          -----------------------------------");
+  println("");
 }
 
 
 
 
 void mousePressed() {
-	// test for randomly indexing into the array
-	//randomJournalPage();
+  // test for randomly indexing into the array
+  //randomJournalPage();
 }
 
 
-void randomJournalPage(){
-	print("Switching from journal page "+pageNum);
-	pageNum = int(random(numOfJournalPages-1));
-    println(" to "+pageNum);
+void randomJournalPage() {
+  print("Switching from journal page "+pageNum);
+  pageNum = int(random(numOfJournalPages-1));
+  println(" to "+pageNum);
 }

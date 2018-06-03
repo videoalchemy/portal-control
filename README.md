@@ -3,6 +3,11 @@
 > Installed April 2015 at the Chabot Space and Science Center
 ___________________
 
+### Required:
+#### Libraries:
+- oscP5 0.9.9
+- Open Kinect for Processing 1.0
+
 ### Vids and Picts
 - [R&D on Flickr](https://www.flickr.com/photos/jaycody9/albums/72157651532556476)
 
