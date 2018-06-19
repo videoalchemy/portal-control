@@ -61,7 +61,8 @@ Channel chnl_2;
  
 void setup() {
  	println("Initializing window at " + SCREEN_WIDTH + " x " + SCREEN_HEIGHT);
- 	size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ 	//size (SCREEN_WIDTH, SCREEN_HEIGHT);
+ size(1024, 768);
 
  	//optional
  	smooth();
