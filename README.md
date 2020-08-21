@@ -11,7 +11,7 @@ ___________________
 
 ### RnD, test runs, and prototypes
 - [Picts: R&D screenshots on Flickr][1]
-- [Vid: 2015_03-proto_portal_control_v-2][3]
+- [Vid: 2015_03-proto_portal_control_v-2][3] - with excerpt from Thomas Pynchon's [Gravity's Rainbow][6]
 - [Vid: portal-feedback_v0-4-0][5]
 
 
@@ -361,3 +361,4 @@ ___________________________
 [3]:https://www.youtube.com/watch?v=jfbcqyYewXg
 [4]:https://www.youtube.com/watch?v=YUDMK08I1ok
 [5]:https://www.youtube.com/watch?v=-B2NUWf8G74
+[6]:https://en.wikipedia.org/wiki/Gravity%27s_Rainbow
