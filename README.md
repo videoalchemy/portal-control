@@ -12,7 +12,7 @@ ___________________
 ### RnD, test runs, and prototypes
 - [Picts: R&D screenshots on Flickr][1]
 - [Vid: 2015_03-proto_portal_control_v-2][3]
-- [Vid: portal-feedback_v0-4-0[5]
+- [Vid: portal-feedback_v0-4-0][5]
 
 
 
