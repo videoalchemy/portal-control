@@ -3,13 +3,24 @@
 > Installed April 2015 at the Chabot Space and Science Center
 ___________________
 
+## Vids and Picts of the output
+### In action:
+- [Vid: 2015-03_Portal_Chabot-Space-Center][4]
+- [Vid: Portal Control - Redux][2]
+
+
+### RnD, test runs, and prototypes
+- [Picts: R&D screenshots on Flickr][1]
+- [Vid: 2015_03-proto_portal_control_v-2][3]
+- [Vid: portal-feedback_v0-4-0[5]
+
+
+
 ### Required:
 #### Libraries:
 - oscP5 0.9.9
 - Open Kinect for Processing 1.0
 
-### Vids and Picts
-- [R&D on Flickr](https://www.flickr.com/photos/jaycody9/albums/72157651532556476)
 
 #### repo organization
 ##### portal-control/portal-control 
@@ -344,3 +355,9 @@ ________________________________
 
 ___________________________
 [Optima projectors]:http://www.projectorreviews.com/optoma/optoma-zx210st-short-throw-ledlaser-dlp-projector-review/
+
+[1]:https://www.flickr.com/photos/jaycody9/albums/72157651532556476
+[2]:https://vimeo.com/273180206
+[3]:https://www.youtube.com/watch?v=jfbcqyYewXg
+[4]:https://www.youtube.com/watch?v=YUDMK08I1ok
+[5]:https://www.youtube.com/watch?v=-B2NUWf8G74
