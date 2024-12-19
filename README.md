@@ -38,7 +38,7 @@ ___________________
 
 ##### docs
 - kept the markdown docs here before creating a wiki
-- but as development cycles shortened, the wiki became too slow to use, to cumbersome. 
+- but as development cycles shortened, the wiki became too slow to use, too cumbersome. 
 - so started using the README again.  
 - which means that neither the docs folder nor the wiki are up to date, although they contain lots of background research and ideas not covered in the more relevant README of the main repo.
 
